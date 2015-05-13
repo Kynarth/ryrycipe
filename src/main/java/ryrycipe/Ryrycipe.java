@@ -7,7 +7,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import ryrycipe.util.LocaleUtil;
-import sun.rmi.server.LoaderHandler;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -48,7 +47,7 @@ public class Ryrycipe extends Application {
         rootLayout = loader.load();
 
         // Create a scene with the loaded layout
-        Scene scene = new Scene(rootLayout, 600, 445);
+        Scene scene = new Scene(rootLayout, 700, 445);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

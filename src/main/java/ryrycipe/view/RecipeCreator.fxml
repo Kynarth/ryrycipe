@@ -6,19 +6,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
    <items>
-      <TabPane maxWidth="380.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="%tab.materials.name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <GridPane hgap="5.0" layoutX="14.0" layoutY="14.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                           <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                            <ColumnConstraints halignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                              <ColumnConstraints halignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
@@ -26,11 +26,11 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
                           </rowConstraints>
                            <children>
-                              <ToggleButton fx:id="foragedBtn" mnemonicParsing="false" text="ToggleButton" />
-                              <ToggleButton fx:id="QuarteredBtn" mnemonicParsing="false" text="ToggleButton" GridPane.columnIndex="1" />
-                              <ComboBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+                              <ToggleButton fx:id="foragedBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.foraged.name" />
+                              <ToggleButton fx:id="QuarteredBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
+                              <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
                               <ComboBox maxWidth="1.7976931348623157E308" prefHeight="26.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <ComboBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                               <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
@@ -38,7 +38,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="%tab.planstats.name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
@@ -47,7 +47,7 @@
       </TabPane>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="%tab.plan.name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -63,19 +63,19 @@
                               <RowConstraints minHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Label" />
-                              <Label text="Label" GridPane.rowIndex="1" />
-                              <ComboBox GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="ALWAYS" />
-                              <ComboBox GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-                              <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-                              <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Comment your plan" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                              <Label text="%label.quality.name" />
+                              <Label text="%label.plan.name" GridPane.rowIndex="1" />
+                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
+                              <ListView prefHeight="324.0" prefWidth="325.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                              <TextArea prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="%tab.materialstats.name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>

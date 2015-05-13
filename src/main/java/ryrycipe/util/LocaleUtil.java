@@ -27,7 +27,6 @@ public class LocaleUtil {
     public static void setLanguage(String lang) {
         Properties parameters = PropertiesUtil.loadProperties("src/main/resources/parameters.properties");
 
-
         if (parameters != null) {
             if (parameters.getProperty("language.supported").contains(lang))
                 prefs.put("language", lang);
