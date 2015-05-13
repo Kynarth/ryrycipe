@@ -9,6 +9,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.intellij:annotations:12.0'
 }
 
 sourceSets {
@@ -17,5 +18,15 @@ sourceSets {
             srcDirs = ['src/main/java', 'src/main/resources']
             includes = ['**/*.fxml', '**/*.properties', '**/*.png', '**/*.css']
         }
+    }
+}
+
+// Convert all properties files in utf-8 format
+task convertUtf8 {
+    FileTree tree = fileTree(dir: 'src/main/resources')
+    tree.include '**/*.properties'
+
+    tree.each {File file -> exec {
+        commandLine 'native2ascii', '-encoding', 'utf-8', file, file}
     }
 }

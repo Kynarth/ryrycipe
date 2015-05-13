@@ -1,7 +1,6 @@
 #newBtn {
     -fx-background-image: url('/images/toolbar/new.png');
-    -fx-background-size: 32 32;
+    -fx-background-size: 30 30;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-color: #EBEBEB;
 }
