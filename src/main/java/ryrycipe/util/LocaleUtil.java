@@ -11,9 +11,7 @@ public class LocaleUtil {
 
     private static Preferences prefs = Preferences.userNodeForPackage(LocaleUtil.class);
 
-    private LocaleUtil() {
-
-    }
+    private LocaleUtil() {}
 
     /**
      * Return the current application's language.
