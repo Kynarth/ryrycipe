@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ryrycipe.controller.RecipeCreatorController">
    <items>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -26,12 +26,12 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
                           </rowConstraints>
                            <children>
-                              <ToggleButton fx:id="foragedBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.foraged.name" />
-                              <ToggleButton fx:id="QuarteredBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
-                              <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
-                              <ComboBox maxWidth="1.7976931348623157E308" prefHeight="26.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                              <ToggleButton fx:id="foragedBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.foraged.name" />
+                              <ToggleButton fx:id="QuarteredBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="componentCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.component.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+                              <ComboBox fx:id="qualityCB" disable="true" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="%combobox.quality.placeholder" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="factionCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.faction.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <FlowPane fx:id="materialChooser" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>
@@ -65,8 +65,8 @@
                            <children>
                               <Label text="%label.quality.name" />
                               <Label text="%label.plan.name" GridPane.rowIndex="1" />
-                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
+                              <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+                              <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
                               <ListView prefHeight="324.0" prefWidth="325.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                               <TextArea prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                            </children>
