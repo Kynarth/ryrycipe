@@ -37,6 +37,7 @@ public class RecipeCreatorController implements Initializable {
         // Initialize the combobox containing the different plans
         PlanManager planManager = new PlanManager();
         planItems.addAll(planManager.getAll(planQualityCB.getValue()));
+        FXCollections.sort(planItems);
         planCB.setItems(planItems);
     }
 }

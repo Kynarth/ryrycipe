@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Represent a craft plan from Ryzom game.
  */
-public class Plan {
+public class Plan implements Comparable<Plan> {
 
     private int id;
     private String name;
@@ -79,6 +79,11 @@ public class Plan {
     }
 
     public String toString() {
-        return name;
+        return category.getCategory() + "/" + name;
+    }
+
+    @Override
+    public int compareTo(Plan o) {
+        return this.toString().compareTo(o.toString());
     }
 }
