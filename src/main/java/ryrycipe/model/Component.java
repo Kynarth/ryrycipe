@@ -12,7 +12,9 @@ public class Component {
     private String icon;
     private int amount;
 
-    public Component() {}
+    public Component() {
+        this.name = null;
+    }
 
     public Component(String id, String name, String icon, int amount) {
         this.id = id;

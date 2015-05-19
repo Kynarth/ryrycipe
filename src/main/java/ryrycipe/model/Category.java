@@ -10,7 +10,9 @@ public class Category {
     private String subCategory;
     private int hand;
 
-    public Category() {}
+    public Category() {
+        this.id = -1;
+    }
 
     public Category(int id, String category, String subCategory, int hand ) {
         this.id = id;

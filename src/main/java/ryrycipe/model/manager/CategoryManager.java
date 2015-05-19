@@ -33,7 +33,7 @@ public class CategoryManager {
 
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.first()) {
+            if (resultSet.isBeforeFirst()) {
                 category = new Category(
                     id, resultSet.getString("category"), resultSet.getString("subcategory"), resultSet.getInt("hand")
                 );

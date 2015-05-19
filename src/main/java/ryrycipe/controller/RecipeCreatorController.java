@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import ryrycipe.model.Plan;
+import ryrycipe.model.manager.PlanManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,9 +21,9 @@ public class RecipeCreatorController implements Initializable {
     private ComboBox<String> planQualityCB;
 
     @FXML
-    private ComboBox<String> planCB;
+    private ComboBox<Plan> planCB;
 
-    private ObservableList<String> planItems = FXCollections.observableArrayList();
+    private ObservableList<Plan> planItems = FXCollections.observableArrayList();
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
 
 
@@ -33,6 +35,8 @@ public class RecipeCreatorController implements Initializable {
         planQualityCB.setValue(planQualityItems.get(planQualityItems.size() -1));
 
         // Initialize the combobox containing the different plans
-
+        PlanManager planManager = new PlanManager();
+        planItems.addAll(planManager.getAll(planQualityCB.getValue()));
+        planCB.setItems(planItems);
     }
 }
