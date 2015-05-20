@@ -53,7 +53,7 @@
                      <children>
                         <GridPane hgap="10.0" layoutX="14.0" layoutY="14.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                            <ColumnConstraints hgrow="NEVER" minWidth="108.0" />
                             <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
                           </columnConstraints>
                           <rowConstraints>
@@ -65,7 +65,7 @@
                            <children>
                               <Label text="%label.quality.name" />
                               <Label text="%label.plan.name" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+                              <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" onAction="#initializePlanList" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
                               <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" onAction="#selectPlan" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
                               <ScrollPane fx:id="planRecipe" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                  <content>

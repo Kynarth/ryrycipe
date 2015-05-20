@@ -38,6 +38,8 @@ public class RecipeCreatorController implements Initializable {
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
 
+    private Plan currentPlan;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize the combobox containing the different plan's quality
@@ -46,6 +48,13 @@ public class RecipeCreatorController implements Initializable {
         planQualityCB.setValue(planQualityItems.get(planQualityItems.size() -1));
 
         // Initialize the combobox containing the different plans
+        initializePlanList();
+
+    }
+
+    @FXML
+    public void initializePlanList() {
+        planItems.clear();
         PlanManager planManager = new PlanManager();
         planItems.addAll(planManager.getAll(planQualityCB.getValue()));
         FXCollections.sort(planItems);
@@ -56,7 +65,13 @@ public class RecipeCreatorController implements Initializable {
     public void selectPlan() {
         // Initialize the list view with plan's information
         componentsContainer.getChildren().clear();
-        Plan currentPlan = planCB.getValue();
+
+        // Case when user change quality and reset the list of plans, the previous value of currentPlan is used.
+        if (planCB.getValue() != null)
+            currentPlan = planCB.getValue();
+        else
+            planCB.setValue(currentPlan);
+
         currentPlan.getComponents().forEach(this::addComponent);
     }
 
