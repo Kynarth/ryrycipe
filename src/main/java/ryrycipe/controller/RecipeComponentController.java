@@ -30,6 +30,8 @@ public class RecipeComponentController implements Initializable {
 
     private Component component;
 
+    private RecipeCreatorController recipeCreatorController;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Set an ImageView in the flow layout that represents a empty slot for a material.
@@ -38,12 +40,27 @@ public class RecipeComponentController implements Initializable {
 
     }
 
-    public void setComponent(Component component) {
-        this.component = component;
-
+    /**
+     * Initialize the RecipeComponent with informations from selected plan's component.
+     */
+    public void setupRecipeComponent() {
         // Initialize RecipeComponent with given component informations
         componentIcon.setImage(component.getImage());
         componentName.setText(component.getName());
         componentIndicator.setText("0/" + component.getAmount());
+        recipeCreatorController.enableFilter();
+    }
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+
+    /**
+     * Set the recipeCreatorController to perform action in RecipeCreator view.
+     *
+     * @param recipeCreatorController Controller of RecipeCreator view.
+     */
+    public void setRecipeCreatorController(RecipeCreatorController recipeCreatorController) {
+        this.recipeCreatorController = recipeCreatorController;
     }
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import ryrycipe.model.Component;
 import ryrycipe.model.Plan;
@@ -21,6 +22,9 @@ import java.util.ResourceBundle;
  * Controller for the RecipeCreator.
  */
 public class RecipeCreatorController implements Initializable {
+
+    @FXML
+    private GridPane materialFilter;
 
     @FXML
     private ComboBox<String> planQualityCB;
@@ -48,6 +52,7 @@ public class RecipeCreatorController implements Initializable {
         planCB.setItems(planItems);
     }
 
+    @FXML
     public void selectPlan() {
         // Initialize the list view with plan's information
         componentsContainer.getChildren().clear();
@@ -70,11 +75,20 @@ public class RecipeCreatorController implements Initializable {
             // Add the loaded recipeComponent to the ScrollPane
             componentsContainer.getChildren().add(recipeComponent);
 
-            // Set the recipeComponent controller
+            // Set the recipeComponent controller and setup the RecipeComponent
             RecipeComponentController controller = loader.getController();
+            controller.setRecipeCreatorController(this);
             controller.setComponent(component);
+            controller.setupRecipeComponent();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Enable controls in the materials filter.
+     */
+    public void enableFilter() {
+        materialFilter.getChildren().forEach((control) -> control.setDisable(false));
     }
 }
