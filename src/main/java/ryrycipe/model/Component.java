@@ -58,4 +58,13 @@ public class Component {
     public String toString() {
         return name;
     }
+
+    /**
+     * Return the component image
+     *
+     * @return Component's image.
+     */
+    public Image getImage() {
+        return new Image("/images/components/" + icon);
+    }
 }

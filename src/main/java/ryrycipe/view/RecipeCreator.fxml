@@ -59,15 +59,19 @@
                           <rowConstraints>
                             <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
                             <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="30.0" prefHeight="193.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="129.0" minHeight="30.0" prefHeight="77.0" valignment="CENTER" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label text="%label.quality.name" />
                               <Label text="%label.plan.name" GridPane.rowIndex="1" />
                               <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-                              <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
-                              <ListView prefHeight="324.0" prefWidth="325.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" onAction="#selectPlan" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
+                              <ScrollPane fx:id="planRecipe" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                                 <content>
+                                    <VBox fx:id="componentsContainer" />
+                                 </content>
+                              </ScrollPane>
                               <TextArea prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
