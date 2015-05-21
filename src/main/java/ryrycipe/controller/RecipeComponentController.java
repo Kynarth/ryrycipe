@@ -48,19 +48,9 @@ public class RecipeComponentController implements Initializable {
         componentIcon.setImage(component.getImage());
         componentName.setText(component.getName());
         componentIndicator.setText("0/" + component.getAmount());
-        recipeCreatorController.enableFilter();
     }
 
     public void setComponent(Component component) {
         this.component = component;
-    }
-
-    /**
-     * Set the recipeCreatorController to perform action in RecipeCreator view.
-     *
-     * @param recipeCreatorController Controller of RecipeCreator view.
-     */
-    public void setRecipeCreatorController(RecipeCreatorController recipeCreatorController) {
-        this.recipeCreatorController = recipeCreatorController;
     }
 }

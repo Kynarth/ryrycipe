@@ -1,7 +1,5 @@
 package ryrycipe.controller;
 
-import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 

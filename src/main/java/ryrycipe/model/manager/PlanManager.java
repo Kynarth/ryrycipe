@@ -10,11 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manage Plan object from ryrycipe database.
  */
 public class PlanManager {
+
     public Connection connection = DBConnection.getInstance();
 
     /**
@@ -45,7 +47,7 @@ public class PlanManager {
 
                 // Retrieve plan's category and the list of its components
                 Category category = categoryManager.find(resultSet.getInt("category_id"));
-                ArrayList<Component> components = componentManager.getPlanComponents(resultSet.getInt("plan_id"));
+                List<Component> components = componentManager.getPlanComponents(resultSet.getInt("plan_id"));
 
                 plan = new Plan(
                     resultSet.getInt("plan_id"), name, quality,

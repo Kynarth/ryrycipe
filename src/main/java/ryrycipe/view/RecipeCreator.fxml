@@ -27,7 +27,7 @@
                           </rowConstraints>
                            <children>
                               <ToggleButton fx:id="foragedBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.foraged.name" />
-                              <ToggleButton fx:id="QuarteredBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
+                              <ToggleButton fx:id="quarteredBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
                               <ComboBox fx:id="componentCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.component.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
                               <ComboBox fx:id="qualityCB" disable="true" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="%combobox.quality.placeholder" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                               <ComboBox fx:id="factionCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.faction.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
@@ -65,7 +65,7 @@
                            <children>
                               <Label text="%label.quality.name" />
                               <Label text="%label.plan.name" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" onAction="#initializePlanList" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+                              <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" onAction="#initializePlansCB" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
                               <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" onAction="#selectPlan" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
                               <ScrollPane fx:id="planRecipe" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                  <content>

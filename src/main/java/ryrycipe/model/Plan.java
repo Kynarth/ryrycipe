@@ -1,10 +1,5 @@
 package ryrycipe.model;
 
-import javafx.scene.effect.BlendMode;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +16,7 @@ public class Plan implements Comparable<Plan> {
 
     public Plan() {}
 
-    public Plan(int id, String name, String quality, String icon, Category category, ArrayList<Component>components) {
+    public Plan(int id, String name, String quality, String icon, Category category, List<Component>components) {
         this.id = id;
         this.name = name;
         this.quality = quality;
