@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Manage Material object from ryrycipe database.
@@ -21,39 +22,32 @@ public class MaterialManager {
     /**
      * Gives the list of materials corresponding to the parameters from the materials filter.
      *
-     * @param categories Contains the categories of materials. Ex: Foragaed, Quartered or both
-     * @param component Define on which components the user search for materials.
-     * @param quality Material's quality
-     * @param faction Material's faction
-     * @return A list of materials fitting the materials filter parameters
+     * @param parameters A Map containing each value of filter's controls.
+     * @return A list of materials fitting the materials filter parameters.
      */
-    public ArrayList<Material> filter(String[] categories, String component, String quality, String faction) {
+    public ArrayList<Material> filter(Map<String ,String> parameters) {
         ArrayList<Material> materials = new ArrayList<Material>();
         ComponentManager componentManager = new ComponentManager();
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
-                "SELECT m.id as material_id, m.description mc.category, mc.name as material_name" +
-                    "mct.name as type_name, mct.icon, ms.faction, ms.quality " +
-                    "FROM material as m " +
-                    "JOIN material_category as mc " +
-                    "ON m.category_id = mc.id " +
-                    "JOIN material_category_type as mct " +
-                    "ON mc.type_id = mct.id " +
-                    "JOIN material_spec as ms " +
-                    "ON ms.id = m.spec_id " +
-                    "JOIN material_component as mcmp " +
-                    "ON mcp.id = material_component_id " +
+                "SELECT m.id AS material_id, m.description, mc.category, mc.name AS material_name, " +
+                    "mct.name AS type_name, mct.icon, ms.faction, ms.quality " +
+                    "FROM material AS m " +
+                    "JOIN material_category AS mc ON m.category_id = mc.id " +
+                    "JOIN material_category_type AS mct ON mc.type_id = mct.id " +
+                    "JOIN material_spec AS ms ON ms.id = m.spec_id " +
+                    "JOIN material_component AS mcmp ON mcmp.id = material_component_id " +
                     "WHERE (mc.category = ? OR mc.category = ?) " +
-                    "AND ms.quality = ? AND Mmq.Faction = ? " +
-                    "AND (mcp.component_id_1 = ? OR mcp.component_id_2 = ?)",
-                ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY
+                    "AND ms.quality = ? AND ms.Faction = ? " +
+                    "AND (mcmp.component_id_1 = ? OR mcmp.component_id_2 = ?)"
             );
-            statement.setString(1, categories[0]);
-            statement.setString(2, categories[1]);
-            statement.setString(3, component);
-            statement.setString(4, quality);
-            statement.setString(5, faction);
+            statement.setString(1, parameters.get("foraged"));
+            statement.setString(2, parameters.get("quartered"));
+            statement.setString(3, parameters.get("quality"));
+            statement.setString(4, parameters.get("faction"));
+            statement.setString(5, parameters.get("component"));
+            statement.setString(6, parameters.get("component"));
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -71,7 +65,7 @@ public class MaterialManager {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+             e.printStackTrace();
         }
 
         return materials;

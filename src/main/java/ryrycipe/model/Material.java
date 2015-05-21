@@ -1,5 +1,7 @@
 package ryrycipe.model;
 
+import javafx.scene.image.Image;
+
 import java.util.List;
 
 /**
@@ -102,5 +104,9 @@ public class Material {
 
     public void setFaction(String faction) {
         this.faction = faction;
+    }
+
+    public Image getImage() {
+        return new Image("/images/materials/" + icon);
     }
 }

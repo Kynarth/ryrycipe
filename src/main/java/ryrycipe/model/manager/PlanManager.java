@@ -32,9 +32,9 @@ public class PlanManager {
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
-                "SELECT r.id as plan_id, r.icon, r.category_id FROM recipe as r" +
-                    "INNER JOIN recipe_category as rc ON r.category_id = rc.id" +
-                    "INNER JOIN recipe_component as rcmp ON rcmp.recipe_id = r.id" +
+                "SELECT r.id AS plan_id, r.icon, r.category_id FROM recipe AS r " +
+                    "INNER JOIN recipe_category AS rc ON r.category_id = rc.id " +
+                    "INNER JOIN recipe_component AS rcmp ON rcmp.recipe_id = r.id " +
                     "WHERE r.name= ? AND r.quality= ?",
                 ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY
             );

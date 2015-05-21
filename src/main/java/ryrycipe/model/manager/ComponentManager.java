@@ -30,8 +30,8 @@ public class ComponentManager {
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
-                "SELECT * FROM component as c " +
-                    "INNER JOIN recipe_component as rc ON rc.component_id = c.id " +
+                "SELECT * FROM component AS c " +
+                    "INNER JOIN recipe_component AS rc ON rc.component_id = c.id " +
                     "WHERE c.id = ?"
             );
             statement.setString(1, id);
@@ -61,9 +61,9 @@ public class ComponentManager {
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
-                "SELECT c.id as component_id, c.name, c.icon, rc.amount " +
-                    " FROM component as c " +
-                    "INNER JOIN recipe_component as rc ON rc.component_id = c.id " +
+                "SELECT c.id AS component_id, c.name, c.icon, rc.amount " +
+                    "FROM component AS c " +
+                    "INNER JOIN recipe_component AS rc ON rc.component_id = c.id " +
                     "WHERE rc.recipe_id = ?"
             );
             statement.setInt(1, planId);
@@ -94,7 +94,7 @@ public class ComponentManager {
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
-                "SELECT c.id as cmp_id as cmp_id, c.name as cmp_name, c.icon as cmp_icon" +
+                "SELECT c.id as cmp_id, c.name as cmp_name, c.icon as cmp_icon " +
                     "FROM component as c " +
                     "INNER JOIN material_component as mcmp " +
                     "ON c.id = mcmp.component_id_1 OR c.id = mcmp.component_id_2 " +

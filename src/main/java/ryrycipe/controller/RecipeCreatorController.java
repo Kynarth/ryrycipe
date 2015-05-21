@@ -13,8 +13,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import ryrycipe.model.Component;
+import ryrycipe.model.Material;
 import ryrycipe.model.Plan;
+import ryrycipe.model.manager.MaterialManager;
 import ryrycipe.model.manager.PlanManager;
+import ryrycipe.model.representation.MaterialIcon;
 
 import java.io.IOException;
 import java.net.URL;
@@ -216,7 +219,12 @@ public class RecipeCreatorController implements Initializable {
     /**
      * Display materials fitting the materials filter options.
      */
+    @FXML
     private void displayMaterials() {
+        MaterialManager materialManager = new MaterialManager();
 
+        for (Material material: materialManager.filter(getFilterParameters())) {
+            materialChooser.getChildren().add(new MaterialIcon(material));
+        }
     }
 }
