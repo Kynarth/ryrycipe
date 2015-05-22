@@ -1,6 +1,13 @@
 package ryrycipe.model;
 
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import ryrycipe.util.LocaleUtil;
+import ryrycipe.util.PropertiesUtil;
 
 import java.util.List;
 
@@ -106,7 +113,34 @@ public class Material {
         this.faction = faction;
     }
 
-    public Image getImage() {
-        return new Image("/images/materials/" + icon);
+    /**
+     * Return an ImageView with the material image
+     *
+     * @return Material's image as an ImageView.
+     */
+    public ImageView getImage() {
+        /**
+         * Check if the material has faction because factions have the same name regardless of the language but not for
+         * generic faction. So we have to use english word for generic to load correspoding background.
+         */
+        Image background;
+        String generic = PropertiesUtil.loadProperties(
+            this.getClass().getClassLoader().getResource("lang_" + LocaleUtil.getLanguage() + ".properties").getPath()
+            ).getProperty("combobox.faction.generic");
+        if (this.faction.equals(generic)) {
+            background = new Image("/images/backgrounds/BK_generic.png");
+        } else {
+            background = new Image("/images/backgrounds/BK_" + this.faction.toLowerCase() + ".png");
+        }
+
+        Image overlay = new Image("/images/materials/" + icon);
+
+        // Create a canvas that combines the background with the overlay
+        Canvas canvas = new Canvas(40, 40);
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.drawImage(background, 0, 0);
+        graphicsContext.drawImage(overlay, 0, 0);
+        WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
+        return new ImageView(snapshot);
     }
 }

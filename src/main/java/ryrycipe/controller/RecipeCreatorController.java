@@ -17,7 +17,6 @@ import ryrycipe.model.Material;
 import ryrycipe.model.Plan;
 import ryrycipe.model.manager.MaterialManager;
 import ryrycipe.model.manager.PlanManager;
-import ryrycipe.model.representation.MaterialIcon;
 
 import java.io.IOException;
 import java.net.URL;
@@ -224,7 +223,7 @@ public class RecipeCreatorController implements Initializable {
         MaterialManager materialManager = new MaterialManager();
 
         for (Material material: materialManager.filter(getFilterParameters())) {
-            materialChooser.getChildren().add(new MaterialIcon(material));
+            materialChooser.getChildren().add(material.getImage());
         }
     }
 }
