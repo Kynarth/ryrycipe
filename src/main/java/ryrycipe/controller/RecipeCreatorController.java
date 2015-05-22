@@ -211,9 +211,18 @@ public class RecipeCreatorController implements Initializable {
     private void initializeFilter() {
         initializeComponentsCB();
         initializeQualityCB();
-        initializeFactionCB();
+
+        // The factionCB will be initialize with the qualityCB initialization by the way its onAction function.
     }
 
+    /**
+     * Update the factionCB in function of selected quality and display resulting materials.
+     */
+    @FXML
+    public void handleQualityChange() {
+        initializeFactionCB();
+        displayMaterials();
+    }
 
     /**
      * Display materials fitting the materials filter options.
@@ -221,6 +230,7 @@ public class RecipeCreatorController implements Initializable {
     @FXML
     private void displayMaterials() {
         MaterialManager materialManager = new MaterialManager();
+        materialChooser.getChildren().clear();
 
         for (Material material: materialManager.filter(getFilterParameters())) {
             materialChooser.getChildren().add(material.getImage());

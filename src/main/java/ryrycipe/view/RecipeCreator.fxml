@@ -27,10 +27,10 @@
                           </rowConstraints>
                            <children>
                               <ToggleButton fx:id="foragedBtn" disable="true" onAction="#displayMaterials" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.foraged.name" />
-                              <ToggleButton fx:id="quarteredBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
-                              <ComboBox fx:id="componentCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.component.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
-                              <ComboBox fx:id="qualityCB" disable="true" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="%combobox.quality.placeholder" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="factionCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.faction.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <ToggleButton fx:id="quarteredBtn" disable="true" onAction="#displayMaterials" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%button.quartered.name" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="componentCB" disable="true" onAction="#displayMaterials" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.component.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+                              <ComboBox fx:id="qualityCB" disable="true" onAction="#handleQualityChange" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="%combobox.quality.placeholder" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="factionCB" disable="true" onAction="#displayMaterials" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.faction.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                               <FlowPane fx:id="materialChooser" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
