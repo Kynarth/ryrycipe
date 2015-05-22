@@ -1,0 +1,82 @@
+{
+    "mpftMpM": {
+        "icon": "ICO_Shaft",
+        "name": "Flèche"
+    },
+    "mpftMpPE": {
+        "icon": "ICO_Firing_pin",
+        "name": "Percuteur"
+    },
+    "mpftMpCA": {
+        "icon": "ICO_barrel",
+        "name": "Canon"
+    },
+    "mpftMpGA": {
+        "icon": "ICO_trigger",
+        "name": "Détente"
+    },
+    "mpftMpC": {
+        "icon": "ICO_Counterweight",
+        "name": "Contrepoids"
+    },
+    "mpftMpG": {
+        "icon": "ICO_Grip",
+        "name": "Prise"
+    },
+    "mpftMpL": {
+        "icon": "ICO_Blade",
+        "name": "Lame"
+    },
+    "mpftMpMF": {
+        "icon": "ICO_Magic_focus",
+        "name": "Concentration Magique"
+    },
+    "mpftMpCR": {
+        "icon": "ICO_Armor_shell",
+        "name": "Carapace pour armure"
+    },
+    "mpftMpRI": {
+        "icon": "ICO_Lining",
+        "name": "Doublure"
+    },
+    "mpftMpAT": {
+        "icon": "ICO_armor_clip",
+        "name": "Fixation pour Armures"
+    },
+    "mpftMpVE": {
+        "icon": "ICO_Clothes",
+        "name": "Vêtements"
+    },
+    "mpftMpSU": {
+        "icon": "ICO_Jewel_stone_support",
+        "name": "Configuration des bijoux"
+    },
+    "mpftMpED": {
+        "icon": "ICO_Jewel_stone",
+        "name": "Bijou"
+    },
+    "mpftMpPR": {
+        "icon": "ICO_Ammo_bullet",
+        "name": "Balle de munitions"
+    },
+    "mpftMpEN": {
+        "icon": "ICO_Ammo_jacket",
+        "name": "Cartouche de Munitions"
+    },
+    "mpftMpE": {
+        "icon": "ICO_Explosif",
+        "name": "Explosif"
+    },
+    "mpftMpH": {
+        "icon": "ICO_hammer",
+        "name": "Marteau"
+    },
+    "mpftMpRE": {
+        "icon": "ICO_Stuffing",
+        "name": "Rembourrage"
+    },
+    "mpftMpP": {
+        "icon": "ICO_Pointe",
+        "name": "Pointe"
+    }
+}

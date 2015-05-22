@@ -1,0 +1,408 @@
+{
+    "Arme": {
+        "Mélée": {
+            "Arme à une main": {
+                "Hache": {
+                    "code": "bccmea05",
+                    "icon": "MW_axe",
+                    "type": "Arme 1M",
+                    "name": "Hache"
+                },
+                "Dague": {
+                    "code": "bccmea06",
+                    "icon": "MW_dagger",
+                    "type": "Arme 1M",
+                    "name": "Dague"
+                },
+                "Lance": {
+                    "code": "bccmea07",
+                    "icon": "MW_lance",
+                    "type": "Arme 1M",
+                    "name": "Lance"
+                },
+                "Massue": {
+                    "code": "bccmea08",
+                    "icon": "MW_mace",
+                    "type": "Arme 1M",
+                    "name": "Massue"
+                },
+                "Bâton": {
+                    "code": "bccmea09",
+                    "icon": "MW_staff",
+                    "type": "Arme 1M",
+                    "name": "Bâton"
+                },
+                "Epée": {
+                    "code": "bccmea10",
+                    "icon": "MW_sword",
+                    "type": "Arme 1M",
+                    "name": "Epée"
+                }
+            },
+            "Arme à deux mains": {
+                "Hache à deux mains": {
+                    "code": "bccmea01",
+                    "icon": "MW_2h_axe",
+                    "type": "Arme 2M",
+                    "name": "Hache à deux mains"
+                },
+                "Pique": {
+                    "code": "bccmea02",
+                    "icon": "MW_2h_lance",
+                    "type": "Arme 2M",
+                    "name": "Pique"
+                },
+                "Massue à deux mains": {
+                    "code": "bccmea03",
+                    "icon": "MW_2h_mace",
+                    "type": "Arme 2M",
+                    "name": "Massue à deux mains"
+                },
+                "Epée à deux mains": {
+                    "code": "bccmea04",
+                    "icon": "MW_2h_sword",
+                    "type": "Arme 2M",
+                    "name": "Epée à deux mains"
+                }
+            },
+            "Corps à corps": {
+                "Amplificateur magique": {
+                    "code": "bccmea15",
+                    "icon": "MG_Glove",
+                    "type": "Arme 2M",
+                    "name": "Amplifacateur magique"
+                }
+            }
+        },
+        "Distance": {
+            "Arme à distance à une main": {
+                "Pistolet": {
+                    "code": "bccrea04",
+                    "icon": "RW_pistol",
+                    "type": "Arme Distance 1M",
+                    "name": "Pistolet"
+                },
+                "Pistolet Arbalète": {
+                    "code": "bccrea05",
+                    "icon": "RW_pistolarc",
+                    "type": "Arme Distance 1M",
+                    "name": "Pistolet Arbalète"
+                }
+            },
+            "Arme à distance à deux mains": {
+                "Mitrailleuse": {
+                    "code": "bccrea01",
+                    "icon": "RW_autolaunch",
+                    "type": "Arme Distance 2M",
+                    "name": "Mitrailleuse"
+                },
+                "Fusil Arbalète": {
+                    "code": "bccrea02",
+                    "icon": "RW_bowgun",
+                    "type": "Arme Distance 2M",
+                    "name": "Fusil Arbalète"
+                },
+                "Lance-grenade": {
+                    "code": "bccrea03",
+                    "icon": "RW_launcher",
+                    "type": "Arme Distance 2M",
+                    "name": "Lance-grenade"
+                },
+                "Fusil": {
+                    "code": "bccrea06",
+                    "icon": "RW_rifle",
+                    "type": "Arme Distance 2M",
+                    "name": "Fusil"
+                }
+            }
+        }
+    },
+    "Armure": {
+        "Armure Lourde": {
+            "Bottes lourdes": {
+                "code": "bccaea01",
+                "icon": "AR_botte",
+                "type": "Armure Lourde",
+                "name": "Bottes"
+            },
+            "Gants lourds": {
+                "code": "bccaea02",
+                "icon": "AR_hand",
+                "type": "Armure Lourde",
+                "name": "Gants"
+            },
+            "Casque": {
+                "code": "bccaea03",
+                "icon": "AR_helmet",
+                "type": "Armure Lourde",
+                "name": "Casque"
+            },
+            "Pantalon lourd": {
+                "code": "bccaea04",
+                "icon": "AR_pantabotte",
+                "type": "Armure Lourde",
+                "name": "Pantalon"
+            },
+            "Manches lourdes": {
+                "code": "bccaea05",
+                "icon": "AR_armpad",
+                "type": "Armure Lourde",
+                "name": "Manches"
+            },
+            "Gilet lourd": {
+                "code": "bccaea06",
+                "icon": "AR_gilet",
+                "type": "Armure Lourde",
+                "name": "Gilet"
+            }
+        },
+        "Armure Moyenne": {
+            "Bottes moyennes": {
+                "code": "bccaea12",
+                "icon": "AR_botte",
+                "type": "Armure Moyenne",
+                "name": "Bottes"
+            },
+            "Gants moyens": {
+                "code": "bccaea13",
+                "icon": "AR_hand",
+                "type": "Armure Moyenne",
+                "name": "Gants"
+            },
+            "Pantalon moyen": {
+                "code": "bccaea14",
+                "icon": "AR_pantabotte",
+                "type": "Armure Moyenne",
+                "name": "Pantalon"
+            },
+            "Manches moyennes": {
+                "code": "bccaea15",
+                "icon": "AR_armpad",
+                "type": "Armure Moyenne",
+                "name": "Manches"
+            },
+            "Gilet moyen": {
+                "code": "bccaea16",
+                "icon": "AR_gilet",
+                "type": "Armure Moyenne",
+                "name": "Gilet"
+            }
+        },
+        "Armure Légère": {
+            "Bottes légères": { 
+                "code": "bccaea07",
+                "icon": "AR_botte",
+                "type": "Armure Légère",
+                "name": "Bottes"
+            },
+            "Gants légers": {
+                "code": "bccaea08",
+                "icon": "AR_hand",
+                "type": "Armure Légère",
+                "name": "Gants"
+            },
+            "Pantalon léger": {
+                "code": "bccaea09",
+                "icon": "AR_pantabotte",
+                "type": "Armure Légère",
+                "name": "Pantalon"
+            },
+            "Pantalon de mage": {
+                "code": "bccaea09",
+                "icon": "AR_pantabotte",
+                "type": "Armure Légère",
+                "name": "Pantalon de mage"
+            },
+            "Manches légères": {
+                "code": "bccaea10",
+                "icon": "AR_armpad",
+                "type": "Armure Légère",
+                "name": "Manches"
+            },
+            "Gilet léger": {
+                "code": "bccaea11",
+                "icon": "AR_gilet",
+                "type": "Armure Légère",
+                "name": "Gilet"
+            }
+        },
+        "Bouclier": {
+            "Rondache": {
+                "code": "bccsea01",
+                "icon": "SH_buckler",
+                "type": "Bouclier",
+                "name": "Rondache"
+            },
+            "Bouclier": {
+                "code": "bccsea02",
+                "icon": "SH_large_shield",
+                "type": "Bouclier",
+                "name": "Bouclier"
+            }
+        }
+    },
+    "Bijou": {
+        "Anneau de Cheville": {
+            "code": "bcmjea01",
+            "icon": "PA_anklet",
+            "type": "Bijou",
+            "name": "Anneau de Cheville"
+        },
+        "Bracelets": {
+            "code": "bcmjea02",
+            "icon": "PA_bracelet",
+            "type": "Bijou",
+            "name": "Bracelets"
+        },
+        "Diadème": {
+            "code": "bcmjea03",
+            "icon": "PA_diadem",
+            "type": "Bijou",
+            "name": "Diadème"
+        },
+        "Boucle d'Oreille": {
+            "code": "bcmjea04",
+            "icon": "PA_earring",
+            "type": "Bijou",
+            "name": "Boucle d'Oreille"
+        },
+        "Pendentif": {
+            "code": "bcmjea05",
+            "icon": "PA_pendant",
+            "type": "Bijou",
+            "name": "Pendentif"
+        },
+        "Bague": {
+            "code": "bcmjea06",
+            "icon": "PA_ring",
+            "type": "Bijou",
+            "name": "Bague"
+        }
+    },
+    "Munition": {
+        "Arme à distance à une main": {
+            "Pistolet": {
+                "Munitions contandantes":  {
+                    "code": "bccpea16",
+                    "icon": "RW_pistol",
+                    "type": "Munition",
+                    "name": "Munitions contandantes"
+                },
+                "Munitions perforantes":  {
+                    "code": "bccpea17",
+                    "icon": "RW_pistol",
+                    "type": "Munition",
+                    "name": "Munitions perforantes"
+                },
+                "Munitions tranchantes": {
+                    "code": "bccpea18",
+                    "icon": "RW_pistol",
+                    "type": "Munition",
+                    "name": "Munitions tranchantes"
+                }
+            },
+            "Pistolet Arbalète": {
+                "Munitions contandantes": {
+                    "code": "bccpea13",
+                    "icon": "RW_pistolarc",
+                    "type": "Munition",
+                    "name": "Munitions contandantes"
+                },
+                "Munitions perforantes": {
+                    "code": "bccpea14", 
+                    "icon": "RW_pistolarc",
+                    "type": "Munition",
+                    "name": "Munitions perforantes"
+                },
+                "Munitions tranchantes": {
+                    "code": "bccpea15",
+                    "icon": "RW_pistolarc",
+                    "type": "Munition",
+                    "name": "Munitions tranchantes"
+                }
+            }
+        },
+        "Arme à distance à deux mains": {
+            "Mitrailleuse": {
+                "Munitions contandantes": {
+                    "code": "bccpea01",
+                    "icon": "RW_autolaunch",
+                    "type": "Munition",
+                    "name": "Munitions contandantes"
+                },
+                "Munitions perforantes": {
+                    "code": "bccpea02",
+                    "icon": "RW_autolaunch",
+                    "type": "Munition",
+                    "name": "Munitions perforantes"
+                },
+                "Munitions tranchantes": {
+                    "code": "bccpea03",
+                    "icon": "RW_autolaunch",
+                    "type": "Munition",
+                    "name": "Munitions tranchantes"
+                }
+            },
+            "Fusil Arbalète": {
+                "Munitions contandantes": {
+                    "code": "bccpea04",
+                    "icon": "RW_bowgun",
+                    "type": "Munition",
+                    "name": "Munitions contandantes"
+                },
+                "Munitions perforantes": {
+                    "code": "bccpea05",
+                    "icon": "RW_bowgun",
+                    "type": "Munition",
+                    "name": "Munitions perforantes"
+                },
+                "Munitions tranchantes": {
+                    "code": "bccpea06",
+                    "icon": "RW_bowgun",
+                    "type": "Munition",
+                    "name": "Munitions tranchantes"
+                }
+            },
+            "Lance-grenade": {
+                "Munitions contandantes": {
+                    "code": "bccpea10",
+                    "icon": "RW_grenade",
+                    "type": "Munition",
+                    "name": "Munitions contandantes"
+                },
+                "Munitions perforantes": {
+                    "code": "bccpea11",
+                    "icon": "RW_grenade",
+                    "type": "Munition",
+                    "name": "Munitions perforantes"
+                },
+                "Munitions tranchantes": {
+                    "code": "bccpea12",
+                    "icon": "RW_grenade",
+                    "type": "Munition",
+                    "name": "Munitions tranchantes"
+                }
+            },
+            "Fusil": {
+                "Munitions contandantes": {
+                    "code": "bccpea19",
+                    "icon": "RW_rifle",
+                    "type": "Munition",
+                    "name": "Munitions contandantes"
+                },
+                "Munitions perforantes": {
+                    "code": "bccpea20",
+                    "icon": "RW_rifle",
+                    "type": "Munition",
+                    "name": "Munitions perforantes"
+                },
+                "Munitions tranchantes": {
+                    "code": "bccpea21",
+                    "icon": "RW_rifle",
+                    "type": "Munition",
+                    "name": "Munitions tranchantes"
+                }
+            }
+        }
+    }
+}

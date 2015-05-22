@@ -23,12 +23,12 @@ public class Material {
     private String icon;
     private String name;
     private String quality;
-    private String faction;
+    private Faction faction;
     private List<Component> asComponent;
 
     public Material() {}
 
-    public Material(String id, String description, String category, String type, String quality, String faction,
+    public Material(String id, String description, String category, String type, String quality, Faction faction,
                     String icon, String name, List<Component> asComponent) {
         this.id = id;
         this.description = description;
@@ -105,11 +105,11 @@ public class Material {
         this.quality = quality;
     }
 
-    public String getFaction() {
+    public Faction getFaction() {
         return faction;
     }
 
-    public void setFaction(String faction) {
+    public void setFaction(Faction faction) {
         this.faction = faction;
     }
 
@@ -123,22 +123,21 @@ public class Material {
          * Check if the material has faction because factions have the same name regardless of the language but not for
          * generic faction. So we have to use english word for generic to load correspoding background.
          */
-        Image background;
-        String generic = PropertiesUtil.loadProperties(
-            this.getClass().getClassLoader().getResource("lang_" + LocaleUtil.getLanguage() + ".properties").getPath()
-            ).getProperty("combobox.faction.generic");
-        if (this.faction.equals(generic)) {
-            background = new Image("/images/backgrounds/BK_generic.png");
-        } else {
-            background = new Image("/images/backgrounds/BK_" + this.faction.toLowerCase() + ".png");
-        }
-
+//        Image background;
+//        String generic = PropertiesUtil.loadProperties(
+//            this.getClass().getClassLoader().getResource("lang_" + LocaleUtil.getLanguage() + ".properties").getPath()
+//            ).getProperty("combobox.faction.generic");
+//        if (this.faction.getName().equals(generic)) {
+//            background = new Image("/images/backgrounds/BK_generic.png");
+//        } else {
+//            background = new Image("/images/backgrounds/BK_" + this.faction.getName().toLowerCase() + ".png");
+//        }
         Image overlay = new Image("/images/materials/" + icon);
 
         // Create a canvas that combines the background with the overlay
         Canvas canvas = new Canvas(40, 40);
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.drawImage(background, 0, 0);
+        graphicsContext.drawImage(this.faction.getImage(), 0, 0);
         graphicsContext.drawImage(overlay, 0, 0);
         WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
         return new ImageView(snapshot);

@@ -1,0 +1,408 @@
+{
+    "Weapon": {
+        "Melee": {
+            "One-handed weapon": {
+                "Hache": {
+                    "code": "bccmea05",
+                    "icon": "MW_axe",
+                    "type": "Weapon 1H",
+                    "name": "Axe"
+                },
+                "Dagger": {
+                    "code": "bccmea06",
+                    "icon": "MW_dagger",
+                    "type": "Weapon 1H",
+                    "name": "Dagger"
+                },
+                "Spear": {
+                    "code": "bccmea07",
+                    "icon": "MW_lance",
+                    "type": "Weapon 1H",
+                    "name": "Spear"
+                },
+                "Mace": {
+                    "code": "bccmea08",
+                    "icon": "MW_mace",
+                    "type": "Weapon 1H",
+                    "name": "Mace"
+                },
+                "Staff": {
+                    "code": "bccmea09",
+                    "icon": "MW_staff",
+                    "type": "Weapon 1H",
+                    "name": "Staff"
+                },
+                "Sword": {
+                    "code": "bccmea10",
+                    "icon": "MW_sword",
+                    "type": "Weapon 1H",
+                    "name": "Sword"
+                }
+            },
+            "Two-handed weapon": {
+                "Long axe": {
+                    "code": "bccmea01",
+                    "icon": "MW_2h_axe",
+                    "type": "Weapon 2H",
+                    "name": "Long axe"
+                },
+                "Pike": {
+                    "code": "bccmea02",
+                    "icon": "MW_2h_lance",
+                    "type": "Weapon 2H",
+                    "name": "Pike"
+                },
+                "Long mace": {
+                    "code": "bccmea03",
+                    "icon": "MW_2h_mace",
+                    "type": "Weapon 2H",
+                    "name": "Long mace"
+                },
+                "Long sword": {
+                    "code": "bccmea04",
+                    "icon": "MW_2h_sword",
+                    "type": "Weapon 2H",
+                    "name": "Long sword"
+                }
+            },
+            "Hand-to-hand": {
+                "Magic amplifier": {
+                    "code": "bccmea15",
+                    "icon": "MG_Glove",
+                    "type": "Weapon 2H",
+                    "name": "Magic amplifier"
+                }
+            }
+        },
+        "Range": {
+            "One-handed range weapon": {
+                "Pistol": {
+                    "code": "bccrea04",
+                    "icon": "RW_pistol",
+                    "type": "Ranged Weapon 1H",
+                    "name": "Pistol"
+                },
+                "Bowpistol": {
+                    "code": "bccrea05",
+                    "icon": "RW_pistolarc",
+                    "type": "Ranged Weapon 1H",
+                    "name": "Bowpistol"
+                }
+            },
+            "Two-handed range weapon": {
+                "Autolauncher": {
+                    "code": "bccrea01",
+                    "icon": "RW_autolaunch",
+                    "type": "Ranged Weapon 2H",
+                    "name": "Autolauncher"
+                },
+                "Bowrifle": {
+                    "code": "bccrea02",
+                    "icon": "RW_bowgun",
+                    "type": "Ranged Weapon 2H",
+                    "name": "Bowrifle"
+                },
+                "Launcher": {
+                    "code": "bccrea03",
+                    "icon": "RW_launcher",
+                    "type": "Ranged Weapon 2H",
+                    "name": "Launcher"
+                },
+                "Rifle": {
+                    "code": "bccrea06",
+                    "icon": "RW_rifle",
+                    "type": "Ranged Weapon 2H",
+                    "name": "Rifle"
+                }
+            }
+        }
+    },
+    "Armor": {
+        "Heavy armor": {
+            "Heavy boots": {
+                "code": "bccaea01",
+                "icon": "AR_botte",
+                "type": "Heavy Armor",
+                "name": "Boots"
+            },
+            "Heavy gloves": {
+                "code": "bccaea02",
+                "icon": "AR_hand",
+                "type": "Heavy Armor",
+                "name": "Gloves"
+            },
+            "Helmet": {
+                "code": "bccaea03",
+                "icon": "AR_helmet",
+                "type": "Heavy Armor",
+                "name": "Helmet"
+            },
+            "Heavy pants": {
+                "code": "bccaea04",
+                "icon": "AR_pantabotte",
+                "type": "Heavy Armor",
+                "name": "Pants"
+            },
+            "Heavy sleeves": {
+                "code": "bccaea05",
+                "icon": "AR_armpad",
+                "type": "Heavy Armor",
+                "name": "Sleeves"
+            },
+            "Heavy vest": {
+                "code": "bccaea06",
+                "icon": "AR_gilet",
+                "type": "Heavy Armor",
+                "name": "Vest"
+            }
+        },
+        "Medium Armor": {
+            "Medium boots": {
+                "code": "bccaea12",
+                "icon": "AR_botte",
+                "type": "Medium Armor",
+                "name": "Boots"
+            },
+            "Medium gloves": {
+                "code": "bccaea13",
+                "icon": "AR_hand",
+                "type": "Medium Armor",
+                "name": "Gloves"
+            },
+            "Medium pants": {
+                "code": "bccaea14",
+                "icon": "AR_pantabotte",
+                "type": "Medium Armor",
+                "name": "Pants"
+            },
+            "Medium sleeves": {
+                "code": "bccaea15",
+                "icon": "AR_armpad",
+                "type": "Medium Armor",
+                "name": "Sleeves"
+            },
+            "Medium vest": {
+                "code": "bccaea16",
+                "icon": "AR_gilet",
+                "type": "Medium Armor",
+                "name": "Vest"
+            }
+        },
+        "Light armor": {
+            "Light boots": { 
+                "code": "bccaea07",
+                "icon": "AR_botte",
+                "type": "Light Armor",
+                "name": "Boots"
+            },
+            "Light gloves": {
+                "code": "bccaea08",
+                "icon": "AR_hand",
+                "type": "Light Armor",
+                "name": "Gloves"
+            },
+            "Light pants": {
+                "code": "bccaea09",
+                "icon": "AR_pantabotte",
+                "type": "Light Armor",
+                "name": "Pants"
+            },
+            "Caster pants": {
+                "code": "bccaea09",
+                "icon": "AR_pantabotte",
+                "type": "Light Armor",
+                "name": "Caster pants"
+            },
+            "light sleeves": {
+                "code": "bccaea10",
+                "icon": "AR_armpad",
+                "type": "Light Armor",
+                "name": "Sleeves"
+            },
+            "Light vest": {
+                "code": "bccaea11",
+                "icon": "AR_gilet",
+                "type": "Light Armor",
+                "name": "Vest"
+            }
+        },
+        "Shield": {
+            "Buckler": {
+                "code": "bccsea01",
+                "icon": "SH_buckler",
+                "type": "Shield",
+                "name": "Rondache"
+            },
+            "Shield": {
+                "code": "bccsea02",
+                "icon": "SH_large_shield",
+                "type": "Shield",
+                "name": "Bouclier"
+            }
+        }
+    },
+    "Jewel": {
+        "Anklet": {
+            "code": "bcmjea01",
+            "icon": "PA_anklet",
+            "type": "Jewel",
+            "name": "Anklet"
+        },
+        "Bracelet": {
+            "code": "bcmjea02",
+            "icon": "PA_bracelet",
+            "type": "Jewel",
+            "name": "Bracelet"
+        },
+        "Diadem": {
+            "code": "bcmjea03",
+            "icon": "PA_diadem",
+            "type": "Jewel",
+            "name": "Diadem"
+        },
+        "Earring": {
+            "code": "bcmjea04",
+            "icon": "PA_earring",
+            "type": "Jewel",
+            "name": "Earring"
+        },
+        "Pendant": {
+            "code": "bcmjea05",
+            "icon": "PA_pendant",
+            "type": "Jewel",
+            "name": "Pendant"
+        },
+        "Ring": {
+            "code": "bcmjea06",
+            "icon": "PA_ring",
+            "type": "Jewel",
+            "name": "Ring"
+        }
+    },
+    "Ammo": {
+        "One-handed ranged weapon": {
+            "Pistol": {
+                "Smashing ammo":  {
+                    "code": "bccpea16",
+                    "icon": "RW_pistol",
+                    "type": "Ammo",
+                    "name": "Smashing ammo"
+                },
+                "Piercing ammo":  {
+                    "code": "bccpea17",
+                    "icon": "RW_pistol",
+                    "type": "Ammo",
+                    "name": "Piercing ammo"
+                },
+                "Slashing ammo": {
+                    "code": "bccpea18",
+                    "icon": "RW_pistol",
+                    "type": "Ammo",
+                    "name": "Slashing ammo"
+                }
+            },
+            "Bowpistol": {
+                "Smashing ammo": {
+                    "code": "bccpea13",
+                    "icon": "RW_pistolarc",
+                    "type": "Ammo",
+                    "name": "Smashing ammo"
+                },
+                "Piercing ammo": {
+                    "code": "bccpea14", 
+                    "icon": "RW_pistolarc",
+                    "type": "Ammo",
+                    "name": "Piercing ammo"
+                },
+                "Slashing ammo": {
+                    "code": "bccpea15",
+                    "icon": "RW_pistolarc",
+                    "type": "Ammo",
+                    "name": "Slashing ammo"
+                }
+            }
+        },
+        "Two-handed ranged weapon": {
+            "Autolauncher": {
+                "Smashing ammo": {
+                    "code": "bccpea01",
+                    "icon": "RW_autolaunch",
+                    "type": "Ammo",
+                    "name": "Smashing ammo"
+                },
+                "Piercing ammo": {
+                    "code": "bccpea02",
+                    "icon": "RW_autolaunch",
+                    "type": "Ammo",
+                    "name": "Piercing ammo"
+                },
+                "Slashing ammo": {
+                    "code": "bccpea03",
+                    "icon": "RW_autolaunch",
+                    "type": "Ammo",
+                    "name": "Slashing ammo"
+                }
+            },
+            "Bowrifle": {
+                "Smashing ammo": {
+                    "code": "bccpea04",
+                    "icon": "RW_bowgun",
+                    "type": "Ammo",
+                    "name": "Smashing ammo"
+                },
+                "Piercing ammo": {
+                    "code": "bccpea05",
+                    "icon": "RW_bowgun",
+                    "type": "Ammo",
+                    "name": "Piercing ammo"
+                },
+                "Slashing ammo": {
+                    "code": "bccpea06",
+                    "icon": "RW_bowgun",
+                    "type": "Ammo",
+                    "name": "Slashing ammo"
+                }
+            },
+            "Launcher": {
+                "Smashing ammo": {
+                    "code": "bccpea10",
+                    "icon": "RW_grenade",
+                    "type": "Ammo",
+                    "name": "Smashing ammo"
+                },
+                "Piercing ammo": {
+                    "code": "bccpea11",
+                    "icon": "RW_grenade",
+                    "type": "Ammo",
+                    "name": "Piercing ammo"
+                },
+                "Slashing ammo": {
+                    "code": "bccpea12",
+                    "icon": "RW_grenade",
+                    "type": "Ammo",
+                    "name": "Slashing ammo"
+                }
+            },
+            "Rifle": {
+                "Smashing ammo": {
+                    "code": "bccpea19",
+                    "icon": "RW_rifle",
+                    "type": "Ammo",
+                    "name": "Smashing ammo"
+                },
+                "Piercing ammo": {
+                    "code": "bccpea20",
+                    "icon": "RW_rifle",
+                    "type": "Ammo",
+                    "name": "Piercing ammo"
+                },
+                "Slashing ammo": {
+                    "code": "bccpea21",
+                    "icon": "RW_rifle",
+                    "type": "Ammo",
+                    "name": "Slashing ammo"
+                }
+            }
+        }
+    }
+}

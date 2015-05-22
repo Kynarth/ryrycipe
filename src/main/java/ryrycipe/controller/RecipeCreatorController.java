@@ -13,8 +13,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import ryrycipe.model.Component;
+import ryrycipe.model.Faction;
 import ryrycipe.model.Material;
 import ryrycipe.model.Plan;
+import ryrycipe.model.manager.FactionManager;
 import ryrycipe.model.manager.MaterialManager;
 import ryrycipe.model.manager.PlanManager;
 
@@ -45,7 +47,7 @@ public class RecipeCreatorController implements Initializable {
     public ComboBox<String> qualityCB;
 
     @FXML
-    public ComboBox<String> factionCB;
+    public ComboBox<Faction> factionCB;
 
     @FXML
     public FlowPane materialChooser;
@@ -62,8 +64,8 @@ public class RecipeCreatorController implements Initializable {
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
     private ObservableList<Component> componentItems = FXCollections.observableArrayList();
-    private ObservableList<String> factionItems = FXCollections.observableArrayList();
     private ObservableList<String> qualityItems = FXCollections.observableArrayList();
+    private ObservableList<Faction> factionItems = FXCollections.observableArrayList();
     private Plan currentPlan;  // Save the plan chose by the user.
     private ResourceBundle resources;
 
@@ -145,6 +147,96 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
+     * Fill the combobox of components.
+     */
+    private void initializeComponentsCB() {
+        componentItems.addAll(currentPlan.getComponents());
+        componentCB.setItems(componentItems);
+        componentCB.setValue(componentItems.get(0));
+        componentCB.setOnAction(event -> displayMaterials());
+    }
+
+    /**
+     * Fill the combobox of qualities.
+     */
+    private void initializeQualityCB() {
+        qualityItems.clear();
+        qualityItems.addAll(resources.getString("combobox.quality.values").split(","));
+        qualityCB.setItems(qualityItems);
+        qualityCB.setValue(qualityItems.get(0));
+
+        qualityCB.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            updateFactionItems((Integer) oldValue, (Integer) newValue);
+        });
+    }
+
+    /**
+     * Fill the combobox of factions.
+     */
+    private void initializeFactionCB() {
+        FactionManager factionManager = new FactionManager();
+        factionItems.clear();
+        // Indexes lower than two corresponds to basic and fin quality which does not allow faction.
+        if (qualityCB.getSelectionModel().getSelectedIndex() < 2) {
+            factionItems.add(factionManager.find(resources.getString("combobox.faction.generic")));
+            factionCB.setItems(factionItems);
+            factionCB.setValue(factionItems.get(0));
+        } else {
+            for (String factionName: resources.getString("combobox.faction.values").split(",")) {
+                factionItems.add(factionManager.find(factionName));
+            }
+
+            factionCB.setItems(factionItems);
+            factionCB.setValue(factionItems.get(0));
+        }
+        factionCB.setOnAction(event -> displayMaterials());
+    }
+
+    /**
+     * Initialize all filter's controls
+     */
+    private void initializeFilter() {
+        initializeComponentsCB();
+        initializeQualityCB();
+        initializeFactionCB();
+    }
+
+    /**
+     * Update the list of factions in function of selected quality.
+     *
+     * @param oldIndex Previous index of quality item
+     * @param newIndex Index of the chosen quality item
+     */
+    private void updateFactionItems(int oldIndex, int newIndex) {
+        // Case where the user choose a quality higher than 'Basic' and 'Fine' from them
+        if (oldIndex < 2 && newIndex >= 2) {
+            factionCB.setOnAction(null);
+            factionItems.clear();
+            factionCB.setOnAction(event -> displayMaterials());
+            FactionManager factionManager = new FactionManager();
+            for (String factionName: resources.getString("combobox.faction.values").split(",")) {
+                factionItems.add(factionManager.find(factionName));
+            }
+            factionCB.setItems(factionItems);
+            factionCB.setValue(factionItems.get(0));
+        }
+        // Case where the user choose a quality lower than 'Choice' and higher from them
+        else if (newIndex < 2 && oldIndex >= 2) {
+            factionCB.setOnAction(null);
+            factionItems.clear();
+            factionCB.setOnAction(event -> displayMaterials());
+            FactionManager factionManager = new FactionManager();
+            factionItems.add(factionManager.find(resources.getString("combobox.faction.generic")));
+            factionCB.setItems(factionItems);
+            factionCB.setValue(factionItems.get(0));
+
+        } else {
+            // No change required, just updates quality of material in the materials chooser.
+            displayMaterials();
+        }
+    }
+
+    /**
      * Get all parameters from the materials filter.
      *
      * @return A map with the value of each parameters from the filter.
@@ -162,66 +254,11 @@ public class RecipeCreatorController implements Initializable {
         else
             parameters.put("quartered", null);
 
-        parameters.put("faction", factionCB.getValue());
+        parameters.put("faction", factionCB.getValue().getName());
         parameters.put("quality", qualityCB.getValue());
         parameters.put("component", componentCB.getValue().getId());
 
         return parameters;
-    }
-
-    /**
-     * Fill the combobox of components.
-     */
-    private void initializeComponentsCB() {
-        componentItems.addAll(currentPlan.getComponents());
-        componentCB.setItems(componentItems);
-        componentCB.setValue(componentItems.get(0));
-    }
-
-    /**
-     * Fill the combobox of qualities.
-     */
-    private void initializeQualityCB() {
-        qualityItems.clear();
-        qualityItems.addAll(resources.getString("combobox.quality.values").split(","));
-        qualityCB.setItems(qualityItems);
-        qualityCB.setValue(qualityItems.get(0));
-    }
-
-    /**
-     * Fill the combobox of factions.
-     */
-    private void initializeFactionCB() {
-        factionItems.clear();
-        // Indexes lower than two corresponds to basic and fin quality which does not allow faction.
-        if (qualityCB.getSelectionModel().getSelectedIndex() < 2) {
-            factionItems.add(resources.getString("combobox.faction.generic"));
-            factionCB.setItems(factionItems);
-            factionCB.setValue(factionItems.get(0));
-        } else {
-            factionItems.addAll(resources.getString("combobox.faction.values").split(","));
-            factionCB.setItems(factionItems);
-            factionCB.setValue(factionItems.get(0));
-        }
-    }
-
-    /**
-     * Initialize all filter's controls
-     */
-    private void initializeFilter() {
-        initializeComponentsCB();
-        initializeQualityCB();
-
-        // The factionCB will be initialize with the qualityCB initialization by the way its onAction function.
-    }
-
-    /**
-     * Update the factionCB in function of selected quality and display resulting materials.
-     */
-    @FXML
-    public void handleQualityChange() {
-        initializeFactionCB();
-        displayMaterials();
     }
 
     /**

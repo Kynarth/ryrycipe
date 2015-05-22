@@ -1,6 +1,7 @@
 package ryrycipe.model.manager;
 
 import ryrycipe.model.Component;
+import ryrycipe.model.Faction;
 import ryrycipe.model.Material;
 import ryrycipe.util.DBConnection;
 
@@ -28,6 +29,7 @@ public class MaterialManager {
     public ArrayList<Material> filter(Map<String ,String> parameters) {
         ArrayList<Material> materials = new ArrayList<Material>();
         ComponentManager componentManager = new ComponentManager();
+        FactionManager factionManager = new FactionManager();
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
@@ -55,11 +57,12 @@ public class MaterialManager {
 
                 // Retrieve components affiliated to the current material
                 List<Component> components = componentManager.getMaterialComponents(resultSet.getString("material_id"));
+                Faction faction = factionManager.find(resultSet.getString("faction"));
 
                 materials.add(new Material(
                     resultSet.getString("material_id"), resultSet.getString("description"),
                     resultSet.getString("category"), resultSet.getString("type_name"), resultSet.getString("quality"),
-                    resultSet.getString("faction"), resultSet.getString("icon"), resultSet.getString("material_name"),
+                    faction, resultSet.getString("icon"), resultSet.getString("material_name"),
                     components
                 ));
             }

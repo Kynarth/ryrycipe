@@ -1,0 +1,82 @@
+{
+    "mpftMpM": {
+        "icon": "ICO_Shaft",
+        "name": "Shaft"
+    },
+    "mpftMpPE": {
+        "icon": "ICO_Firing_pin",
+        "name": "Firing Pin"
+    },
+    "mpftMpCA": {
+        "icon": "ICO_barrel",
+        "name": "Barrel"
+    },
+    "mpftMpGA": {
+        "icon": "ICO_trigger",
+        "name": "Trigger"
+    },
+    "mpftMpC": {
+        "icon": "ICO_Counterweight",
+        "name": "Counterweight"
+    },
+    "mpftMpG": {
+        "icon": "ICO_Grip",
+        "name": "Grip"
+    },
+    "mpftMpL": {
+        "icon": "ICO_Blade",
+        "name": "Blade"
+    },
+    "mpftMpMF": {
+        "icon": "ICO_Magic_focus",
+        "name": "Magic Focus"
+    },
+    "mpftMpCR": {
+        "icon": "ICO_Armor_shell",
+        "name": "Armor Shell"
+    },
+    "mpftMpRI": {
+        "icon": "ICO_Lining",
+        "name": "Lining"
+    },
+    "mpftMpAT": {
+        "icon": "ICO_armor_clip",
+        "name": "Armor Clip"
+    },
+    "mpftMpVE": {
+        "icon": "ICO_Clothes",
+        "name": "Clothes"
+    },
+    "mpftMpSU": {
+        "icon": "ICO_Jewel_stone_support",
+        "name": "Jewel Stone Support"
+    },
+    "mpftMpED": {
+        "icon": "ICO_Jewel_stone",
+        "name": "Jewel Stone"
+    },
+    "mpftMpPR": {
+        "icon": "ICO_Ammo_bullet",
+        "name": "Ammo Bullet"
+    },
+    "mpftMpEN": {
+        "icon": "ICO_Ammo_jacket",
+        "name": "Ammo Jacket"
+    },
+    "mpftMpE": {
+        "icon": "ICO_Explosif",
+        "name": "Explosif"
+    },
+    "mpftMpH": {
+        "icon": "ICO_hammer",
+        "name": "Hammer"
+    },
+    "mpftMpRE": {
+        "icon": "ICO_Stuffing",
+        "name": "Stuffing"
+    },
+    "mpftMpP": {
+        "icon": "ICO_Pointe",
+        "name": "Point"
+    }
+}
