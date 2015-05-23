@@ -9,12 +9,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Manage Faction object from ryrycipe database.
+ * Manage {@link Faction} object from ryrycipe database.
  */
 public class FactionManager {
 
+    /**
+     * Connection to the ryrycipe database.
+     * @see DBConnection
+     */
     private Connection connection = DBConnection.getInstance();
 
+    /**
+     * Retrieve a {@link Faction} by its name in the database.
+     *
+     * @param name Name of {@link Faction#name}
+     * @return {@link Faction}
+     */
     public Faction find(String name) {
         Faction faction = new Faction();
 

@@ -10,17 +10,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Manage Category object from ryrycipe database.
+ * Manage {@link Category} object from ryrycipe database.
  */
 public class CategoryManager {
 
+    /**
+     * Connection to the ryrycipe database.
+     * @see DBConnection
+     */
     public Connection connection = DBConnection.getInstance();
 
     /**
-     * Retrieve a Category by its id in the database.
+     * Retrieve a {@link Category} by its id in the database.
      *
-     * @param id
-     * @return Category
+     * @param id {@link Category#id}
+     * @return  {@link Category}
      */
     public Category find(int id) {
         Category category = new Category();

@@ -9,14 +9,17 @@ import java.sql.SQLException;
  */
 public class DBConnection {
 
+    /**
+     * SQL {@link Connection}.
+     */
     private static Connection connection;
 
     private DBConnection() {}
 
     /**
-     * Method to get the database connection.
+     * Retrieve the singleton instance of {@link Connection}
      *
-     * @return Connection
+     * @return {@link Connection}
      */
     public static Connection getInstance() {
         if (connection == null) {

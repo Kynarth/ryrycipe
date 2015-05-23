@@ -3,15 +3,40 @@ package ryrycipe.model;
 import java.util.List;
 
 /**
- * Represent a craft plan from Ryzom game.
+ * Represent a craft plan from the game Ryzom.
+ *
+ * @see <a href="http://ryzom.com">Ryzom</a>
  */
 public class Plan implements Comparable<Plan> {
 
+    /**
+     * Plan's database id.
+     */
     private int id;
+
+    /**
+     * Plan's name.
+     */
     private String name;
+
+    /**
+     * Plan's quality.
+     */
     private String quality;
+
+    /**
+     * Plan's icon.
+     */
     private String icon;
+
+    /**
+     * Plan's {@link Category}
+     */
     private Category category;
+
+    /**
+     * Plan's {@link Component}s that defines the craft's plan recipe.
+     */
     private List<Component> components;
 
     public Plan() {}

@@ -1,13 +1,30 @@
 package ryrycipe.model;
 
 /**
- * Plan's category
+ * {@link Plan}'s category
+ *
+ * @see Plan#category
  */
 public class Category {
 
+    /**
+     * Category's database id.
+     */
     private int id;
+
+    /**
+     * First level of classification.
+     */
     private String category;
+
+    /**
+     * Second level of classification.
+     */
     private String subCategory;
+
+    /**
+     * NUmber of hand needed to use the crafted item from the {@link Plan}
+     */
     private int hand;
 
     public Category() {
@@ -56,5 +73,4 @@ public class Category {
     public String toString() {
         return String.valueOf(id);
     }
-
 }

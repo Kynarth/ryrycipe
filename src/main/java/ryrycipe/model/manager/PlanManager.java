@@ -13,17 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manage Plan object from ryrycipe database.
+ * Manage {@link Plan} object from ryrycipe database.
  */
 public class PlanManager {
 
+    /**
+     * Connection to the ryrycipe database.
+     * @see DBConnection
+     */
     public Connection connection = DBConnection.getInstance();
 
     /**
-     * Retrieve a Plan object by its name and quality.
-     * @param name Plan's name
-     * @param quality plan's quality
-     * @return Plan
+     * Retrieve a {@link Plan} by its name and quality in the database.
+     *
+     * @param name {@link Plan#name}
+     * @param quality {@link Plan#quality}
+     * @return {@link Plan}
      */
     public Plan find(String name, String quality) {
         Plan plan = new Plan();
@@ -63,13 +68,13 @@ public class PlanManager {
     }
 
     /**
-     * Retrieve all plan with the given quality.
+     * Retrieve all {@link Plan}s with the given quality.
      *
-     * @param quality Plan's quality.
-     * @return An ArrayList of Plan object corresponding to the given quality.
+     * @param quality {@link Plan#quality}
+     * @return {@link List} of {@link Plan} corresponding to the given quality.
      */
-    public ArrayList<Plan> getAll(String quality) {
-        ArrayList<Plan> plans = new ArrayList<Plan>();
+    public List<Plan> getAll(String quality) {
+        List<Plan> plans = new ArrayList<>();
         CategoryManager categoryManager = new CategoryManager();
         ComponentManager componentManager = new ComponentManager();
 

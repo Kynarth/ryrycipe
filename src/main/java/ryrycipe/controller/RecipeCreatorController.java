@@ -27,45 +27,77 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the RecipeCreator.
+ * Controller for the RecipeCreator view.
  */
 public class RecipeCreatorController implements Initializable {
 
+    /**
+     * Contains all controls allowing the user to select materials in functions of parameters.
+     */
     @FXML
     private GridPane materialFilter;
 
+    /**
+     * Display {@link Material}s from drilling.
+     */
     @FXML
     private ToggleButton foragedBtn;
 
+    /**
+     * Display {@link Material}s from hunting.
+     */
     @FXML
     private ToggleButton quarteredBtn;
 
+    /**
+     * Display {@link Material}s that can be used as selected component.
+     */
     @FXML
     public ComboBox<Component> componentCB;
 
+    /**
+     * Display {@link Material}s with selected quality.
+     */
     @FXML
     public ComboBox<String> qualityCB;
 
+    /**
+     * Display {@link Material}s belonging to the selected faction.
+     */
     @FXML
     public ComboBox<Faction> factionCB;
 
+    /**
+     * Contains filtered {@link Material}s.
+     */
     @FXML
     public FlowPane materialChooser;
 
+    /**
+     * Choose {@link Plan}'s quality.
+     */
     @FXML
     private ComboBox<String> planQualityCB;
 
+    /**
+     * List of possible {@link Plan}.
+     */
     @FXML
     private ComboBox<Plan> planCB;
 
+    /**
+     * Contain RecipeComponent for each {@link Plan}'s {@link Component}.
+     */
     @FXML
     private VBox componentsContainer;
 
+    // ObservableList for each combobox.
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
     private ObservableList<Component> componentItems = FXCollections.observableArrayList();
     private ObservableList<String> qualityItems = FXCollections.observableArrayList();
     private ObservableList<Faction> factionItems = FXCollections.observableArrayList();
+
     private Plan currentPlan;  // Save the plan chose by the user.
     private ResourceBundle resources;
 
@@ -83,7 +115,8 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Fill the combobox of plans and update it when user changes quality.
+     * Fill the {@link RecipeCreatorController#planCB} with {@link Plan} in function of selected quality from
+     * {@link RecipeCreatorController#planQualityCB}.
      */
     @FXML
     public void initializePlansCB() {
@@ -95,19 +128,19 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Action performed when the user choose a plan from the associated combobox.
+     * Action performed when the user chooses a {@link Plan} from the associated combobox.
      */
     @FXML
     public void selectPlan() {
-        // Initialize the list view with plan's information
         componentsContainer.getChildren().clear();
 
-        // Case when user change quality and reset the list of plans, the previous value of currentPlan is used.
+        // Case when user change quality and reset the list of plans, the previous value of currentPlan is used
         if (planCB.getValue() != null)
             currentPlan = planCB.getValue();
         else
             planCB.setValue(currentPlan);
 
+        // Fill the component container with each plan's component
         currentPlan.getComponents().forEach(this::addComponent);
 
         // Unlock and initialize material filter
@@ -116,9 +149,10 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Add a RecipeComponent to the ScrollPane containing all the plan's recipe component.
+     * Add a RecipeComponent to the {@link RecipeCreatorController#componentsContainer} containing all
+     * the {@link Plan}'s components.
      *
-     * @param component A plan's Component.
+     * @param component A {@link Component} from a {@link Plan}.
      */
     private void addComponent(Component component) {
         try {
@@ -127,10 +161,10 @@ public class RecipeCreatorController implements Initializable {
             loader.setLocation(this.getClass().getResource("/ryrycipe/view/RecipeComponent.fxml"));
             AnchorPane recipeComponent = loader.load();
 
-            // Add the loaded recipeComponent to the ScrollPane
+            // Add the loaded RecipeComponent view to the components container
             componentsContainer.getChildren().add(recipeComponent);
 
-            // Set the recipeComponent controller and setup the RecipeComponent
+            // Set the RecipeComponent controller and setup the RecipeComponent
             RecipeComponentController controller = loader.getController();
             controller.setComponent(component);
             controller.setupRecipeComponent();
@@ -140,14 +174,15 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Enable controls in the materials filter.
+     * Enable each controls from {@link RecipeCreatorController#materialFilter} after the user
+     * has chosen a {@link Plan} in {@link RecipeCreatorController#planCB}.
      */
     private void enableFilter() {
         materialFilter.getChildren().forEach((control) -> control.setDisable(false));
     }
 
     /**
-     * Fill the combobox of components.
+     * Fill {@link RecipeCreatorController#componentCB} with chosen {@link Plan}'s {@link Component}.
      */
     private void initializeComponentsCB() {
         componentItems.addAll(currentPlan.getComponents());
@@ -157,7 +192,7 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Fill the combobox of qualities.
+     * Fill {@link RecipeCreatorController#qualityCB} with the five possibilities.
      */
     private void initializeQualityCB() {
         qualityItems.clear();
@@ -171,7 +206,7 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Fill the combobox of factions.
+     * Fill {@link RecipeCreatorController#factionCB} in function of selected quality.
      */
     private void initializeFactionCB() {
         FactionManager factionManager = new FactionManager();
@@ -193,7 +228,7 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Initialize all filter's controls
+     * Initialize all {@link RecipeCreatorController#materialFilter} controls.
      */
     private void initializeFilter() {
         initializeComponentsCB();
@@ -202,13 +237,13 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Update the list of factions in function of selected quality.
+     * Update the {@link RecipeCreatorController#factionCB} in function of selected quality.
      *
-     * @param oldIndex Previous index of quality item
-     * @param newIndex Index of the chosen quality item
+     * @param oldIndex Index of the previous quality.
+     * @param newIndex Index of the chosen quality item.
      */
     private void updateFactionItems(int oldIndex, int newIndex) {
-        // Case where the user choose a quality higher than 'Basic' and 'Fine' from them
+        // Case where the user chooses a quality higher than 'Basic' and 'Fine' from them
         if (oldIndex < 2 && newIndex >= 2) {
             factionCB.setOnAction(null);
             factionItems.clear();
@@ -220,7 +255,7 @@ public class RecipeCreatorController implements Initializable {
             factionCB.setItems(factionItems);
             factionCB.setValue(factionItems.get(0));
         }
-        // Case where the user choose a quality lower than 'Choice' and higher from them
+        // Case where the user chooses a quality lower than 'Choice' and higher from them
         else if (newIndex < 2 && oldIndex >= 2) {
             factionCB.setOnAction(null);
             factionItems.clear();
@@ -237,9 +272,9 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Get all parameters from the materials filter.
+     * Get all parameters from {@link RecipeCreatorController#materialFilter}.
      *
-     * @return A map with the value of each parameters from the filter.
+     * @return {@link Map} with the value of each parameter from the {@link RecipeCreatorController#materialFilter}.
      */
     private Map<String, String> getFilterParameters() {
         Map<String, String> parameters = new HashMap<>();
@@ -262,7 +297,7 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Display materials fitting the materials filter options.
+     * Display {@link Material}s fitting the {@link RecipeCreatorController#materialFilter} options.
      */
     @FXML
     private void displayMaterials() {

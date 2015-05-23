@@ -3,13 +3,30 @@ package ryrycipe.model;
 import javafx.scene.image.Image;
 
 /**
- * A plan component
+ * Component that compose {@link Plan}s
+ *
+ * @see Plan#components
  */
 public class Component {
 
+    /**
+     * Component's database id.
+     */
     private String id;
+
+    /**
+     * Component's name.
+     */
     private String name;
+
+    /**
+     * Icon representing the component.
+     */
     private String icon;
+
+    /**
+     * Amount of materaials needed for the component in the {@link Plan}.
+     */
     private int amount;
 
     public Component() {
@@ -60,9 +77,9 @@ public class Component {
     }
 
     /**
-     * Return the component image
+     * Return an {@link Image} from {@link Component#icon}.
      *
-     * @return Component's image.
+     * @return {@link Image}
      */
     public Image getImage() {
         return new Image("/images/components/" + icon);

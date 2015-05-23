@@ -10,16 +10,17 @@ import java.util.Properties;
 
 
 /**
- * Helper functions for handling properties files.
+ * Helper functions for handling for {@link Properties}.
  */
 public class PropertiesUtil {
 
     private PropertiesUtil() {}
 
     /**
-     * Load properties file in the a Properties object.
+     * Load properties file in the a {@link Properties}.
      *
-     * @return A Properties object.
+     * @param filePath Path to the wanted properties file.
+     * @return {@link Properties}.
      */
     @Nullable
     public static Properties loadProperties(String filePath) {

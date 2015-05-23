@@ -6,24 +6,57 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import ryrycipe.util.LocaleUtil;
-import ryrycipe.util.PropertiesUtil;
 
 import java.util.List;
 
 /**
- * Represents a material.
+ * Represent a material that are ingredient of the {@link Plan}'s recipe.
  */
 public class Material {
 
+    /**
+     * Material's database id.
+     */
     private String id;
+
+    /**
+     * A long description composes of all material informations.
+     */
     private String description;
+
+    /**
+     * First level of classification.
+     */
     private String category;
+
+    /**
+     * Second level of classification.
+     */
     private String type;
+
+    /**
+     * Icon representing the material.
+     */
     private String icon;
+
+    /**
+     * Material's name
+     */
     private String name;
+
+    /**
+     * Material's quality
+     */
     private String quality;
+
+    /**
+     * Material's faction.
+     */
     private Faction faction;
+
+    /**
+     * A {@link List} of {@link Component}s defining in which {@link Component} a material can be used.
+     */
     private List<Component> asComponent;
 
     public Material() {}
@@ -114,27 +147,14 @@ public class Material {
     }
 
     /**
-     * Return an ImageView with the material image
+     * Return an {@link ImageView} composed of {@link Faction#icon} and {@link Material#icon}.
      *
-     * @return Material's image as an ImageView.
+     * @return {@link ImageView}..
      */
     public ImageView getImage() {
-        /**
-         * Check if the material has faction because factions have the same name regardless of the language but not for
-         * generic faction. So we have to use english word for generic to load correspoding background.
-         */
-//        Image background;
-//        String generic = PropertiesUtil.loadProperties(
-//            this.getClass().getClassLoader().getResource("lang_" + LocaleUtil.getLanguage() + ".properties").getPath()
-//            ).getProperty("combobox.faction.generic");
-//        if (this.faction.getName().equals(generic)) {
-//            background = new Image("/images/backgrounds/BK_generic.png");
-//        } else {
-//            background = new Image("/images/backgrounds/BK_" + this.faction.getName().toLowerCase() + ".png");
-//        }
         Image overlay = new Image("/images/materials/" + icon);
 
-        // Create a canvas that combines the background with the overlay
+        // Create a canvas that combines the background with the material icon as overlay
         Canvas canvas = new Canvas(40, 40);
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.drawImage(this.faction.getImage(), 0, 0);

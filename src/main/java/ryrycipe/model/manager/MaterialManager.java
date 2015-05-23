@@ -1,5 +1,6 @@
 package ryrycipe.model.manager;
 
+import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Component;
 import ryrycipe.model.Faction;
 import ryrycipe.model.Material;
@@ -14,20 +15,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Manage Material object from ryrycipe database.
+ * Manage {@link Material} object from ryrycipe database.
  */
 public class MaterialManager {
 
+    /**
+     * Connection to the ryrycipe database.
+     * @see DBConnection
+     */
     public Connection connection = DBConnection.getInstance();
 
     /**
-     * Gives the list of materials corresponding to the parameters from the materials filter.
+     * Give {@link List} of {@link Material}s corresponding to the parameters from the
+     * {@link ryrycipe.controller.RecipeCreatorController#materialFilter}.
      *
-     * @param parameters A Map containing each value of filter's controls.
-     * @return A list of materials fitting the materials filter parameters.
+     * @param parameters {@link Map} containing each value of
+     * {@link ryrycipe.controller.RecipeCreatorController#materialFilter}'s controls.
+     * @return {@link List} of {@link Material}s fitting
+     * {@link ryrycipe.controller.RecipeCreatorController#materialFilter}'s parameters.
+     * @see RecipeCreatorController#getFilterParameters()
      */
-    public ArrayList<Material> filter(Map<String ,String> parameters) {
-        ArrayList<Material> materials = new ArrayList<Material>();
+    public List<Material> filter(Map<String ,String> parameters) {
+        List<Material> materials = new ArrayList<>();
         ComponentManager componentManager = new ComponentManager();
         FactionManager factionManager = new FactionManager();
 
@@ -55,7 +64,7 @@ public class MaterialManager {
 
             while (resultSet.next()) {
 
-                // Retrieve components affiliated to the current material
+                // Retrieve components and faction affiliated to the current material
                 List<Component> components = componentManager.getMaterialComponents(resultSet.getString("material_id"));
                 Faction faction = factionManager.find(resultSet.getString("faction"));
 

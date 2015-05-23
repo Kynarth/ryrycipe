@@ -13,17 +13,21 @@ import java.util.List;
 
 
 /**
- * Manage Component object from ryrycipe database.
+ * Manage {@link Component} object from ryrycipe database.
  */
 public class ComponentManager {
 
+    /**
+     * Connection to the ryrycipe database.
+     * @see DBConnection
+     */
     public Connection connection = DBConnection.getInstance();
 
     /**
-     * Retrieve a Component by its id in the database.
+     * Retrieve a {@link Component} by its id in the database.
      *
-     * @param id
-     * @return Component
+     * @param id {@link Component#id}
+     * @return {@link Component}
      */
     public Component find(String id) {
         Component component = new Component();
@@ -51,13 +55,13 @@ public class ComponentManager {
     }
 
     /**
-     * Retrieve all components from a plan.
+     * Retrieve all {@link Component}s from a {@link ryrycipe.model.Plan}.
      *
-     * @param planId
-     * @return The list of components composing the plan.
+     * @param planId {@link ryrycipe.model.Plan#id}
+     * @return A {@link List} of {@link Component}s composing the {@link ryrycipe.model.Plan}.
      */
     public List<Component> getPlanComponents(int planId) {
-        List<Component> components = new ArrayList<Component>();
+        List<Component> components = new ArrayList<>();
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
@@ -84,13 +88,13 @@ public class ComponentManager {
     }
 
     /**
-     * Retrieve which pair of components a material can be used there.
+     * Retrieve which pair of {@link Component}s a {@link ryrycipe.model.Material} can be used there.
      *
-     * @param materialId material id
-     * @return A list of components affiliated to the given material.
+     * @param materialId {@link ryrycipe.model.Material#id}
+     * @return {@link List} of {@link Component}s affiliated to the given {@link ryrycipe.model.Material}.
      */
     public List<Component> getMaterialComponents(String materialId) {
-        List<Component> components = new ArrayList<Component>();
+        List<Component> components = new ArrayList<>();
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(

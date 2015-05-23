@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the PlanRecipeComponent.
+ * Controller for PlanRecipeComponent view.
  */
 public class RecipeComponentController implements Initializable {
 
@@ -30,8 +30,6 @@ public class RecipeComponentController implements Initializable {
 
     private Component component;
 
-    private RecipeCreatorController recipeCreatorController;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Set an ImageView in the flow layout that represents a empty slot for a material.
@@ -41,7 +39,7 @@ public class RecipeComponentController implements Initializable {
     }
 
     /**
-     * Initialize the RecipeComponent with informations from selected plan's component.
+     * Initialize the RecipeComponent with informations from a {@link ryrycipe.model.Plan}'s {@link Component}.
      */
     public void setupRecipeComponent() {
         // Initialize RecipeComponent with given component informations
@@ -50,6 +48,11 @@ public class RecipeComponentController implements Initializable {
         componentIndicator.setText("0/" + component.getAmount());
     }
 
+    /**
+     * Set the controller's {@link Component} with {@link ryrycipe.model.Plan}'s one
+     *
+     * @param component A {@link Component} composing a {@link ryrycipe.model.Plan}.
+     */
     public void setComponent(Component component) {
         this.component = component;
     }

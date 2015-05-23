@@ -13,7 +13,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Main application.
+ * <h1>Application to manage Ryzom's craft plans</h1>
+ * <p>
+ * This application allows the user to create, read and upload his own recipe.
+ * It will calculate the user's plan stats in function of chosen materials. This will allow the user to know which
+ * recipe fitting his wishes.
+ * </p>
+ *
  */
 public class Ryrycipe extends Application {
 
@@ -35,9 +41,9 @@ public class Ryrycipe extends Application {
     }
 
     /**
-     * Load the application's base UI.
+     * Load the application's main UI.
      *
-     * @throws IOException
+     * @throws IOException In case where the fxml file isn't found.
      */
     private void initialize() throws IOException {
         // Load the main layout from fxml file
@@ -55,7 +61,7 @@ public class Ryrycipe extends Application {
     /**
      * Load the interface for creating recipes.
      *
-     * @throws IOException
+     * @throws IOException In case where the fxml file isn't found.
      */
     public void showRecipeCreator() throws IOException {
         // Load RecipeCreator fxml file

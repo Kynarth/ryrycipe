@@ -5,10 +5,13 @@ import java.util.prefs.Preferences;
 
 
 /**
- * Helper functions for handling locales.
+ * Helper functions for handling {@link java.util.Locale}s.
  */
 public class LocaleUtil {
 
+    /**
+     * Stock all user's preferences concerning the application.
+     */
     private static Preferences prefs = Preferences.userNodeForPackage(LocaleUtil.class);
 
     private LocaleUtil() {}
@@ -22,6 +25,12 @@ public class LocaleUtil {
         return prefs.get("language", "en");
     }
 
+
+    /**
+     * Change the current application's language if supported.
+     *
+     * @param lang New application's language to setup.
+     */
     public static void setLanguage(String lang) {
         Properties parameters = PropertiesUtil.loadProperties(
             LocaleUtil.class.getClassLoader().getResource("parameters.properties").getPath()

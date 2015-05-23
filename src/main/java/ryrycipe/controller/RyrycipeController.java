@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the RyrycipeView
+ * Controller for the Ryrycipe view.
  */
 public class RyrycipeController implements Initializable {
 
