@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import ryrycipe.model.view.MaterialView;
 
 import java.util.List;
 
@@ -160,6 +161,6 @@ public class Material {
         graphicsContext.drawImage(this.faction.getImage(), 0, 0);
         graphicsContext.drawImage(overlay, 0, 0);
         WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
-        return new ImageView(snapshot);
+        return new MaterialView(snapshot, this);
     }
 }
