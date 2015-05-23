@@ -148,11 +148,11 @@ public class Material {
     }
 
     /**
-     * Return an {@link ImageView} composed of {@link Faction#icon} and {@link Material#icon}.
+     * Return an {@link MaterialView} composed of {@link Faction#icon} and {@link Material#icon}.
      *
-     * @return {@link ImageView}..
+     * @return {@link MaterialView}..
      */
-    public ImageView getImage() {
+    public MaterialView getImage() {
         Image overlay = new Image("/images/materials/" + icon);
 
         // Create a canvas that combines the background with the material icon as overlay

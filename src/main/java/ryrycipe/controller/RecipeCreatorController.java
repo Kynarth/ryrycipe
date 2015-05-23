@@ -19,6 +19,7 @@ import ryrycipe.model.Plan;
 import ryrycipe.model.manager.FactionManager;
 import ryrycipe.model.manager.MaterialManager;
 import ryrycipe.model.manager.PlanManager;
+import ryrycipe.model.view.MaterialView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -305,7 +306,18 @@ public class RecipeCreatorController implements Initializable {
         materialChooser.getChildren().clear();
 
         for (Material material: materialManager.filter(getFilterParameters())) {
-            materialChooser.getChildren().add(material.getImage());
+            MaterialView materialView = material.getImage();
+            materialView.setController(this);
+            materialChooser.getChildren().add(materialView);
         }
+    }
+
+    /**
+     * Add the double clicked {@link ryrycipe.model.view.MaterialView} in the correspondant RecipeComponent.
+     *
+     * @param materialView {@link MaterialView}
+     */
+    public void addMaterialToRecipe(MaterialView materialView) {
+        System.out.println(materialView);
     }
 }
