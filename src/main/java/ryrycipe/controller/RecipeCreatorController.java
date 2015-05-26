@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
@@ -161,6 +162,8 @@ public class RecipeCreatorController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/ryrycipe/view/RecipeComponent.fxml"));
             AnchorPane recipeComponent = loader.load();
+            // Add an id corresponding to material name to retrieve it later.
+            recipeComponent.setId(component.getName());
 
             // Add the loaded RecipeComponent view to the components container
             componentsContainer.getChildren().add(recipeComponent);
@@ -169,6 +172,9 @@ public class RecipeCreatorController implements Initializable {
             RecipeComponentController controller = loader.getController();
             controller.setComponent(component);
             controller.setupRecipeComponent();
+
+            // Store the node controller to use it later.
+            recipeComponent.setUserData(controller);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -312,12 +318,28 @@ public class RecipeCreatorController implements Initializable {
         }
     }
 
+    public Node getRecipeComponent(MaterialView materialView) {
+        for (Node node: componentsContainer.getChildren()) {
+            if (materialView.getMaterial().getComponents().contains(node.getId())) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Add the double clicked {@link ryrycipe.model.view.MaterialView} in the correspondant RecipeComponent.
      *
      * @param materialView {@link MaterialView}
      */
     public void addMaterialToRecipe(MaterialView materialView) {
-        System.out.println(materialView);
+        Node node = getRecipeComponent(materialView);
+        if (node != null) {
+            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
+            controller.getMaterialsContainer().getChildren().add(0, materialView);
+        } else {
+            System.err.println("Can't find the RecipeComponent for the double clicked material view");
+        }
     }
 }

@@ -4,11 +4,11 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import ryrycipe.model.view.MaterialView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represent a material that are ingredient of the {@link Plan}'s recipe.
@@ -145,6 +145,18 @@ public class Material {
 
     public void setFaction(Faction faction) {
         this.faction = faction;
+    }
+
+    public String toString() {
+        return name;
+    }
+
+    /**
+     * A return a {@link List} of material's components name
+     * @return {@link List} of material's components name
+     */
+    public List<String> getComponents() {
+        return getAsComponent().stream().map(Component::getName).collect(Collectors.toList());
     }
 
     /**

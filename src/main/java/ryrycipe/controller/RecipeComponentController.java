@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import ryrycipe.model.Component;
+import ryrycipe.model.view.MaterialView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,9 +34,7 @@ public class RecipeComponentController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Set an ImageView in the flow layout that represents a empty slot for a material.
-        ImageView emptySlot = new ImageView(new Image("/images/backgrounds/BK_empty.png"));
-        materialsContainer.getChildren().add(emptySlot);
-
+        materialsContainer.getChildren().add(new MaterialView());
     }
 
     /**
@@ -55,5 +54,9 @@ public class RecipeComponentController implements Initializable {
      */
     public void setComponent(Component component) {
         this.component = component;
+    }
+
+    public FlowPane getMaterialsContainer() {
+        return materialsContainer;
     }
 }

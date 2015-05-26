@@ -1,5 +1,6 @@
 package ryrycipe.model.view;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
@@ -21,6 +22,13 @@ public class MaterialView extends ImageView {
      * Reference to {@link RecipeCreatorController} to perform actions on the MaterialView.
      */
     private RecipeCreatorController controller;
+
+    /**
+     * Constructor for an empty MaterialView.
+     */
+    public MaterialView() {
+        super(new Image("/images/backgrounds/BK_empty.png"));
+    }
 
     public MaterialView(WritableImage writableImage, Material material) {
         super(writableImage);
