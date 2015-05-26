@@ -338,6 +338,7 @@ public class RecipeCreatorController implements Initializable {
         if (node != null) {
             RecipeComponentController controller = (RecipeComponentController) node.getUserData();
             controller.getMaterialsContainer().getChildren().add(0, materialView);
+            controller.updateIndicator();
         } else {
             System.err.println("Can't find the RecipeComponent for the double clicked material view");
         }

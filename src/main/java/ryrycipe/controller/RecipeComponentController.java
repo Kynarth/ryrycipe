@@ -1,9 +1,10 @@
 package ryrycipe.controller;
 
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import ryrycipe.model.Component;
@@ -30,11 +31,18 @@ public class RecipeComponentController implements Initializable {
     private FlowPane materialsContainer;
 
     private Component component;
+    private int nbMaterials = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Set an ImageView in the flow layout that represents a empty slot for a material.
         materialsContainer.getChildren().add(new MaterialView());
+        materialsContainer.getChildren().addListener((ListChangeListener<? super Node>) observable -> {
+            if (observable.getList().size() > component.getAmount()) {
+                materialsContainer.getChildren().remove(materialsContainer.getChildren().size() - 1);
+                nbMaterials = materialsContainer.getChildren().size();
+            }
+        });
     }
 
     /**
@@ -54,6 +62,13 @@ public class RecipeComponentController implements Initializable {
      */
     public void setComponent(Component component) {
         this.component = component;
+    }
+
+    /**
+     * Update the displayed number of materials present in the user recipe.
+     */
+    public void updateIndicator() {
+        componentIndicator.setText(nbMaterials + "/" + component.getAmount());
     }
 
     public FlowPane getMaterialsContainer() {
