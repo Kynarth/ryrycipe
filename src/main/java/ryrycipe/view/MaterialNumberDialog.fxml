@@ -15,6 +15,6 @@
           <Button fx:id="cancelBtn" onAction="#handleCancelBtn" mnemonicParsing="false" text="%button.cancel.text" />
         </buttons>
       </ButtonBar>
-      <TextField fx:id="nbMaterialField" layoutX="105.0" layoutY="42.0" prefHeight="26.0" prefWidth="85.0" AnchorPane.rightAnchor="20.0" />
+      <TextField fx:id="nbMaterialField" onKeyPressed="#handleEnterPressed" layoutX="105.0" layoutY="42.0" prefHeight="26.0" prefWidth="85.0" AnchorPane.rightAnchor="20.0" />
    </children>
 </AnchorPane>

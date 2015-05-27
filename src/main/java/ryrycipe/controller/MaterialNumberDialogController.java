@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ryrycipe.model.view.MaterialView;
 
@@ -88,6 +90,13 @@ public class MaterialNumberDialogController implements Initializable {
         // Remove potential number from the TextField before leaving the dialog
         nbMaterialField.setText("");
         dialogStage.close();
+    }
+
+    @FXML
+    public void handleEnterPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleOKBtn();
+        }
     }
 
     public TextField getNbMaterialField() {

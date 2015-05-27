@@ -389,6 +389,7 @@ public class RecipeCreatorController implements Initializable {
             controller.setMaterialImage(materialView);
             controller.setMaterialAmount(amount);
             controller.setDialogStage(dialogStage);
+            controller.getNbMaterialField().requestFocus();
 
             dialogStage.showAndWait();
 
