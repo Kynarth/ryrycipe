@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -352,6 +353,8 @@ public class RecipeCreatorController implements Initializable {
             String nbMaterials = showMaterialNumberDialog(materialView, controller.getNeededMaterialNb());
 
             if (!nbMaterials.isEmpty()) {
+                // Remove the event filter after that the material view get into RecipeComponent
+                materialView.removeEventFilter(MouseEvent.MOUSE_CLICKED, materialView.getMouseEventEventHandler());
                 controller.getMaterialsContainer().getChildren().add(0, materialView);
                 controller.updateIndicator(nbMaterials);
             }

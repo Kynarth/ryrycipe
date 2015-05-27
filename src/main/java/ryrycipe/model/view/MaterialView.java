@@ -1,5 +1,6 @@
 package ryrycipe.model.view;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -23,6 +24,14 @@ public class MaterialView extends ImageView {
      */
     private RecipeCreatorController controller;
 
+    private EventHandler<MouseEvent> mouseEventEventHandler = (event -> {
+        if(event.getButton().equals(MouseButton.PRIMARY)) {
+            if(event.getClickCount() == 2){
+                controller.addMaterialToRecipe(this);
+            }
+        }
+    });
+
     /**
      * Constructor for an empty MaterialView.
      */
@@ -35,14 +44,9 @@ public class MaterialView extends ImageView {
         this.material = material;
 
         // Handle mouse clicks action
-        this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                if(event.getClickCount() == 2){
-                    controller.addMaterialToRecipe(this);
-                }
-            }
-        });
+        this.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
     }
+
 
     public Material getMaterial() {
         return material;
@@ -58,5 +62,9 @@ public class MaterialView extends ImageView {
 
     public void setController(RecipeCreatorController controller) {
         this.controller = controller;
+    }
+
+    public EventHandler<MouseEvent> getMouseEventEventHandler() {
+        return mouseEventEventHandler;
     }
 }
