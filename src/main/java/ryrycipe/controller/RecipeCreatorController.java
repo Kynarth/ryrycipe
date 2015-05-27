@@ -347,7 +347,7 @@ public class RecipeCreatorController implements Initializable {
     public void addMaterialToRecipe(MaterialView materialView) {
         Node node = getRecipeComponent(materialView);
         if (node != null) {
-            showMaterialNumberDialog(materialView);
+            showMaterialNumberDialog(materialView, componentCB.getValue().getAmount());
 //            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
 //            controller.getMaterialsContainer().getChildren().add(0, materialView);
 //            controller.updateIndicator();
@@ -358,8 +358,11 @@ public class RecipeCreatorController implements Initializable {
 
     /**
      * Show the dialog allowing the user to select a number of materials.
+     *
+     * @param materialView {@link MaterialView}
+     * @param amount Number of materials needed for a recipe component.
      */
-    private void showMaterialNumberDialog(MaterialView materialView) {
+    private void showMaterialNumberDialog(MaterialView materialView, int amount) {
         try {
             // Retrieve dialog's fxml file
             FXMLLoader loader = new FXMLLoader();
@@ -379,6 +382,7 @@ public class RecipeCreatorController implements Initializable {
             // Get its controller
             MaterialNumberDialogController controller = loader.getController();
             controller.setMaterialImage(materialView);
+            controller.setMaterialAmount(amount);
             controller.setDialogStage(dialogStage);
 
             dialogStage.showAndWait();
