@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.util.LocaleUtil;
 
 import java.io.IOException;
@@ -70,6 +71,10 @@ public class Ryrycipe extends Application {
         loader.setResources(ResourceBundle.getBundle("lang", locale));
         SplitPane recipeCreator = loader.load();
 
+        // Get the corresponding controller
+        RecipeCreatorController controller = loader.getController();
+        controller.setMainApp(this);
+
         rootLayout.setCenter(recipeCreator);
     }
 
@@ -79,5 +84,9 @@ public class Ryrycipe extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

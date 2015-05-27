@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="138.0" prefWidth="210.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ryrycipe.controller.MaterialNumberDialogController" xmlns="http://javafx.com/javafx/8.0.45">
+   <children>
+      <ImageView fx:id="materialImg" fitHeight="40.0" fitWidth="40.0" layoutX="39.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
+      <ButtonBar layoutX="375.0" layoutY="331.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <buttons>
+          <Button fx:id="okBtn" mnemonicParsing="false" text="%button.ok.text" />
+          <Button fx:id="cancelBtn" mnemonicParsing="false" text="%button.cancel.text" />
+        </buttons>
+      </ButtonBar>
+      <TextField fx:id="nbMaterialField" layoutX="105.0" layoutY="42.0" prefHeight="26.0" prefWidth="85.0" AnchorPane.rightAnchor="20.0" />
+   </children>
+</AnchorPane>

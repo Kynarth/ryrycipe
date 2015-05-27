@@ -7,12 +7,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import ryrycipe.Ryrycipe;
 import ryrycipe.model.Component;
 import ryrycipe.model.Faction;
 import ryrycipe.model.Material;
@@ -102,6 +106,7 @@ public class RecipeCreatorController implements Initializable {
 
     private Plan currentPlan;  // Save the plan chose by the user.
     private ResourceBundle resources;
+    private Ryrycipe mainApp;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,7 +115,7 @@ public class RecipeCreatorController implements Initializable {
         // Initialize the combobox containing the different plan's quality
         planQualityItems.addAll(resources.getString("combobox.quality.items").split(","));
         planQualityCB.setItems(planQualityItems);
-        planQualityCB.setValue(planQualityItems.get(planQualityItems.size() -1));
+        planQualityCB.setValue(planQualityItems.get(planQualityItems.size() - 1));
 
         // Initialize the combobox containing the different plans
         initializePlansCB();
@@ -224,7 +229,7 @@ public class RecipeCreatorController implements Initializable {
             factionCB.setItems(factionItems);
             factionCB.setValue(factionItems.get(0));
         } else {
-            for (String factionName: resources.getString("combobox.faction.values").split(",")) {
+            for (String factionName : resources.getString("combobox.faction.values").split(",")) {
                 factionItems.add(factionManager.find(factionName));
             }
 
@@ -256,7 +261,7 @@ public class RecipeCreatorController implements Initializable {
             factionItems.clear();
             factionCB.setOnAction(event -> displayMaterials());
             FactionManager factionManager = new FactionManager();
-            for (String factionName: resources.getString("combobox.faction.values").split(",")) {
+            for (String factionName : resources.getString("combobox.faction.values").split(",")) {
                 factionItems.add(factionManager.find(factionName));
             }
             factionCB.setItems(factionItems);
@@ -311,15 +316,21 @@ public class RecipeCreatorController implements Initializable {
         MaterialManager materialManager = new MaterialManager();
         materialChooser.getChildren().clear();
 
-        for (Material material: materialManager.filter(getFilterParameters())) {
+        for (Material material : materialManager.filter(getFilterParameters())) {
             MaterialView materialView = material.getImage();
             materialView.setController(this);
             materialChooser.getChildren().add(materialView);
         }
     }
 
+    /**
+     * Retrieve the RecipeComponent corresponding to the {@link MaterialView}.
+     *
+     * @param materialView {@link MaterialView}
+     * @return RecipeComponent
+     */
     public Node getRecipeComponent(MaterialView materialView) {
-        for (Node node: componentsContainer.getChildren()) {
+        for (Node node : componentsContainer.getChildren()) {
             if (materialView.getMaterial().getComponents().contains(node.getId())) {
                 return node;
             }
@@ -336,11 +347,47 @@ public class RecipeCreatorController implements Initializable {
     public void addMaterialToRecipe(MaterialView materialView) {
         Node node = getRecipeComponent(materialView);
         if (node != null) {
-            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
-            controller.getMaterialsContainer().getChildren().add(0, materialView);
-            controller.updateIndicator();
+            showMaterialNumberDialog(materialView);
+//            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
+//            controller.getMaterialsContainer().getChildren().add(0, materialView);
+//            controller.updateIndicator();
         } else {
             System.err.println("Can't find the RecipeComponent for the double clicked material view");
         }
+    }
+
+    /**
+     * Show the dialog allowing the user to select a number of materials.
+     */
+    private void showMaterialNumberDialog(MaterialView materialView) {
+        try {
+            // Retrieve dialog's fxml file
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/MaterialNumberDialog.fxml"));
+            loader.setResources(resources);
+            AnchorPane dialogPane = loader.load();
+
+            // Setup dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(resources.getString("dialog.title"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(mainApp.getPrimaryStage());
+            Scene scene = new Scene(dialogPane);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            // Get its controller
+            MaterialNumberDialogController controller = loader.getController();
+            controller.setMaterialImage(materialView);
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMainApp(Ryrycipe mainApp) {
+        this.mainApp = mainApp;
     }
 }
