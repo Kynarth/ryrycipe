@@ -70,4 +70,27 @@ public class MaterialNumberDialogController implements Initializable {
     public void setMaterialAmount(int amount) {
         this.materialAmount = amount;
     }
+
+    /**
+     * Close the dialog and update the corresponding RecipeComponent with the chosen MaterialView and number.
+     * Note: Do nothing if no value is chosen.
+     */
+    @FXML
+    public void handleOKBtn() {
+        dialogStage.close();
+    }
+
+    /**
+     * Close the dialog when the user clicks the cancel button.
+     */
+    @FXML
+    public void handleCancelBtn() {
+        // Remove potential number from the TextField before leaving the dialog
+        nbMaterialField.setText("");
+        dialogStage.close();
+    }
+
+    public TextField getNbMaterialField() {
+        return nbMaterialField;
+    }
 }

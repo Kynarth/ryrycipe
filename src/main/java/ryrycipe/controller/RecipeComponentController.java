@@ -1,9 +1,7 @@
 package ryrycipe.controller;
 
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -37,12 +35,6 @@ public class RecipeComponentController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Set an ImageView in the flow layout that represents a empty slot for a material.
         materialsContainer.getChildren().add(new MaterialView());
-        materialsContainer.getChildren().addListener((ListChangeListener<? super Node>) observable -> {
-            if (observable.getList().size() > component.getAmount()) {
-                materialsContainer.getChildren().remove(materialsContainer.getChildren().size() - 1);
-                nbMaterials = materialsContainer.getChildren().size();
-            }
-        });
     }
 
     /**
@@ -65,10 +57,26 @@ public class RecipeComponentController implements Initializable {
     }
 
     /**
-     * Update the displayed number of materials present in the user recipe.
+     * Update the displayed number of {@link ryrycipe.model.Material} present in the user recipe.
+     *
+     * @param nbMaterials Number of {@link ryrycipe.model.Material}s used for the recipe for corresponding component.
      */
-    public void updateIndicator() {
-        componentIndicator.setText(nbMaterials + "/" + component.getAmount());
+    public void updateIndicator(String nbMaterials) {
+        this.nbMaterials += Integer.valueOf(nbMaterials);
+        componentIndicator.setText(this.nbMaterials + "/" + component.getAmount());
+
+        // Remove the empty MaterialView when the number of needed material is filled
+        if (this.nbMaterials == component.getAmount()) {
+            materialsContainer.getChildren().remove(materialsContainer.getChildren().size() - 1);
+        }
+    }
+
+    /**
+     * Return the number of remaining of {@link ryrycipe.model.Material}s to fill the recipe component.
+     * @return int - Number of {@link ryrycipe.model.Material}s to fill the recipe component.
+     */
+    public int getNeededMaterialNb() {
+        return component.getAmount() - nbMaterials;
     }
 
     public FlowPane getMaterialsContainer() {

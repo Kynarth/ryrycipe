@@ -347,10 +347,14 @@ public class RecipeCreatorController implements Initializable {
     public void addMaterialToRecipe(MaterialView materialView) {
         Node node = getRecipeComponent(materialView);
         if (node != null) {
-            showMaterialNumberDialog(materialView, componentCB.getValue().getAmount());
-//            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
-//            controller.getMaterialsContainer().getChildren().add(0, materialView);
-//            controller.updateIndicator();
+            // Get the number of materials to used via a dialog
+            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
+            String nbMaterials = showMaterialNumberDialog(materialView, controller.getNeededMaterialNb());
+
+            if (!nbMaterials.isEmpty()) {
+                controller.getMaterialsContainer().getChildren().add(0, materialView);
+                controller.updateIndicator(nbMaterials);
+            }
         } else {
             System.err.println("Can't find the RecipeComponent for the double clicked material view");
         }
@@ -360,9 +364,10 @@ public class RecipeCreatorController implements Initializable {
      * Show the dialog allowing the user to select a number of materials.
      *
      * @param materialView {@link MaterialView}
-     * @param amount Number of materials needed for a recipe component.
+     * @param amount Number of remaining {@link Material}s needed for a recipe component.
+     * @return Number of {@link Material}s that the use chose to composed the recipe.
      */
-    private void showMaterialNumberDialog(MaterialView materialView, int amount) {
+    private String showMaterialNumberDialog(MaterialView materialView, int amount) {
         try {
             // Retrieve dialog's fxml file
             FXMLLoader loader = new FXMLLoader();
@@ -386,8 +391,11 @@ public class RecipeCreatorController implements Initializable {
             controller.setDialogStage(dialogStage);
 
             dialogStage.showAndWait();
+
+            return controller.getNbMaterialField().getText();
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
     }
 
