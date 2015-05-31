@@ -89,4 +89,8 @@ public class Ryrycipe extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+
+    public Locale getLocale() {
+        return locale;
+    }
 }

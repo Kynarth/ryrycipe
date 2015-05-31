@@ -34,6 +34,7 @@ public class RecipeComponentController implements Initializable {
 
     private Component component;
     private int nbMaterials = 0;
+    private boolean filled;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,13 +59,22 @@ public class RecipeComponentController implements Initializable {
      *
      * @param nbMaterials Number of {@link ryrycipe.model.Material}s used for the recipe for corresponding component.
      */
-    public void updateIndicator(String nbMaterials) {
-        this.nbMaterials += Integer.valueOf(nbMaterials);
+    public void updateIndicator(int nbMaterials) {
+        this.nbMaterials += nbMaterials;
         componentIndicator.setText(this.nbMaterials + "/" + component.getAmount());
 
         // Remove the empty MaterialView when the number of needed material is filled
         if (this.nbMaterials == component.getAmount()) {
             materialsContainer.getChildren().remove(materialsContainer.getChildren().size() - 1);
+            filled = true;
+            LOGGER.info("Recipe component filled.");
+        }
+
+        // Add empty MaterialView if RecipeComponent is no longer filled.
+        if (this.nbMaterials < component.getAmount() && filled) {
+            materialsContainer.getChildren().add(new MaterialView());
+            filled = false;
+            LOGGER.info("Recipe component is no longer filled.");
         }
 
         LOGGER.info("Component: {} updated", component.getName());
@@ -72,6 +82,7 @@ public class RecipeComponentController implements Initializable {
 
     /**
      * Return the number of remaining of {@link ryrycipe.model.Material}s to fill the recipe component.
+     *
      * @return int - Number of {@link ryrycipe.model.Material}s to fill the recipe component.
      */
     public int getNeededMaterialNb() {

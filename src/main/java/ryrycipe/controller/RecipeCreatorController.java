@@ -6,17 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
@@ -112,6 +107,12 @@ public class RecipeCreatorController implements Initializable {
     private Plan currentPlan;  // Save the plan chose by the user.
     private ResourceBundle resources;
     private Ryrycipe mainApp;
+
+    /**
+     * {@link RecipeComponentController} corresponding to the selected component from
+     * {@link RecipeCreatorController#componentCB}.
+     */
+    private RecipeComponentController RCController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -258,6 +259,22 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
+     * Find the corresponding {@link RecipeComponentController} to the selected component from
+     * {@link RecipeCreatorController#componentCB}.
+     */
+    @FXML
+    public void updateComponent() {
+        componentsContainer.getChildren().stream().filter(
+            node -> componentCB.getValue().toString().equals(node.getId())
+        ).forEach(
+            node -> RCController = (RecipeComponentController) node.getUserData()
+        );
+
+        if (RCController == null)
+            LOGGER.error("Can't find the RecipeComponent for {}.", componentCB.getValue());
+    }
+
+    /**
      * Update the {@link RecipeCreatorController#factionCB} in function of selected quality.
      *
      * @param oldIndex Index of the previous quality.
@@ -327,97 +344,20 @@ public class RecipeCreatorController implements Initializable {
 
         for (Material material : materialManager.filter(getFilterParameters())) {
             MaterialView materialView = material.getImage();
-            materialView.setController(this);
+            materialView.setRCController(RCController);
+            materialView.setCreatorController(this);
+            materialView.setMainApp(mainApp);
             materialChooser.getChildren().add(materialView);
         }
 
         LOGGER.info("Materials displayed.");
     }
 
-    /**
-     * Retrieve the RecipeComponent corresponding to the {@link MaterialView}.
-     *
-     * @param materialView {@link MaterialView}
-     * @return RecipeComponent
-     */
-    public Node getRecipeComponent(MaterialView materialView) {
-        for (Node node : componentsContainer.getChildren()) {
-            if (materialView.getMaterial().getComponents().contains(node.getId())) {
-                return node;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Add the double clicked {@link ryrycipe.model.view.MaterialView} in the correspondant RecipeComponent.
-     *
-     * @param materialView {@link MaterialView}
-     */
-    public void addMaterialToRecipe(MaterialView materialView) {
-        Node node = getRecipeComponent(materialView);
-        if (node != null) {
-            // Get the number of materials to used via a dialog
-            RecipeComponentController controller = (RecipeComponentController) node.getUserData();
-            String nbMaterials = showMaterialNumberDialog(materialView, controller.getNeededMaterialNb());
-
-            if (!nbMaterials.isEmpty()) {
-                // Remove the event filter after that the material view get into RecipeComponent
-                materialView.removeEventFilter(MouseEvent.MOUSE_CLICKED, materialView.getMouseEventEventHandler());
-                controller.getMaterialsContainer().getChildren().add(0, materialView);
-                controller.updateIndicator(nbMaterials);
-            }
-
-            LOGGER.info("{} has been added to the {} recipe's component",
-                    materialView.getMaterial().getDescription(), controller.getComponentName().getText()
-            );
-        } else {
-            LOGGER.error("Can't find the RecipeComponent for the double clicked material view");
-        }
-    }
-
-    /**
-     * Show the dialog allowing the user to select a number of materials.
-     *
-     * @param materialView {@link MaterialView}
-     * @param amount Number of remaining {@link Material}s needed for a recipe component.
-     * @return Number of {@link Material}s that the use chose to composed the recipe.
-     */
-    private String showMaterialNumberDialog(MaterialView materialView, int amount) {
-        try {
-            // Retrieve dialog's fxml file
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/ryrycipe/view/MaterialNumberDialog.fml"));
-            loader.setResources(resources);
-            AnchorPane dialogPane = loader.load();
-
-            // Setup dialog
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle(resources.getString("dialog.title"));
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
-            Scene scene = new Scene(dialogPane);
-            dialogStage.setScene(scene);
-            dialogStage.setResizable(false);
-
-            // Get its controller
-            MaterialNumberDialogController controller = loader.getController();
-            controller.setMaterialImage(materialView);
-            controller.setMaterialAmount(amount);
-            controller.setDialogStage(dialogStage);
-            controller.getNbMaterialField().requestFocus();
-
-            dialogStage.showAndWait();
-
-            return controller.getNbMaterialField().getText();
-        } catch (IOException | IllegalStateException e) {
-            LOGGER.error("Unable to find the MaterialNumberDialog fxml file");
-            return "";
-        }
-    }
-
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public FlowPane getMaterialChooser() {
+        return materialChooser;
     }
 }
