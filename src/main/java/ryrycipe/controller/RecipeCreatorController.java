@@ -17,6 +17,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
 import ryrycipe.model.Component;
 import ryrycipe.model.Faction;
@@ -37,6 +39,8 @@ import java.util.ResourceBundle;
  * Controller for the RecipeCreator view.
  */
 public class RecipeCreatorController implements Initializable {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(RecipeCreatorController.class.getName());
 
     /**
      * Contains all controls allowing the user to select materials in functions of parameters.
@@ -154,6 +158,8 @@ public class RecipeCreatorController implements Initializable {
         // Unlock and initialize material filter
         enableFilter();
         initializeFilter();
+
+        LOGGER.info("User chose a plan.");
     }
 
     /**
@@ -181,8 +187,8 @@ public class RecipeCreatorController implements Initializable {
 
             // Store the node controller to use it later.
             recipeComponent.setUserData(controller);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error("Unable to find the RecipeComponent fxml file");
         }
     }
 
@@ -247,6 +253,8 @@ public class RecipeCreatorController implements Initializable {
         initializeComponentsCB();
         initializeQualityCB();
         initializeFactionCB();
+
+        LOGGER.info("Material filter initialized.");
     }
 
     /**
@@ -322,6 +330,8 @@ public class RecipeCreatorController implements Initializable {
             materialView.setController(this);
             materialChooser.getChildren().add(materialView);
         }
+
+        LOGGER.info("Materials displayed.");
     }
 
     /**
@@ -358,8 +368,12 @@ public class RecipeCreatorController implements Initializable {
                 controller.getMaterialsContainer().getChildren().add(0, materialView);
                 controller.updateIndicator(nbMaterials);
             }
+
+            LOGGER.info("{} has been added to the {} recipe's component",
+                    materialView.getMaterial().getDescription(), controller.getComponentName().getText()
+            );
         } else {
-            System.err.println("Can't find the RecipeComponent for the double clicked material view");
+            LOGGER.error("Can't find the RecipeComponent for the double clicked material view");
         }
     }
 
@@ -397,8 +411,8 @@ public class RecipeCreatorController implements Initializable {
             dialogStage.showAndWait();
 
             return controller.getNbMaterialField().getText();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error("Unable to find the MaterialNumberDialog fxml file");
             return "";
         }
     }

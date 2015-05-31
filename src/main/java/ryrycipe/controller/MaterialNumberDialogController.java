@@ -7,6 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.view.MaterialView;
 
 import java.net.URL;
@@ -17,6 +19,8 @@ import java.util.regex.Pattern;
  * Controller for the dialog used to select a number of material to include in the recipe.
  */
 public class MaterialNumberDialogController implements Initializable {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(MaterialNumberDialogController.class.getName());
 
     @FXML
     private ImageView materialImg;
@@ -65,12 +69,14 @@ public class MaterialNumberDialogController implements Initializable {
     }
 
     /**
-     * Set the number of materials needed for a recipe a component.
+     * Set the number of materials needed for a recipe a component and put it as default value in the
+     * {@link MaterialNumberDialogController#nbMaterialField}
      *
      * @param amount Number of materials needed for a recipe a component.
      */
     public void setMaterialAmount(int amount) {
         this.materialAmount = amount;
+        nbMaterialField.setText(String.valueOf(amount));
     }
 
     /**
@@ -80,6 +86,8 @@ public class MaterialNumberDialogController implements Initializable {
     @FXML
     public void handleOKBtn() {
         dialogStage.close();
+
+        LOGGER.info("USer chose {} materials", nbMaterialField);
     }
 
     /**

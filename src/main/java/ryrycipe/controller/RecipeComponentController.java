@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.Component;
 import ryrycipe.model.view.MaterialView;
 
@@ -15,6 +17,8 @@ import java.util.ResourceBundle;
  * Controller for PlanRecipeComponent view.
  */
 public class RecipeComponentController implements Initializable {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(RecipeComponentController.class.getName());
 
     @FXML
     private ImageView componentIcon;
@@ -45,15 +49,8 @@ public class RecipeComponentController implements Initializable {
         componentIcon.setImage(component.getImage());
         componentName.setText(component.getName());
         componentIndicator.setText("0/" + component.getAmount());
-    }
 
-    /**
-     * Set the controller's {@link Component} with {@link ryrycipe.model.Plan}'s one
-     *
-     * @param component A {@link Component} composing a {@link ryrycipe.model.Plan}.
-     */
-    public void setComponent(Component component) {
-        this.component = component;
+        LOGGER.info("Plan's component: {} initialized", component.getName());
     }
 
     /**
@@ -69,6 +66,8 @@ public class RecipeComponentController implements Initializable {
         if (this.nbMaterials == component.getAmount()) {
             materialsContainer.getChildren().remove(materialsContainer.getChildren().size() - 1);
         }
+
+        LOGGER.info("Component: {} updated", component.getName());
     }
 
     /**
@@ -79,7 +78,20 @@ public class RecipeComponentController implements Initializable {
         return component.getAmount() - nbMaterials;
     }
 
+    /**
+     * Set the controller's {@link Component} with {@link ryrycipe.model.Plan}'s one
+     *
+     * @param component A {@link Component} composing a {@link ryrycipe.model.Plan}.
+     */
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+
     public FlowPane getMaterialsContainer() {
         return materialsContainer;
+    }
+
+    public Label getComponentName() {
+        return componentName;
     }
 }
