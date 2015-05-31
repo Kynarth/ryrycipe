@@ -3,6 +3,9 @@ package ryrycipe.model.view;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -20,6 +23,8 @@ import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Material;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -59,24 +64,31 @@ public class MaterialView extends ImageView {
      */
     private EventHandler<MouseEvent> mouseEventAddMaterial = (event -> {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
-            if(event.getClickCount() == 2){
+            if(event.getClickCount() == 2 && RCController.getNeededMaterialNb() > 0){
                 addToRecipe();
             }
         }
     });
 
     /**
-     * Event that remove the MaterialView from the recipe to the pool of materials.
+     * Event that remove the MaterialView from the recipe to the pool of materials, update the
+     * RecipeComponent indicator and delete written infos from MaterialView image.
      */
     private EventHandler<MouseEvent> mouseEventRemoveMaterial = (event -> {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
             if(event.getClickCount() == 2){
+                // Update RecipeComponent's indicator
                 RCController.updateIndicator(-this.nbMaterials);
-                this.nbMaterials = 0;
+
+                // Change eventFilter to be able to be added again
                 RCController.getMaterialsContainer().getChildren().remove(this);
                 creatorController.getMaterialChooser().getChildren().add(this);
                 this.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventRemoveMaterial);
                 this.addEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventAddMaterial);
+
+                // Return to Material View default value
+                this.nbMaterials = 0;
+                this.setImage(this.material.getImage());
             }
         }
     });
@@ -113,6 +125,7 @@ public class MaterialView extends ImageView {
                 this.addEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventRemoveMaterial);
                 RCController.getMaterialsContainer().getChildren().add(0, this);
                 RCController.updateIndicator(nbMaterials);
+                addMaterialNumber();
             }
 
             LOGGER.info("{} has been added to the {} recipe's component",
@@ -162,7 +175,31 @@ public class MaterialView extends ImageView {
         }
     }
 
+    /**
+     * Write the number of materials on the MaterialView's image after the user chose how many materials to use.
+     */
+    private void addMaterialNumber() {
+        // Image of multiply symbol that indicate the number of materials
+        Image quantity = new Image("/images/foregrounds/W_quantity.png");
 
+        // Get an image of each digits composing the number of chosen materials
+        List<Image> numbers = new ArrayList<>();
+        for (char digit: String.valueOf(this.nbMaterials).toCharArray()) {
+            numbers.add(new Image("/images/foregrounds/Numbers_" + digit + ".png"));
+        }
+
+        Canvas canvas = new Canvas(40, 40);
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.drawImage(this.getImage(), 0, 0);
+        graphicsContext.drawImage(quantity, 3, 31);
+
+        for (int i=0; i < numbers.size(); i++) {
+            graphicsContext.drawImage(numbers.get(i), 9 + (i*5), 31);
+        }
+
+        WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
+        this.setImage(snapshot);
+    }
 
     public Material getMaterial() {
         return material;

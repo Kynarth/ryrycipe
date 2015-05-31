@@ -127,10 +127,6 @@ public class Material {
         return asComponent;
     }
 
-    public void setAsComponent(List<Component> asComponent) {
-        this.asComponent = asComponent;
-    }
-
     public String getQuality() {
         return quality;
     }
@@ -164,7 +160,7 @@ public class Material {
      *
      * @return {@link MaterialView}..
      */
-    public MaterialView getImage() {
+    public MaterialView getMaterialView() {
         Image overlay = new Image("/images/materials/" + icon);
 
         // Create a canvas that combines the background with the material icon as overlay
@@ -174,5 +170,17 @@ public class Material {
         graphicsContext.drawImage(overlay, 0, 0);
         WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
         return new MaterialView(snapshot, this);
+    }
+
+    public Image getImage() {
+        Image overlay = new Image("/images/materials/" + icon);
+
+        // Create a canvas that combines the background with the material icon as overlay
+        Canvas canvas = new Canvas(40, 40);
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.drawImage(this.faction.getImage(), 0, 0);
+        graphicsContext.drawImage(overlay, 0, 0);
+        WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
+        return snapshot;
     }
 }

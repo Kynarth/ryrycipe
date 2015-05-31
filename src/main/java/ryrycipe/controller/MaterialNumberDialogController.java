@@ -43,7 +43,6 @@ public class MaterialNumberDialogController implements Initializable {
             if (!newValue.isEmpty()){
                 if (!pattern.matcher(newValue).matches() || newValue.charAt(0) == '0') {
                     nbMaterialField.setText(oldValue);
-                    System.out.println(pattern.matcher(newValue).matches());
                     return; // to not enter in the second if statement
                 }
             }

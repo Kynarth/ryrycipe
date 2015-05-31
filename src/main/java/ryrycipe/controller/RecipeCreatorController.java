@@ -205,16 +205,27 @@ public class RecipeCreatorController implements Initializable {
      * Fill {@link RecipeCreatorController#componentCB} with chosen {@link Plan}'s {@link Component}.
      */
     private void initializeComponentsCB() {
+        componentCB.setOnAction(null); // Remove listener to not trigger displayMaterials while initializing
+        componentItems.clear();
         componentItems.addAll(currentPlan.getComponents());
         componentCB.setItems(componentItems);
         componentCB.setValue(componentItems.get(0));
-        componentCB.setOnAction(event -> displayMaterials());
+
+        // Set RCController
+        componentsContainer.getChildren().stream().filter(
+            node -> componentCB.getValue().toString().equals(node.getId())
+        ).forEach(
+            node -> RCController = (RecipeComponentController) node.getUserData()
+        );
+
+        componentCB.setOnAction(event -> updateComponent());
     }
 
     /**
      * Fill {@link RecipeCreatorController#qualityCB} with the five possibilities.
      */
     private void initializeQualityCB() {
+        qualityCB.setOnAction(null); // Remove listener to not trigger displayMaterials while initializing
         qualityItems.clear();
         qualityItems.addAll(resources.getString("combobox.quality.values").split(","));
         qualityCB.setItems(qualityItems);
@@ -223,12 +234,15 @@ public class RecipeCreatorController implements Initializable {
         qualityCB.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             updateFactionItems((Integer) oldValue, (Integer) newValue);
         });
+
+        // Do not need to trigger displayMaterials method. We be done by the updateFactionItems one
     }
 
     /**
      * Fill {@link RecipeCreatorController#factionCB} in function of selected quality.
      */
     private void initializeFactionCB() {
+        factionCB.setOnAction(null); // Remove listener to not trigger displayMaterials while initializing
         FactionManager factionManager = new FactionManager();
         factionItems.clear();
         // Indexes lower than two corresponds to basic and fin quality which does not allow faction.
@@ -269,6 +283,8 @@ public class RecipeCreatorController implements Initializable {
         ).forEach(
             node -> RCController = (RecipeComponentController) node.getUserData()
         );
+
+        displayMaterials();
 
         if (RCController == null)
             LOGGER.error("Can't find the RecipeComponent for {}.", componentCB.getValue());
@@ -330,7 +346,6 @@ public class RecipeCreatorController implements Initializable {
         parameters.put("faction", factionCB.getValue().getName());
         parameters.put("quality", qualityCB.getValue());
         parameters.put("component", componentCB.getValue().getId());
-
         return parameters;
     }
 
@@ -343,7 +358,7 @@ public class RecipeCreatorController implements Initializable {
         materialChooser.getChildren().clear();
 
         for (Material material : materialManager.filter(getFilterParameters())) {
-            MaterialView materialView = material.getImage();
+            MaterialView materialView = material.getMaterialView();
             materialView.setRCController(RCController);
             materialView.setCreatorController(this);
             materialView.setMainApp(mainApp);

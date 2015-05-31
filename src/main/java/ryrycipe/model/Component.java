@@ -25,7 +25,7 @@ public class Component {
     private String icon;
 
     /**
-     * Amount of materaials needed for the component in the {@link Plan}.
+     * Amount of materials needed for the component in the {@link Plan}.
      */
     private int amount;
 

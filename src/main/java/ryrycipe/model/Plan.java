@@ -1,5 +1,7 @@
 package ryrycipe.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -103,7 +105,7 @@ public class Plan implements Comparable<Plan> {
     }
 
     @Override
-    public int compareTo(Plan o) {
+    public int compareTo(@NotNull Plan o) {
         return this.toString().compareTo(o.toString());
     }
 }
