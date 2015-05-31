@@ -39,11 +39,11 @@ public class MaterialNumberDialogController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         nbMaterialField.textProperty().addListener(((observable, oldValue, newValue) -> {
             // Check if the new entered value is a number. If not set the oldValue
-            Pattern pattern = Pattern.compile("[0-9]");
+            Pattern pattern = Pattern.compile("^[0-9]+$");
             if (!newValue.isEmpty()){
-                if (!pattern.matcher(String.valueOf(newValue.charAt(newValue.length() - 1))).matches() ||
-                    newValue.charAt(0) == '0') {
+                if (!pattern.matcher(newValue).matches() || newValue.charAt(0) == '0') {
                     nbMaterialField.setText(oldValue);
+                    System.out.println(pattern.matcher(newValue).matches());
                     return; // to not enter in the second if statement
                 }
             }

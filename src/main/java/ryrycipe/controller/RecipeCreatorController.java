@@ -388,7 +388,7 @@ public class RecipeCreatorController implements Initializable {
         try {
             // Retrieve dialog's fxml file
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/ryrycipe/view/MaterialNumberDialog.fxml"));
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/MaterialNumberDialog.fml"));
             loader.setResources(resources);
             AnchorPane dialogPane = loader.load();
 

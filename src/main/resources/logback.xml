@@ -7,8 +7,6 @@
         </layout>
     </appender>
 
-    <logger name="com.base22" level="TRACE"/>
-
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${user.home}/log/ryrycipe.log</file>
         <append>false</append>
@@ -17,8 +15,11 @@
         </encoder>
     </appender>
 
+    <logger name="ryrycipe.controller" level="warn">
+        <appender-ref ref="FILE" />
+    </logger>
+
     <root level="debug">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
     </root>
 </configuration>
