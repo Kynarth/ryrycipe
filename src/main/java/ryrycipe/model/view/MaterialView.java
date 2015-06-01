@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -106,6 +107,8 @@ public class MaterialView extends ImageView {
         super(image);
         this.material = material;
         this.nbMaterials = 0;
+        Tooltip tooltip = new Tooltip(this.material.getDescription());
+        Tooltip.install(this, tooltip);
 
         // Handle mouse clicks action
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventAddMaterial);
