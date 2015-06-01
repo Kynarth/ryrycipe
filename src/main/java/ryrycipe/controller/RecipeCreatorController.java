@@ -358,7 +358,7 @@ public class RecipeCreatorController implements Initializable {
         materialChooser.getChildren().clear();
 
         for (Material material : materialManager.filter(getFilterParameters())) {
-            MaterialView materialView = material.getMaterialView();
+            MaterialView materialView = new MaterialView(material.getImage(), material);
             materialView.setRCController(RCController);
             materialView.setCreatorController(this);
             materialView.setMainApp(mainApp);

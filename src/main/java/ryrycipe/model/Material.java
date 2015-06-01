@@ -4,9 +4,9 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import ryrycipe.model.view.MaterialView;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,22 +156,10 @@ public class Material {
     }
 
     /**
-     * Return an {@link MaterialView} composed of {@link Faction#icon} and {@link Material#icon}.
+     * Return an {@link Image} composed of {@link Faction#icon} and {@link Material#icon}.
      *
-     * @return {@link MaterialView}..
+     * @return {@link Image}
      */
-    public MaterialView getMaterialView() {
-        Image overlay = new Image("/images/materials/" + icon);
-
-        // Create a canvas that combines the background with the material icon as overlay
-        Canvas canvas = new Canvas(40, 40);
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.drawImage(this.faction.getImage(), 0, 0);
-        graphicsContext.drawImage(overlay, 0, 0);
-        WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
-        return new MaterialView(snapshot, this);
-    }
-
     public Image getImage() {
         Image overlay = new Image("/images/materials/" + icon);
 
@@ -180,7 +168,21 @@ public class Material {
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.drawImage(this.faction.getImage(), 0, 0);
         graphicsContext.drawImage(overlay, 0, 0);
-        WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
-        return snapshot;
+
+        // Write material's name on the image
+        List<Image> nameLetters = new ArrayList<>();
+        // Remove uppercase and accent from material name to get correspondance with typo images.
+        char[] filterName = Normalizer.normalize(
+            this.name.toLowerCase(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""
+        ).toCharArray();
+        for (char letter: filterName) {
+            nameLetters.add(new Image("/images/foregrounds/typo_" + letter + ".png"));
+        }
+
+        for (int i=0; i < nameLetters.size(); i++) {
+            graphicsContext.drawImage(nameLetters.get(i), 3 + (i*5), 3);
+        }
+
+        return canvas.snapshot(new SnapshotParameters(), null);
     }
 }

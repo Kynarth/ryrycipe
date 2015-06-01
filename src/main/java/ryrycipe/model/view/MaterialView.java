@@ -23,6 +23,7 @@ import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Material;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -101,8 +102,8 @@ public class MaterialView extends ImageView {
         this.nbMaterials = 0;
     }
 
-    public MaterialView(WritableImage writableImage, Material material) {
-        super(writableImage);
+    public MaterialView(Image image, Material material) {
+        super(image);
         this.material = material;
         this.nbMaterials = 0;
 
@@ -125,7 +126,7 @@ public class MaterialView extends ImageView {
                 this.addEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventRemoveMaterial);
                 RCController.getMaterialsContainer().getChildren().add(0, this);
                 RCController.updateIndicator(nbMaterials);
-                addMaterialNumber();
+                addMaterialInfos();
             }
 
             LOGGER.info("{} has been added to the {} recipe's component",
@@ -176,25 +177,40 @@ public class MaterialView extends ImageView {
     }
 
     /**
-     * Write the number of materials on the MaterialView's image after the user chose how many materials to use.
+     * Write material informations like number and name of materials.
      */
-    private void addMaterialNumber() {
+    private void addMaterialInfos() {
         // Image of multiply symbol that indicate the number of materials
         Image quantity = new Image("/images/foregrounds/W_quantity.png");
 
+        // Create a canvas to draw all images composing the MaterialView's image
+        Canvas canvas = new Canvas(40, 40);
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.drawImage(this.getImage(), 0, 0);
+        graphicsContext.drawImage(quantity, 3, 31);
+
+        // Write the number on the image
         // Get an image of each digits composing the number of chosen materials
         List<Image> numbers = new ArrayList<>();
         for (char digit: String.valueOf(this.nbMaterials).toCharArray()) {
             numbers.add(new Image("/images/foregrounds/Numbers_" + digit + ".png"));
         }
 
-        Canvas canvas = new Canvas(40, 40);
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.drawImage(this.getImage(), 0, 0);
-        graphicsContext.drawImage(quantity, 3, 31);
-
         for (int i=0; i < numbers.size(); i++) {
             graphicsContext.drawImage(numbers.get(i), 9 + (i*5), 31);
+        }
+        // Write material's name on the image
+        List<Image> nameLetters = new ArrayList<>();
+        // Remove uppercase and accent from material name to get correspondance with typo images.
+        char[] filterName = Normalizer.normalize(
+            this.material.getName().toLowerCase(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""
+        ).toCharArray();
+        for (char letter: filterName) {
+            nameLetters.add(new Image("/images/foregrounds/typo_" + letter + ".png"));
+        }
+
+        for (int i=0; i < nameLetters.size(); i++) {
+            graphicsContext.drawImage(nameLetters.get(i), 3 + (i*5), 3);
         }
 
         WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
