@@ -1,13 +1,25 @@
 package ryrycipe.model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import ryrycipe.util.LocaleUtil;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -184,5 +196,25 @@ public class Material {
         }
 
         return canvas.snapshot(new SnapshotParameters(), null);
+    }
+
+    /**
+     * Retrieve material's stats in function of selected {@link Component} in
+     * {@link ryrycipe.controller.RecipeCreatorController#componentCB}
+     *
+     * @param componentCode {@link Component}'s id
+     * @return {@link JsonObject} with all material's stats.
+     */
+    public JsonObject getStats(String componentCode) throws FileNotFoundException {
+        JsonReader jsonReader = new JsonReader(
+            new FileReader(Material.class.getClassLoader().getResource(
+                "json/resource_stats_" + LocaleUtil.getLanguage() + ".json"
+            ).getPath())
+        );
+        Gson gson = new Gson();
+        Type mapOfMapsType = new TypeToken<Map<String, Map<String, Map<String, JsonObject>>>>() {}.getType();
+        Map<String, Map<String, Map<String, JsonObject>>> map = gson.fromJson(jsonReader, mapOfMapsType);
+
+        return map.get(this.id).get("stats").get(componentCode);
     }
 }

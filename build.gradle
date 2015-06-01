@@ -14,13 +14,14 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.12'
     compile 'ch.qos.logback:logback-core:1.1.3'
     compile 'ch.qos.logback:logback-classic:1.1.3'
+    compile 'com.google.code.gson:gson:2.3.1'
 }
 
 sourceSets {
     main {
         resources {
             srcDirs = ['src/main/java', 'src/main/resources']
-            includes = ['**/*.fxml', '**/*.properties', '**/*.png', '**/*.css', '**/*.db', '**/*.xml']
+            includes = ['**/*.fxml', '**/*.properties', '**/*.png', '**/*.css', '**/*.db', '**/*.xml', '**/*.json']
         }
     }
 }
