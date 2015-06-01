@@ -1,5 +1,7 @@
 package ryrycipe.model.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.Faction;
 import ryrycipe.util.DBConnection;
 
@@ -12,6 +14,8 @@ import java.sql.SQLException;
  * Manage {@link Faction} object from ryrycipe database.
  */
 public class FactionManager {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(FactionManager.class.getName());
 
     /**
      * Connection to the ryrycipe database.
@@ -42,7 +46,7 @@ public class FactionManager {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return faction;

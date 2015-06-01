@@ -1,6 +1,8 @@
 package ryrycipe.model.manager;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.Category;
 import ryrycipe.util.DBConnection;
 
@@ -13,6 +15,8 @@ import java.sql.SQLException;
  * Manage {@link Category} object from ryrycipe database.
  */
 public class CategoryManager {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(CategoryManager.class.getName());
 
     /**
      * Connection to the ryrycipe database.
@@ -43,7 +47,7 @@ public class CategoryManager {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return category;

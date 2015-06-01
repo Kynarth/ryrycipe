@@ -6,7 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.controller.RecipeCreatorController;
+import ryrycipe.controller.RyrycipeController;
 import ryrycipe.util.LocaleUtil;
 
 import java.io.IOException;
@@ -23,6 +26,8 @@ import java.util.ResourceBundle;
  *
  */
 public class Ryrycipe extends Application {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(Ryrycipe.class.getName());
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -43,39 +48,46 @@ public class Ryrycipe extends Application {
 
     /**
      * Load the application's main UI.
-     *
-     * @throws IOException In case where the fxml file isn't found.
      */
-    private void initialize() throws IOException {
-        // Load the main layout from fxml file
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("view/RyrycipeView.fxml"));
-        loader.setResources(ResourceBundle.getBundle("lang", locale));
-        rootLayout = loader.load();
+    public void initialize() {
+        try {
+            // Load the main layout from fxml file
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("view/RyrycipeView.fxml"));
+            loader.setResources(ResourceBundle.getBundle("lang", locale));
+            rootLayout = loader.load();
 
-        // Create a scene with the loaded layout
-        Scene scene = new Scene(rootLayout, 700, 445);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            RyrycipeController controller = loader.getController();
+            controller.setMainApp(this);
+
+            // Create a scene with the loaded layout
+            Scene scene = new Scene(rootLayout, 700, 445);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error("Unable to find the RyrycipeView fxml file");
+        }
     }
 
     /**
      * Load the interface for creating recipes.
-     *
-     * @throws IOException In case where the fxml file isn't found.
      */
-    public void showRecipeCreator() throws IOException {
+    public void showRecipeCreator() {
         // Load RecipeCreator fxml file
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("view/RecipeCreator.fxml"));
-        loader.setResources(ResourceBundle.getBundle("lang", locale));
-        SplitPane recipeCreator = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("view/RecipeCreator.fxml"));
+            loader.setResources(ResourceBundle.getBundle("lang", locale));
+            SplitPane recipeCreator = loader.load();
 
-        // Get the corresponding controller
-        RecipeCreatorController controller = loader.getController();
-        controller.setMainApp(this);
+            // Get the corresponding controller
+            RecipeCreatorController controller = loader.getController();
+            controller.setMainApp(this);
 
-        rootLayout.setCenter(recipeCreator);
+            rootLayout.setCenter(recipeCreator);
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error("Unable to find the RecipeCreator fxml file");
+        }
     }
 
     /**
@@ -92,5 +104,9 @@ public class Ryrycipe extends Application {
 
     public Locale getLocale() {
         return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 }

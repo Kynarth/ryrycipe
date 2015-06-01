@@ -1,5 +1,7 @@
 package ryrycipe.model.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.Category;
 import ryrycipe.model.Component;
 import ryrycipe.model.Plan;
@@ -16,6 +18,8 @@ import java.util.List;
  * Manage {@link Plan} object from ryrycipe database.
  */
 public class PlanManager {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(PlanManager.class.getName());
 
     /**
      * Connection to the ryrycipe database.
@@ -61,7 +65,7 @@ public class PlanManager {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return plan;
@@ -94,7 +98,7 @@ public class PlanManager {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return plans;

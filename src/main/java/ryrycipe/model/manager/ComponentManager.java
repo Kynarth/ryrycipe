@@ -1,6 +1,8 @@
 package ryrycipe.model.manager;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.Component;
 import ryrycipe.util.DBConnection;
 
@@ -16,6 +18,8 @@ import java.util.List;
  * Manage {@link Component} object from ryrycipe database.
  */
 public class ComponentManager {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(ComponentManager.class.getName());
 
     /**
      * Connection to the ryrycipe database.
@@ -48,7 +52,7 @@ public class ComponentManager {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return component;
@@ -81,7 +85,7 @@ public class ComponentManager {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return components;
@@ -117,7 +121,7 @@ public class ComponentManager {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return components;

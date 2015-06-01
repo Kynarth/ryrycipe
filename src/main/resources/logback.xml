@@ -9,13 +9,17 @@
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${user.home}/projets/logs/ryrycipe.log</file>
-        <append>false</append>
+        <append>true</append>
         <encoder>
             <pattern>%d <!--[%thread]--> %-5level  %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <logger name="ryrycipe.controller" level="warn">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="ryrycipe.model.manager" level="warn">
         <appender-ref ref="FILE" />
     </logger>
 

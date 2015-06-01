@@ -1,5 +1,7 @@
 package ryrycipe.model.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Component;
 import ryrycipe.model.Faction;
@@ -18,6 +20,8 @@ import java.util.Map;
  * Manage {@link Material} object from ryrycipe database.
  */
 public class MaterialManager {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(MaterialManager.class.getName());
 
     /**
      * Connection to the ryrycipe database.
@@ -77,7 +81,7 @@ public class MaterialManager {
             }
 
         } catch (SQLException e) {
-             e.printStackTrace();
+             LOGGER.error(e.getMessage());
         }
 
         return materials;
