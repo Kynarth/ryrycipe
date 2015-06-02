@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -42,6 +44,18 @@ public class RecipeCreatorController implements Initializable {
      */
     @FXML
     public GridPane materialStatsContainer;
+
+    /**
+     * ImageView containing image from clicked MaterialView
+     */
+    @FXML
+    public ImageView materialIcon;
+
+    /**
+     * Material's description of selected MaterialView
+     */
+    @FXML
+    public Label materialDescription;
 
     /**
      * Contains all controls allowing the user to select materials in functions of parameters.

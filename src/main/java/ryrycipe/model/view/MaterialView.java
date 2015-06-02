@@ -79,6 +79,8 @@ public class MaterialView extends ImageView {
             // Show selected MaterialView stats in function of selected component from the filter in Material Stats tab.
             else if (event.getClickCount() == 1) {
                 creatorController.materialStatsContainer.getChildren().clear();
+                creatorController.materialDescription.setText(this.material.getDescription());
+                creatorController.materialIcon.setImage(this.getMaterialViewImage());
                 try {
                     JsonObject stats = this.material.getStats(creatorController.componentCB.getValue().getId());
                     int index = 0; // materialStatsContainer row index
