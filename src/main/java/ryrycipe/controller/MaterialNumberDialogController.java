@@ -38,13 +38,16 @@ public class MaterialNumberDialogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         nbMaterialField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            // Check if the new entered value is a number. If not set the oldValue
             Pattern pattern = Pattern.compile("^[0-9]+$");
             if (!newValue.isEmpty()){
-                if (!pattern.matcher(newValue).matches() || newValue.charAt(0) == '0') {
+                // Check if the new entered value is a number. If not set the oldValue
+                if (!pattern.matcher(newValue).matches()) {
                     nbMaterialField.setText(oldValue);
                     return; // to not enter in the second if statement
                 }
+                // Check if the user enters a '0' before other numbers to remove it.
+                if (newValue.charAt(0) == '0' && newValue.length() > 1)
+                    nbMaterialField.setText(newValue.substring(1));
             }
 
             // Check if the entered value does not exceed the number of needed materials
@@ -94,8 +97,8 @@ public class MaterialNumberDialogController implements Initializable {
      */
     @FXML
     public void handleCancelBtn() {
-        // Remove potential number from the TextField before leaving the dialog
-        nbMaterialField.setText("");
+        // Set TextField to '0' in order to remove potential numbers from the it before leaving the dialog
+        nbMaterialField.setText("0");
         dialogStage.close();
     }
 

@@ -1,8 +1,6 @@
 package ryrycipe.controller;
 
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,7 +24,6 @@ import ryrycipe.model.manager.MaterialManager;
 import ryrycipe.model.manager.PlanManager;
 import ryrycipe.model.view.MaterialView;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -39,6 +36,12 @@ import java.util.ResourceBundle;
 public class RecipeCreatorController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RecipeCreatorController.class.getName());
+
+    /**
+     * Contains all stats from a selected material in the filter.
+     */
+    @FXML
+    public GridPane materialStatsContainer;
 
     /**
      * Contains all controls allowing the user to select materials in functions of parameters.
@@ -365,14 +368,6 @@ public class RecipeCreatorController implements Initializable {
             materialView.setRCController(RCController);
             materialView.setCreatorController(this);
             materialView.setMainApp(mainApp);
-            try {
-                JsonObject stats = materialView.getMaterial().getStats(componentCB.getValue().getId());
-                for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
-                    System.out.println(entry.getKey() + " "  + entry.getValue());
-                }
-            } catch (FileNotFoundException e) {
-                LOGGER.error("Could not find the json file with all materials stats.");
-            }
             materialChooser.getChildren().add(materialView);
         }
 
@@ -381,9 +376,5 @@ public class RecipeCreatorController implements Initializable {
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
-    }
-
-    public FlowPane getMaterialChooser() {
-        return materialChooser;
     }
 }

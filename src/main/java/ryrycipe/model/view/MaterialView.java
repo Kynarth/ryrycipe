@@ -1,11 +1,15 @@
 package ryrycipe.model.view;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,10 +27,12 @@ import ryrycipe.controller.RecipeComponentController;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Material;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -66,8 +72,26 @@ public class MaterialView extends ImageView {
      */
     private EventHandler<MouseEvent> mouseEventAddMaterial = (event -> {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
+            // Add the selected MaterialView in the corresponding RecipeComponent
             if(event.getClickCount() == 2 && RCController.getNeededMaterialNb() > 0){
                 addToRecipe();
+            }
+            // Show selected MaterialView stats in function of selected component from the filter in Material Stats tab.
+            else if (event.getClickCount() == 1) {
+                creatorController.materialStatsContainer.getChildren().clear();
+                try {
+                    JsonObject stats = this.material.getStats(creatorController.componentCB.getValue().getId());
+                    int index = 0; // materialStatsContainer row index
+                    for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
+                        creatorController.materialStatsContainer.addRow(index,
+                            new Label(entry.getKey()), new ProgressBar(entry.getValue().getAsDouble() / 100),
+                            new Label(entry.getValue().getAsString())
+                        );
+                        index++;
+                    }
+                } catch (FileNotFoundException e) {
+                    LOGGER.error("Could not find the json file with all materials' stats.");
+                }
             }
         }
     });
@@ -84,7 +108,7 @@ public class MaterialView extends ImageView {
 
                 // Change eventFilter to be able to be added again
                 RCController.getMaterialsContainer().getChildren().remove(this);
-                creatorController.getMaterialChooser().getChildren().add(this);
+                creatorController.materialChooser.getChildren().add(this);
                 this.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventRemoveMaterial);
                 this.addEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventAddMaterial);
 
@@ -120,7 +144,6 @@ public class MaterialView extends ImageView {
         if (RCController != null) {
             // Get the number of materials to used via a dialog
             this.nbMaterials = Integer.parseInt(showMaterialNumberDialog(RCController.getNeededMaterialNb()));
-
 
             if (nbMaterials != 0) {
                 // Remove the event filter after that the material view get into RecipeComponent
