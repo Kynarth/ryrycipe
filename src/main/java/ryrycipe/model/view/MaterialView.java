@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
 import ryrycipe.controller.MaterialNumberDialogController;
+import ryrycipe.controller.MaterialStatsDialogController;
 import ryrycipe.controller.RecipeComponentController;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Material;
@@ -94,6 +95,10 @@ public class MaterialView extends ImageView {
                 }
             }
         }
+        // Show a popup with right clicked MaterialView
+        else if (event.getButton().equals(MouseButton.SECONDARY)) {
+            showMaterialStatsDialog();
+        }
     });
 
     /**
@@ -116,6 +121,10 @@ public class MaterialView extends ImageView {
                 this.nbMaterials = 0;
                 this.setImage(this.material.getImage());
             }
+        }
+        // Show a popup with right clicked MaterialView
+        else if (event.getButton().equals(MouseButton.SECONDARY)) {
+            showMaterialStatsDialog();
         }
     });
 
@@ -197,8 +206,49 @@ public class MaterialView extends ImageView {
 
             return controller.getNbMaterialField().getText();
         } catch (IOException | IllegalStateException e) {
-            LOGGER.error("Unable to find the MaterialNumberDialog fxml file");
+            LOGGER.error(e.getMessage());
             return "";
+        }
+    }
+
+    /**
+     * Show a dialog allowing the user to check the selected material stats.
+     */
+    private void showMaterialStatsDialog() {
+        try {
+            // Retrieve dialog's fxml file
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/MaterialStatsDialog.fxml"));
+            loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
+            AnchorPane dialogPane = loader.load();
+
+            // Setup dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(material.getDescription());
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(dialogPane);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            MaterialStatsDialogController controller = loader.getController();
+
+            // Setup infos
+            controller.materialDescription.setText(material.getDescription());
+            controller.materialIcon.setImage(this.getMaterialViewImage());
+
+            JsonObject stats = this.material.getStats(creatorController.componentCB.getValue().getId());
+            int index = 0; // materialStatsContainer row index
+            for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
+                controller.materialStatsContainer.addRow(index,
+                    new Label(entry.getKey()), new ProgressBar(entry.getValue().getAsDouble() / 100),
+                    new Label(entry.getValue().getAsString())
+                );
+                index++;
+            }
+
+            dialogStage.showAndWait();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error("Unable to find the MaterialNumberDialog fxml file");
         }
     }
 
@@ -265,5 +315,9 @@ public class MaterialView extends ImageView {
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public Image getMaterialViewImage() {
+        return this.snapshot(new SnapshotParameters(), null);
     }
 }
