@@ -28,7 +28,6 @@ import ryrycipe.controller.RecipeComponentController;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Material;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -90,8 +89,8 @@ public class MaterialView extends ImageView {
                         );
                         index++;
                     }
-                } catch (FileNotFoundException e) {
-                    LOGGER.error("Could not find the json file with all materials' stats.");
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage());
                 }
             }
         }
@@ -237,6 +236,7 @@ public class MaterialView extends ImageView {
             controller.materialIcon.setImage(this.getMaterialViewImage());
 
             JsonObject stats = this.material.getStats(creatorController.componentCB.getValue().getId());
+
             int index = 0; // materialStatsContainer row index
             for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
                 controller.materialStatsContainer.addRow(index,
@@ -248,7 +248,7 @@ public class MaterialView extends ImageView {
 
             dialogStage.showAndWait();
         } catch (IOException | IllegalStateException e) {
-            LOGGER.error("Unable to find the MaterialNumberDialog fxml file");
+            LOGGER.error(e.getMessage());
         }
     }
 

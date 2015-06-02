@@ -195,7 +195,7 @@ public class RecipeCreatorController implements Initializable {
             // Store the node controller to use it later.
             recipeComponent.setUserData(controller);
         } catch (IOException | IllegalStateException e) {
-            LOGGER.error("Unable to find the RecipeComponent fxml file");
+            LOGGER.error(e.getMessage());
         }
     }
 

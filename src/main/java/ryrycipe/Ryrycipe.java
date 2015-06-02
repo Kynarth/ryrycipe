@@ -65,7 +65,7 @@ public class Ryrycipe extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException | IllegalStateException e) {
-            LOGGER.error("Unable to find the RyrycipeView fxml file");
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public class Ryrycipe extends Application {
 
             rootLayout.setCenter(recipeCreator);
         } catch (IOException | IllegalStateException e) {
-            LOGGER.error("Unable to find the RecipeCreator fxml file");
+            LOGGER.error(e.getMessage());
         }
     }
 

@@ -8,16 +8,15 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.util.LocaleUtil;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,6 +25,8 @@ import java.util.stream.Collectors;
  * Represent a material that are ingredient of the {@link Plan}'s recipe.
  */
 public class Material {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(Material.class.getName());
 
     /**
      * Material's database id.
@@ -204,13 +205,21 @@ public class Material {
      *
      * @param componentCode {@link Component}'s id
      * @return {@link JsonObject} with all material's stats.
+     * @throws IOException
      */
-    public JsonObject getStats(String componentCode) throws FileNotFoundException {
-        JsonReader jsonReader = new JsonReader(
-            new FileReader(Material.class.getClassLoader().getResource(
-                "json/resource_stats_" + LocaleUtil.getLanguage() + ".json"
-            ).getPath())
+    public JsonObject getStats(String componentCode) throws IOException {
+        // Get json file with materials' stats
+        URL jsonUrl = Material.class.getClassLoader().getResource(
+            "json/resource_stats_" + LocaleUtil.getLanguage() + ".json"
         );
+        if (jsonUrl == null) {
+            LOGGER.error("Could not find json file with all materials' stats.");
+            return null;
+        }
+
+        JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonUrl.openStream()));
+
+        // Return JsonObject containing stats for the given material and component
         Gson gson = new Gson();
         Type mapOfMapsType = new TypeToken<Map<String, Map<String, Map<String, JsonObject>>>>() {}.getType();
         Map<String, Map<String, Map<String, JsonObject>>> map = gson.fromJson(jsonReader, mapOfMapsType);

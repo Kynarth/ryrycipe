@@ -31,9 +31,7 @@ public class DBConnection {
             try {
                 Class.forName("org.sqlite.JDBC");
                 connection = DriverManager.getConnection(
-                    "jdbc:sqlite://"+ DBConnection.class.getResource(
-                        "/databases/ryrycipe_" + LocaleUtil.getLanguage() + ".db"
-                    ).getPath()
+                    "jdbc:sqlite::resource:databases/ryrycipe_" + LocaleUtil.getLanguage() + ".db"
                 );
             } catch (ClassNotFoundException | SQLException e) {
                 LOGGER.error(e.getMessage());
@@ -50,9 +48,7 @@ public class DBConnection {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(
-                "jdbc:sqlite://"+ DBConnection.class.getResource(
-                    "/databases/ryrycipe_" + LocaleUtil.getLanguage() + ".db"
-                ).getPath()
+                "jdbc:sqlite::resource:databases/ryrycipe_" + LocaleUtil.getLanguage() + ".db"
             );
         } catch (ClassNotFoundException | SQLException e) {
             LOGGER.error(e.getMessage());

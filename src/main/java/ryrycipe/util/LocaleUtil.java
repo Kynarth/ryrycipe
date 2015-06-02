@@ -33,7 +33,7 @@ public class LocaleUtil {
      */
     public static void setLanguage(String lang) {
         Properties parameters = PropertiesUtil.loadProperties(
-            LocaleUtil.class.getClassLoader().getResource("parameters.properties").getPath()
+            LocaleUtil.class.getClassLoader().getResource("parameters.properties")
         );
 
         if (parameters != null) {

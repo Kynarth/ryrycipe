@@ -2,10 +2,12 @@ package ryrycipe.util;
 
 
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Properties;
 
 
@@ -14,37 +16,38 @@ import java.util.Properties;
  */
 public class PropertiesUtil {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(PropertiesUtil.class.getName());
+
     private PropertiesUtil() {}
 
     /**
      * Load properties file in the a {@link Properties}.
      *
-     * @param filePath Path to the wanted properties file.
+     * @param filePath {@link URL} path to the wanted properties file.
      * @return {@link Properties}.
      */
     @Nullable
-    public static Properties loadProperties(String filePath) {
-        InputStream inputStream = null;
+    public static Properties loadProperties(URL filePath) {
+        InputStreamReader inputStreamReader = null;
         Properties properties = new Properties();
 
         try {
-            inputStream = new FileInputStream(filePath);
-            properties.load(inputStream);
+            inputStreamReader = new InputStreamReader(filePath.openStream());
+            properties.load(inputStreamReader);
 
             return properties;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         } finally {
-            if (inputStream != null) {
+            if (inputStreamReader != null) {
                 try {
-                    inputStream.close();
+                    inputStreamReader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
                 }
             }
         }
 
-        System.err.println("An error occurred while loading properties file");
         return null;
     }
 }
