@@ -31,7 +31,7 @@ sourceSets {
 // Jar with dependencies
 jar {
     manifest {
-        attributes("Implementation-Title": "Gradle",
+        attributes("Implementation-Title": "Ryrycipe",
                 "Implementation-Version": version,
                 "Main-Class": mainClassName
         )
@@ -47,5 +47,22 @@ task convertUtf8 {
 
     tree.each {File file -> exec {
         commandLine 'native2ascii', '-encoding', 'utf-8', file, file}
+    }
+}
+
+// Create self contained application
+task buildSelfContainedApp {
+
+    exec {
+        workingDir "${project.projectDir.absolutePath}"
+
+        commandLine "${System.env.'JAVA_HOME'}/bin/javafxpackager",
+                "-deploy",
+                "-native",
+                "-name", "Ryrycipe",
+                "-outdir", "${buildDir.name}${File.separator}dist",
+                "-outfile", "Ryrycipe",
+                "-srcdir", "${buildDir.name}${File.separator}${libsDir.name}",
+                "-appclass", mainClassName
     }
 }
