@@ -79,6 +79,7 @@ public class MaterialView extends ImageView {
             // Show selected MaterialView stats in function of selected component from the filter in Material Stats tab.
             else if (event.getClickCount() == 1) {
                 creatorController.materialStatsContainer.getChildren().clear();
+                creatorController.materialDescription.setVisible(true);
                 creatorController.materialDescription.setText(this.material.getDescription());
                 creatorController.materialIcon.setImage(this.getMaterialViewImage());
                 try {
@@ -108,19 +109,44 @@ public class MaterialView extends ImageView {
      */
     private EventHandler<MouseEvent> mouseEventRemoveMaterial = (event -> {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
+            event.consume(); // To not trigger RecipeComponent#clicked method
             if(event.getClickCount() == 2){
                 // Update RecipeComponent's indicator
                 RCController.updateIndicator(-this.nbMaterials);
 
                 // Change eventFilter to be able to be added again
                 RCController.getMaterialsContainer().getChildren().remove(this);
-                creatorController.materialChooser.getChildren().add(this);
-                this.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventRemoveMaterial);
-                this.addEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventAddMaterial);
+
+                // Do not move back the used material to the material chooser if it's empty
+                if (!creatorController.materialChooser.getChildren().isEmpty())
+                    creatorController.materialChooser.getChildren().add(this);
+
+                this.setOnMouseClicked(this.mouseEventAddMaterial);
 
                 // Return to Material View default value
                 this.nbMaterials = 0;
                 this.setImage(this.material.getImage());
+
+                // Remove the materials from the list of the ones used.
+                creatorController.getUsedMaterials().remove(this.material.getName());
+            } else if (event.getClickCount() == 1) {
+                creatorController.materialStatsContainer.getChildren().clear();
+                creatorController.materialDescription.setVisible(true);
+                creatorController.materialDescription.setText(this.material.getDescription());
+                creatorController.materialIcon.setImage(this.getMaterialViewImage());
+                try {
+                    JsonObject stats = this.material.getStats(RCController.getComponent().getId());
+                    int index = 0; // materialStatsContainer row index
+                    for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
+                        creatorController.materialStatsContainer.addRow(index,
+                            new Label(entry.getKey()), new ProgressBar(entry.getValue().getAsDouble() / 100),
+                            new Label(entry.getValue().getAsString())
+                        );
+                        index++;
+                    }
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage());
+                }
             }
         }
         // Show a popup with right clicked MaterialView
@@ -144,13 +170,15 @@ public class MaterialView extends ImageView {
         Tooltip tooltip = new Tooltip(this.material.getDescription());
         Tooltip.install(this, tooltip);
 
-        // Handle mouse clicks action
-        this.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventAddMaterial);
+        this.setOnMouseClicked(mouseEventAddMaterial);
     }
     /**
      * Add the double clicked {@link ryrycipe.model.view.MaterialView} in the correspondant RecipeComponent.
      */
     public void addToRecipe() {
+        // Add the material to list of plan incorporated one
+        creatorController.getUsedMaterials().add(this.material.getName());
+
         if (RCController != null) {
             // Get the number of materials to used via a dialog
             try {
@@ -241,7 +269,7 @@ public class MaterialView extends ImageView {
             controller.materialDescription.setText(material.getDescription());
             controller.materialIcon.setImage(this.getMaterialViewImage());
 
-            JsonObject stats = this.material.getStats(creatorController.componentCB.getValue().getId());
+            JsonObject stats = this.material.getStats(RCController.getComponent().getId());
 
             int index = 0; // materialStatsContainer row index
             for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
@@ -251,7 +279,6 @@ public class MaterialView extends ImageView {
                 );
                 index++;
             }
-
             dialogStage.showAndWait();
         } catch (IOException | IllegalStateException e) {
             LOGGER.error(e.getMessage());

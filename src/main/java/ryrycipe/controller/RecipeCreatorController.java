@@ -28,9 +28,7 @@ import ryrycipe.model.view.MaterialView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Controller for the RecipeCreator view.
@@ -127,6 +125,7 @@ public class RecipeCreatorController implements Initializable {
     private Plan currentPlan;  // Save the plan chose by the user.
     private ResourceBundle resources;
     private Ryrycipe mainApp;
+    private List<String> usedMaterials = new ArrayList<>();
 
     /**
      * {@link RecipeComponentController} corresponding to the selected component from
@@ -142,6 +141,7 @@ public class RecipeCreatorController implements Initializable {
         planQualityItems.addAll(resources.getString("combobox.quality.items").split(","));
         planQualityCB.setItems(planQualityItems);
         planQualityCB.setValue(planQualityItems.get(planQualityItems.size() - 1));
+
 
         // Initialize the combobox containing the different plans
         initializePlansCB();
@@ -205,6 +205,7 @@ public class RecipeCreatorController implements Initializable {
             RecipeComponentController controller = loader.getController();
             controller.setComponent(component);
             controller.setupRecipeComponent();
+            controller.setCreatorController(this);
 
             // Store the node controller to use it later.
             recipeComponent.setUserData(controller);
@@ -378,6 +379,10 @@ public class RecipeCreatorController implements Initializable {
         materialChooser.getChildren().clear();
 
         for (Material material : materialManager.filter(getFilterParameters())) {
+            // Check if the material has already been added to the plan
+            if (this.usedMaterials.contains(material.getName()))
+                continue;
+
             MaterialView materialView = new MaterialView(material.getImage(), material);
             materialView.setRCController(RCController);
             materialView.setCreatorController(this);
@@ -390,5 +395,9 @@ public class RecipeCreatorController implements Initializable {
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public List<String> getUsedMaterials() {
+        return usedMaterials;
     }
 }

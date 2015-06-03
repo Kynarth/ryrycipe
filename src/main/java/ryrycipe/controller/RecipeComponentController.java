@@ -32,6 +32,7 @@ public class RecipeComponentController implements Initializable {
     @FXML
     private FlowPane materialsContainer;
 
+    private RecipeCreatorController creatorController;
     private Component component;
     private int nbMaterials = 0;
     private boolean filled;
@@ -104,5 +105,21 @@ public class RecipeComponentController implements Initializable {
 
     public Label getComponentName() {
         return componentName;
+    }
+
+    public void setCreatorController(RecipeCreatorController creatorController) {
+        this.creatorController = creatorController;
+    }
+
+    public Component getComponent() {
+        return component;
+    }
+
+    /**
+     * Update the {@link RecipeCreatorController#componentCB} in function of clicked RecipeComponent.
+     */
+    @FXML
+    public void clicked() {
+        this.creatorController.componentCB.setValue(this.component);
     }
 }
