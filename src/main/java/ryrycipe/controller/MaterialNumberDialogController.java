@@ -51,7 +51,7 @@ public class MaterialNumberDialogController implements Initializable {
             }
 
             // Check if the entered value does not exceed the number of needed materials
-            if (!newValue.isEmpty() && Integer.parseInt(newValue) > materialAmount) {
+            if (!newValue.isEmpty() && Integer.valueOf(newValue) > materialAmount) {
                 nbMaterialField.setText(String.valueOf(materialAmount));
             }
         }));
@@ -79,6 +79,8 @@ public class MaterialNumberDialogController implements Initializable {
     public void setMaterialAmount(int amount) {
         this.materialAmount = amount;
         nbMaterialField.setText(String.valueOf(amount));
+
+        nbMaterialField.selectNextWord();
     }
 
     /**

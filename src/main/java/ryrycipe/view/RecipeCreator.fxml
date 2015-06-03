@@ -1,107 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.image.ImageView?>
+
 <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ryrycipe.controller.RecipeCreatorController">
-   <items>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="%tab.materials.name">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <GridPane fx:id="materialFilter" hgap="5.0" layoutX="14.0" layoutY="14.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                          <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
-                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
-                          </rowConstraints>
-                           <children>
-                              <ToggleButton fx:id="foragedBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#displayMaterials" text="%button.foraged.name" />
-                              <ToggleButton fx:id="quarteredBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#displayMaterials" text="%button.quartered.name" GridPane.columnIndex="1" />
-                              <ComboBox fx:id="componentCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.component.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
-                              <ComboBox fx:id="qualityCB" disable="true" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="%combobox.quality.placeholder" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="factionCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.faction.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <FlowPane fx:id="materialChooser" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-                           </children>
-                        </GridPane>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="%tab.planstats.name">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="%tab.plan.name">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <GridPane hgap="10.0" layoutX="14.0" layoutY="14.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="NEVER" minWidth="108.0" />
-                            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
-                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="30.0" prefHeight="193.0" valignment="CENTER" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="129.0" minHeight="30.0" prefHeight="77.0" valignment="CENTER" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="%label.quality.name" />
-                              <Label text="%label.plan.name" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" onAction="#initializePlansCB" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-                              <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" onAction="#selectPlan" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
-                              <ScrollPane fx:id="planRecipe" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
-                                 <content>
-                                    <VBox fx:id="componentsContainer" />
-                                 </content>
-                              </ScrollPane>
-                              <TextArea prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
-                           </children>
-                        </GridPane>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="%tab.materialstats.name">
-               <content>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" />
-                   <AnchorPane xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
-                       <children>
-                           <ImageView fx:id="materialIcon" fitHeight="40.0" fitWidth="40.0" layoutX="14.0" layoutY="-31.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                           <Label fx:id="materialDescription" layoutX="69.0" layoutY="17.0" text="Label" />
-                           <GridPane fx:id="materialStatsContainer" layoutY="55.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
-                               <columnConstraints>
-                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                   <ColumnConstraints minWidth="10.0" prefWidth="130.0" />
-                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                               </columnConstraints>
-                               <rowConstraints>
-                                   <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                               </rowConstraints>
-                           </GridPane>
-                       </children>
-                   </AnchorPane>
-               </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </items>
+    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="%tab.materials.name">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <GridPane fx:id="materialFilter" hgap="5.0" layoutX="14.0" layoutY="14.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+                    </rowConstraints>
+                    <ToggleButton fx:id="foragedBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#displayMaterials" text="%button.foraged.name" />
+                    <ToggleButton fx:id="quarteredBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#displayMaterials" text="%button.quartered.name" GridPane.columnIndex="1" />
+                    <ComboBox fx:id="componentCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.component.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+                    <ComboBox fx:id="qualityCB" disable="true" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="%combobox.quality.placeholder" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="factionCB" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="%combobox.faction.placeholder" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                    <FlowPane fx:id="materialChooser" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                </GridPane>
+            </AnchorPane>
+        </Tab>
+        <Tab text="%tab.planstats.name">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </Tab>
+    </TabPane>
+    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="%tab.plan.name">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <GridPane hgap="10.0" layoutX="14.0" layoutY="14.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="108.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="30.0" prefHeight="193.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="129.0" minHeight="30.0" prefHeight="77.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <Label text="%label.quality.name" />
+                    <Label text="%label.plan.name" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="planQualityCB" maxWidth="1.7976931348623157E308" onAction="#initializePlansCB" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+                    <ComboBox fx:id="planCB" maxWidth="1.7976931348623157E308" onAction="#selectPlan" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
+                    <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                        <VBox fx:id="componentsContainer" />
+                    </ScrollPane>
+                    <TextArea prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                </GridPane>
+            </AnchorPane>
+        </Tab>
+        <Tab text="%tab.materialstats.name">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
+                <ImageView fx:id="materialIcon" fitHeight="40.0" fitWidth="40.0" layoutX="14.0" layoutY="-31.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                <Label fx:id="materialDescription" layoutX="69.0" layoutY="17.0" text="Label" />
+                <GridPane fx:id="materialStatsContainer" layoutY="55.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints minWidth="10.0" prefWidth="130.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                    </rowConstraints>
+                </GridPane>
+            </AnchorPane>
+        </Tab>
+    </TabPane>
 </SplitPane>

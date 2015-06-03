@@ -153,7 +153,11 @@ public class MaterialView extends ImageView {
     public void addToRecipe() {
         if (RCController != null) {
             // Get the number of materials to used via a dialog
-            this.nbMaterials = Integer.parseInt(showMaterialNumberDialog(RCController.getNeededMaterialNb()));
+            try {
+                this.nbMaterials = Integer.valueOf(showMaterialNumberDialog(RCController.getNeededMaterialNb()));
+            } catch (NumberFormatException e) {
+                this.nbMaterials = 0;
+            }
 
             if (nbMaterials != 0) {
                 // Remove the event filter after that the material view get into RecipeComponent
