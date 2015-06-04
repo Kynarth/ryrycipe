@@ -19,7 +19,7 @@
             <tooltip>
                <Tooltip text="%toolbtn.upload.tip" />
             </tooltip></Button>
-         <Button fx:id="saveBtn" layoutX="128.0" layoutY="8.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+         <Button fx:id="saveBtn" onAction="#save" layoutX="128.0" layoutY="8.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
             <tooltip>
                <Tooltip text="%toolbtn.save.tip" />
             </tooltip></Button>

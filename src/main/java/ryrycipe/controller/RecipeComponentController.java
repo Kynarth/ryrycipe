@@ -82,6 +82,14 @@ public class RecipeComponentController implements Initializable {
     }
 
     /**
+     * Update the {@link RecipeCreatorController#componentCB} in function of clicked RecipeComponent.
+     */
+    @FXML
+    public void clicked() {
+        this.creatorController.componentCB.setValue(this.component);
+    }
+
+    /**
      * Return the number of remaining of {@link ryrycipe.model.Material}s to fill the recipe component.
      *
      * @return int - Number of {@link ryrycipe.model.Material}s to fill the recipe component.
@@ -115,11 +123,7 @@ public class RecipeComponentController implements Initializable {
         return component;
     }
 
-    /**
-     * Update the {@link RecipeCreatorController#componentCB} in function of clicked RecipeComponent.
-     */
-    @FXML
-    public void clicked() {
-        this.creatorController.componentCB.setValue(this.component);
+    public boolean isFilled() {
+        return filled;
     }
 }

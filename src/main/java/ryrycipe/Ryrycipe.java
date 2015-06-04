@@ -30,9 +30,10 @@ public class Ryrycipe extends Application {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Ryrycipe.class.getName());
 
+    private Locale locale;
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private Locale locale;
+    RecipeCreatorController creatorController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -79,13 +80,13 @@ public class Ryrycipe extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource("view/RecipeCreator.fxml"));
             loader.setResources(ResourceBundle.getBundle("lang", locale));
-            SplitPane recipeCreator = loader.load();
+            SplitPane recipeCreatorPane = loader.load();
 
             // Get the corresponding controller
-            RecipeCreatorController controller = loader.getController();
-            controller.setMainApp(this);
+            creatorController = loader.getController();
+            creatorController.setMainApp(this);
 
-            rootLayout.setCenter(recipeCreator);
+            rootLayout.setCenter(recipeCreatorPane);
         } catch (IOException | IllegalStateException e) {
             LOGGER.error(e.getMessage());
         }
@@ -109,5 +110,9 @@ public class Ryrycipe extends Application {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    public RecipeCreatorController getCreatorController() {
+        return creatorController;
     }
 }

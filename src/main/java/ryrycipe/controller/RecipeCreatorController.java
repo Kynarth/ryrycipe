@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -391,6 +392,25 @@ public class RecipeCreatorController implements Initializable {
         }
 
         LOGGER.info("Materials displayed.");
+    }
+
+    /**
+     * Check if all RecipeComponent have enough to materials to fill requirements.
+     *
+     * @return True if each plan's RecipeComponent is completed else false
+     */
+    public boolean isPlanFilled() {
+        if (!componentsContainer.getChildren().isEmpty()) {
+            for (Node node : componentsContainer.getChildren()) {
+                RecipeComponentController controller = (RecipeComponentController) node.getUserData();
+                if (!controller.isFilled())
+                    return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     public void setMainApp(Ryrycipe mainApp) {

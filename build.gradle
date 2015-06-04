@@ -41,7 +41,7 @@ jar {
 }
 
 // Convert all properties files in utf-8 format
-task convertUtf8 {
+task convertUtf8 << {
     FileTree tree = fileTree(dir: 'src/main/resources')
     tree.include '**/*.properties'
 
@@ -51,7 +51,7 @@ task convertUtf8 {
 }
 
 // Create self contained application
-task buildSelfContainedApp {
+task buildSelfContainedApp << {
 
     exec {
         workingDir "${project.projectDir.absolutePath}"
