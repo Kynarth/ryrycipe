@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -55,6 +56,11 @@ public class RecipeCreatorController implements Initializable {
      */
     @FXML
     public Label materialDescription;
+
+    /**
+     */
+    @FXML
+    public TextArea recipeComment;
 
     /**
      * Contains all controls allowing the user to select materials in functions of parameters.
@@ -114,7 +120,7 @@ public class RecipeCreatorController implements Initializable {
      * Contain RecipeComponent for each {@link Plan}'s {@link Component}.
      */
     @FXML
-    private VBox componentsContainer;
+    public VBox componentsContainer;
 
     // ObservableList for each combobox.
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
@@ -166,6 +172,7 @@ public class RecipeCreatorController implements Initializable {
      */
     @FXML
     public void selectPlan() {
+        usedMaterials.clear();  // To free previous used materials for the new plan
         componentsContainer.getChildren().clear();
 
         // Case when user change quality and reset the list of plans, the previous value of currentPlan is used

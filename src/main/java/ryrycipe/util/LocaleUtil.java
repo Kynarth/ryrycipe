@@ -1,5 +1,7 @@
 package ryrycipe.util;
 
+import ryrycipe.Ryrycipe;
+
 import java.util.Properties;
 import java.util.prefs.Preferences;
 
@@ -12,7 +14,7 @@ public class LocaleUtil {
     /**
      * Stock all user's preferences concerning the application.
      */
-    private static Preferences prefs = Preferences.userNodeForPackage(LocaleUtil.class);
+    private static Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
 
     private LocaleUtil() {}
 

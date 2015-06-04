@@ -54,7 +54,7 @@
                     <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                         <VBox fx:id="componentsContainer" />
                     </ScrollPane>
-                    <TextArea prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                    <TextArea fx:id="recipeComment" prefHeight="200.0" prefWidth="200.0" promptText="%textarea.comment.placeholder" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                 </GridPane>
             </AnchorPane>
         </Tab>
