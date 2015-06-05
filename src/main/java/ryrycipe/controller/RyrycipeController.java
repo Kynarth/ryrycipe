@@ -1,12 +1,11 @@
 package ryrycipe.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
@@ -20,6 +19,7 @@ import ryrycipe.util.LocaleUtil;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.prefs.Preferences;
@@ -65,6 +65,9 @@ public class RyrycipeController implements Initializable {
     @FXML
     public Button saveBtn;
 
+    @FXML
+    private BorderPane mainPane;
+
     private Ryrycipe mainApp;
     private ResourceBundle resources;
 
@@ -92,6 +95,27 @@ public class RyrycipeController implements Initializable {
             mainApp.initialize();
             mainApp.showRecipeCreator();
             LOGGER.info("Launch new recipe.");
+        }
+    }
+
+    /**
+     * Load the pane to search for recipes in place of recipe creator one.
+     */
+    @FXML
+    public void searchRecipe() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SearchRecipe.fxml"));
+            loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
+            SplitPane searchRecipePane = loader.load();
+
+            // Get the corresponding controller
+            SearchRecipeController searchController = loader.getController();
+            searchController.setMainApp(mainApp);
+
+            mainPane.setCenter(searchRecipePane);
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
