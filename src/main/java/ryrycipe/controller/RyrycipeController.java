@@ -112,10 +112,11 @@ public class RyrycipeController implements Initializable {
             // Get the corresponding controller
             SearchRecipeController searchController = loader.getController();
             searchController.setMainApp(mainApp);
+            searchController.searchLocalRecipes();  // Add local recipes to the SearchRecipe's list view
 
             mainPane.setCenter(searchRecipePane);
         } catch (IOException | IllegalStateException e) {
-            LOGGER.error(e.getMessage());
+            e.printStackTrace();
         }
     }
 
