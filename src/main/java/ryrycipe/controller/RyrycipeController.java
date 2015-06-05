@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +74,61 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
+     * Create a new recipe.
+     */
+    @FXML
+    public void newRecipe() {
+
+        // Ask for confirmation
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("dialog.newrecipe.title"));
+        alert.setHeaderText(resources.getString("dialog.newrecipe.header"));
+        alert.setContentText(resources.getString("dialog.newrecipe.content"));
+
+        Optional < ButtonType > result = alert.showAndWait();
+
+        // If user accepts -> create a new recipe
+        if (result.get() == ButtonType.OK) {
+            mainApp.initialize();
+            mainApp.showRecipeCreator();
+            LOGGER.info("Launch new recipe.");
+        }
+    }
+
+    /**
+     * Toggle language between french and english.
+     */
+    @FXML
+    public void changeLanguage() {
+
+        // Ask for confirmation
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("dialog.language.title"));
+        alert.setHeaderText(resources.getString("dialog.language.header"));
+        alert.setContentText(resources.getString("dialog.language.content"));
+
+        Optional < ButtonType > result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+
+            if (mainApp.getLocale().toString().equals("fr")) {
+                LocaleUtil.setLanguage("en");
+                DBConnection.changeLanguage();  // update the path to the database in function of language
+                mainApp.setLocale(new Locale("en"));
+            } else {
+                LocaleUtil.setLanguage("fr");
+                DBConnection.changeLanguage();  // update the path to the database in function of language
+                mainApp.setLocale(new Locale("fr"));
+            }
+            mainApp.initialize();
+            mainApp.showRecipeCreator();
+
+            LOGGER.info("Language changed");
+        }
+
+    }
+
+    /**
      * Ask for saving current recipe when the user click in the save tool button.
      */
     @FXML
@@ -109,26 +165,6 @@ public class RyrycipeController implements Initializable {
 
             alert.showAndWait();
         }
-    }
-
-    /**
-     * Toggle language between french and english.
-     */
-    @FXML
-    public void changeLanguage() {
-        if (mainApp.getLocale().toString().equals("fr")) {
-            LocaleUtil.setLanguage("en");
-            DBConnection.changeLanguage();  // update the path to the database in function of language
-            mainApp.setLocale(new Locale("en"));
-        } else {
-            LocaleUtil.setLanguage("fr");
-            DBConnection.changeLanguage();  // update the path to the database in function of language
-            mainApp.setLocale(new Locale("fr"));
-        }
-        mainApp.initialize();
-        mainApp.showRecipeCreator();
-
-        LOGGER.info("Language changed");
     }
 
     /**
