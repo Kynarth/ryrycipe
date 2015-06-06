@@ -10,7 +10,10 @@ import javafx.scene.control.ListView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
+import ryrycipe.model.RecipeWrapper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,11 +28,11 @@ public class SearchRecipeController implements Initializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(SearchRecipeController.class.getName());
 
     @FXML
-    private ListView localRecipesView;
+    private ListView<RecipeWrapper> localRecipesView;
 
     private Ryrycipe mainApp;
     private ResourceBundle resources;
-    private ObservableList<String> localRecipes = FXCollections.observableArrayList();
+    private ObservableList<RecipeWrapper> localRecipes = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,7 +52,7 @@ public class SearchRecipeController implements Initializable {
             if (recipes != null && recipes.length > 0) {
                 for (File recipe: recipes) {
                     if (recipe.isFile()) {
-                        localRecipes.add(recipe.getName());
+                        loadRecipeFromFile(recipe);
                     }
                 }
 
@@ -75,6 +78,29 @@ public class SearchRecipeController implements Initializable {
 
         LOGGER.info("Local recipes have been listed.");
 
+    }
+
+    /**
+     * Load a {@link RecipeWrapper}from given file.
+     * @param recipesFile {@link File} containing XML data representing a user's recipe.
+     */
+    public void loadRecipeFromFile(File recipesFile) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(RecipeWrapper.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            RecipeWrapper wrapper = (RecipeWrapper) unmarshaller.unmarshal(recipesFile);
+
+            localRecipes.add(wrapper);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle(resources.getString("dialog.loaddataerror.title"));
+            alert.setHeaderText(resources.getString("dialog.loaddataerror.header"));
+            alert.setContentText(resources.getString("dialog.loaddataerror.content" + recipesFile.getPath()));
+
+            alert.showAndWait();
+        }
     }
 
     public void setMainApp(Ryrycipe mainApp) {

@@ -60,4 +60,8 @@ public class RecipeWrapper {
     public void setComponents(List<ComponentWrapper> components) {
         this.components = components;
     }
+
+    public String toString() {
+        return this.recipeAuthor + "_" + this.recipeName;
+    }
 }
