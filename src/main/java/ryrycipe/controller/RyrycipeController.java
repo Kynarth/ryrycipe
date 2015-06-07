@@ -261,7 +261,9 @@ public class RyrycipeController implements Initializable {
                 MaterialView materialView = (MaterialView) child;
                 materials.add(materialView.getMaterial());
             }
-            ComponentWrapper componentWrapper = new ComponentWrapper(controller, materials);
+            ComponentWrapper componentWrapper = new ComponentWrapper();
+            componentWrapper.setComponent(controller.getComponent());
+            componentWrapper.setMaterials(materials);
             componentWrappers.add(componentWrapper);
         }
 

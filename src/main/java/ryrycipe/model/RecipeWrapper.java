@@ -52,7 +52,7 @@ public class RecipeWrapper {
         this.recipeComment = recipeComment;
     }
 
-    @XmlElement(name = "recipe_component")
+    @XmlElement(name = "components")
     public List<ComponentWrapper> getComponents() {
         return components;
     }

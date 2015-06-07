@@ -1,8 +1,5 @@
 package ryrycipe.model;
 
-import ryrycipe.controller.RecipeComponentController;
-
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
@@ -13,7 +10,7 @@ public class ComponentWrapper {
     /**
      * Name of the RecipeComponent.
      */
-    private RecipeComponentController component;
+    private Component component;
 
     /**
      * List of materials within the RecipeComponent.
@@ -22,20 +19,14 @@ public class ComponentWrapper {
 
     public ComponentWrapper() {}
 
-    public ComponentWrapper(RecipeComponentController controller, List<Material> materials) {
-        this.component = controller;
-        this.materials = materials;
-    }
-
-    public RecipeComponentController getComponent() {
+    public Component getComponent() {
         return component;
     }
 
-    public void setComponent(RecipeComponentController component) {
+    public void setComponent(Component component) {
         this.component = component;
     }
 
-    @XmlElement(name = "material")
     public List<Material> getMaterials() {
         return materials;
     }
