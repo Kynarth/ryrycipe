@@ -1,5 +1,5 @@
-#newBtn {
-    -fx-background-image: url('/images/toolbar/new.png');
+#createBtn {
+    -fx-background-image: url('/images/toolbar/create.png');
     -fx-background-size: 30 30;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -19,15 +19,22 @@
     -fx-background-position: center;
 }
 
-#saveBtn {
-    -fx-background-image: url('/images/toolbar/save.png');
+#languageBtn {
+    -fx-background-image: url('/images/toolbar/change_lang.png');
     -fx-background-size: 30 30;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
 
-#languageBtn {
-    -fx-background-image: url('/images/toolbar/change_lang.png');
+#newBtn {
+    -fx-background-image: url('/images/toolbar/new.png');
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+#saveBtn {
+    -fx-background-image: url('/images/toolbar/save.png');
     -fx-background-size: 30 30;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;

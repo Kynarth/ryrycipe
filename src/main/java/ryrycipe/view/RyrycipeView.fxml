@@ -2,16 +2,17 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="/css/toolbar.css" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ryrycipe.controller.RyrycipeController">
    <top>
       <ToolBar minHeight="40.0" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-          <Button fx:id="newBtn" onAction="#newRecipe" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+          <Button fx:id="createBtn" onAction="#createRecipe" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
             <tooltip>
-               <Tooltip text="%toolbtn.new.tip" />
+               <Tooltip text="%toolbtn.create.tip" />
             </tooltip></Button>
-         <Button fx:id="searchBtn" onAction="#searchRecipe" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+         <Button fx:id="searchBtn" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#searchRecipe" prefHeight="32.0" prefWidth="32.0">
             <tooltip>
                <Tooltip text="%toolbtn.search.tip" />
             </tooltip></Button>
@@ -24,10 +25,7 @@
                <Tooltip text="%toolbtn.lang.tip" />
             </tooltip></Button>
           <Separator orientation="VERTICAL" prefHeight="200.0" />
-         <Button fx:id="saveBtn" onAction="#save" layoutX="128.0" layoutY="8.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
-            <tooltip>
-               <Tooltip text="%toolbtn.save.tip" />
-            </tooltip></Button>
+         <HBox fx:id="specificToolBtns" minHeight="33.0" prefHeight="33.0" spacing="5.0" />
       </ToolBar>
    </top>
 </BorderPane>

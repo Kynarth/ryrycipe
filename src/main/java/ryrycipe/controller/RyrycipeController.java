@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
@@ -33,37 +34,42 @@ import static javafx.scene.control.Alert.AlertType;
 public class RyrycipeController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RyrycipeController.class.getName());
-
     /**
-     * Create a new RecipeCreator view.
+     * Display the pane for create recipe.
      */
     @FXML
-    public Button newBtn;
+    private Button createBtn;
 
     /**
      * Search for user's saved recipe.
      */
     @FXML
-    public Button searchBtn;
+    private Button searchBtn;
 
     /**
      * Upload the current recipe.
      */
     @FXML
-    public Button uploadBtn;
+    private Button uploadBtn;
 
     /**
      * Call a dialog to ask to change current language.
      * Application has to restart to apply changes.
      */
     @FXML
-    public Button languageBtn;
+    private Button languageBtn;
+
+    /**
+     * {@link ButtonBar} containing tool buttons for each specific application pane like creation or search pane.
+     */
+    @FXML
+    private HBox specificToolBtns;
 
     /**
      * Save current recipe.
      */
     @FXML
-    public Button saveBtn;
+    private Button saveBtn;
 
     /**
      * Main widget of the application.
@@ -83,47 +89,46 @@ public class RyrycipeController implements Initializable {
         this.resources = resources;
     }
 
-    /**
-     * Create a new recipe.
-     */
     @FXML
-    public void newRecipe() {
-
-        // Ask for confirmation
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle(resources.getString("dialog.newrecipe.title"));
-        alert.setHeaderText(resources.getString("dialog.newrecipe.header"));
-        alert.setContentText(resources.getString("dialog.newrecipe.content"));
-
-        Optional < ButtonType > result = alert.showAndWait();
-
-        // If user accepts -> create a new recipe
-        if (result.get() == ButtonType.OK) {
-            mainApp.initialize();
-            mainApp.showRecipeCreator();
-            LOGGER.info("Launch new recipe.");
+    public void createRecipe() {
+        // Load previous CreatorPane with his tool bar else create new one.
+        if (mainApp.getRecipeCreatorPane() != null) {
+            mainApp.getCreatorController().initializeSpecificToolBar();
+            mainApp.getRootLayout().setCenter(mainApp.getRecipeCreatorPane());
+        } else {
+            newRecipe();
+            LOGGER.warn("Warning: Not found previous recipe's creator pane.");
         }
     }
 
     /**
-     * Load the pane to search for recipes in place of recipe creator one.
+     * Load the pane to search for recipes.
      */
     @FXML
     public void searchRecipe() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SearchRecipe.fxml"));
-            loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
-            SplitPane searchRecipePane = loader.load();
+        // Check if a previous search pane has been created to load it otherwise create a new one
+        if (mainApp.getRecipeSearchPane() != null) {
+            mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().clear();
+            mainApp.getRootLayout().setCenter(mainApp.getRecipeSearchPane());
+        } else {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(this.getClass().getResource("/ryrycipe/view/SearchRecipe.fxml"));
+                loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
+                mainApp.setRecipeSearchPane(loader.load());
 
-            // Get the corresponding controller
-            SearchRecipeController searchController = loader.getController();
-            searchController.setMainApp(mainApp);
-            searchController.searchLocalRecipes();  // Add local recipes to the SearchRecipe's list view
+                // Get the corresponding controller
+                SearchRecipeController searchController = loader.getController();
+                searchController.setMainApp(mainApp);
+                searchController.searchLocalRecipes();  // Add local recipes to the SearchRecipe's list view
 
-            mainPane.setCenter(searchRecipePane);
-        } catch (IOException | IllegalStateException e) {
-            e.printStackTrace();
+                mainPane.setCenter(mainApp.getRecipeSearchPane());
+
+                // Load corresponding tool bar
+                mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().clear();
+            } catch (IOException | IllegalStateException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -161,9 +166,29 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
+     * Create a new recipe.
+     */
+    public void newRecipe() {
+
+        // Ask for confirmation
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("dialog.newrecipe.title"));
+        alert.setHeaderText(resources.getString("dialog.newrecipe.header"));
+        alert.setContentText(resources.getString("dialog.newrecipe.content"));
+
+        Optional < ButtonType > result = alert.showAndWait();
+
+        // If user accepts -> create a new recipe
+        if (result.get() == ButtonType.OK) {
+            mainApp.initialize();
+            mainApp.showRecipeCreator();
+            LOGGER.info("Launch new recipe.");
+        }
+    }
+
+    /**
      * Ask for saving current recipe when the user click in the save tool button.
      */
-    @FXML
     public void save() {
         if (mainApp.getCreatorController().isPlanFilled()) {
             String authorName = askAuthorName();
@@ -318,5 +343,9 @@ public class RyrycipeController implements Initializable {
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public HBox getSpecificToolBtns() {
+        return specificToolBtns;
     }
 }

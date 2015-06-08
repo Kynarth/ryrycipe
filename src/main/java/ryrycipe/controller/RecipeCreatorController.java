@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -152,6 +149,26 @@ public class RecipeCreatorController implements Initializable {
 
         // Initialize the combobox containing the different plans
         initializePlansCB();
+    }
+
+    /**
+     * Add a new and save recipe buttons specific to this pane.
+     */
+    public void initializeSpecificToolBar() {
+        // Button to create new recipe
+        Button newRecipe = new Button("");
+        newRecipe.setId("newBtn");
+        newRecipe.setPrefSize(32,32);
+        newRecipe.setOnAction(e -> mainApp.getRyrycipeController().newRecipe());
+
+        // Button to save current recipe
+        Button saveRecipe = new Button("");
+        saveRecipe.setId("saveBtn");
+        saveRecipe.setPrefSize(32,32);
+        saveRecipe.setOnAction(e -> mainApp.getRyrycipeController().save());
+
+        mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().clear();
+        mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().addAll(newRecipe, saveRecipe);
     }
 
     /**

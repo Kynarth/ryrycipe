@@ -33,11 +33,26 @@ public class Ryrycipe extends Application {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Ryrycipe.class.getName());
 
+    /**
+     * Path to folder where user's recipes are saved.
+     */
     private String savedRecipesFolder;
 
     private Locale locale;
     private Stage primaryStage;
     private BorderPane rootLayout;
+
+    /**
+     * Current create pane to load it if user navigates through pane.
+     */
+    private SplitPane recipeCreatorPane;
+
+    /**
+     * Current search pane to load it if user navigates through pane.
+     */
+    private SplitPane recipeSearchPane;
+
+    RyrycipeController ryrycipeController;
     RecipeCreatorController creatorController;
 
     @Override
@@ -66,8 +81,8 @@ public class Ryrycipe extends Application {
             loader.setResources(ResourceBundle.getBundle("lang", locale));
             rootLayout = loader.load();
 
-            RyrycipeController controller = loader.getController();
-            controller.setMainApp(this);
+            ryrycipeController = loader.getController();
+            ryrycipeController.setMainApp(this);
 
             // Create a scene with the loaded layout
             Scene scene = new Scene(rootLayout, 700, 445);
@@ -87,11 +102,12 @@ public class Ryrycipe extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource("view/RecipeCreator.fxml"));
             loader.setResources(ResourceBundle.getBundle("lang", locale));
-            SplitPane recipeCreatorPane = loader.load();
+            recipeCreatorPane = loader.load();
 
             // Get the corresponding controller
             creatorController = loader.getController();
             creatorController.setMainApp(this);
+            creatorController.initializeSpecificToolBar();
 
             rootLayout.setCenter(recipeCreatorPane);
         } catch (IOException | IllegalStateException e) {
@@ -129,7 +145,7 @@ public class Ryrycipe extends Application {
                     LOGGER.warn("Could not create {} directory", savedRecipesFolder);
             }
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -151,5 +167,25 @@ public class Ryrycipe extends Application {
 
     public String getSavedRecipesFolder() {
         return savedRecipesFolder;
+    }
+
+    public RyrycipeController getRyrycipeController() {
+        return ryrycipeController;
+    }
+
+    public BorderPane getRootLayout() {
+        return rootLayout;
+    }
+
+    public SplitPane getRecipeCreatorPane() {
+        return recipeCreatorPane;
+    }
+
+    public void setRecipeSearchPane(SplitPane recipeSearchPane) {
+        this.recipeSearchPane = recipeSearchPane;
+    }
+
+    public SplitPane getRecipeSearchPane() {
+        return recipeSearchPane;
     }
 }
