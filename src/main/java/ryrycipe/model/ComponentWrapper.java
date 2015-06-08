@@ -1,6 +1,6 @@
 package ryrycipe.model;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class to wrap a {@link ryrycipe.controller.RecipeComponentController}.
@@ -15,7 +15,7 @@ public class ComponentWrapper {
     /**
      * List of materials within the RecipeComponent.
      */
-    private List<Material> materials;
+    private Map<Material, Integer> materials;
 
     public ComponentWrapper() {}
 
@@ -27,11 +27,11 @@ public class ComponentWrapper {
         this.component = component;
     }
 
-    public List<Material> getMaterials() {
+    public Map<Material, Integer> getMaterials() {
         return materials;
     }
 
-    public void setMaterials(List<Material> materials) {
+    public void setMaterials(Map<Material, Integer> materials) {
         this.materials = materials;
     }
 }

@@ -73,7 +73,7 @@ public class MaterialView extends ImageView {
     private EventHandler<MouseEvent> mouseEventAddMaterial = (event -> {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
             // Add the selected MaterialView in the corresponding RecipeComponent
-            if(event.getClickCount() == 2 && RCController.getNeededMaterialNb() > 0){
+            if(event.getClickCount() == 2 && RCController.getNeededMaterialNb() > 0) {
                 addToRecipe();
             }
             // Show selected MaterialView stats in function of selected component from the filter in Material Stats tab.
@@ -167,11 +167,29 @@ public class MaterialView extends ImageView {
         super(image);
         this.material = material;
         this.nbMaterials = 0;
+
         Tooltip tooltip = new Tooltip(this.material.getDescription());
         Tooltip.install(this, tooltip);
 
         this.setOnMouseClicked(mouseEventAddMaterial);
     }
+
+    /**
+     * Constructor used to load plan's recipe from file.
+     *
+     * @param material {@link Material}
+     * @param number Number of materials present in the recipe.
+     */
+    public MaterialView(Material material, int number) {
+        super(material.getImage());
+        this.material = material;
+        this.nbMaterials = number;
+        this.addMaterialInfos();
+
+        Tooltip tooltip = new Tooltip(this.material.getDescription());
+        Tooltip.install(this, tooltip);
+    }
+
     /**
      * Add the double clicked {@link ryrycipe.model.view.MaterialView} in the correspondant RecipeComponent.
      */
@@ -352,5 +370,9 @@ public class MaterialView extends ImageView {
 
     public Image getMaterialViewImage() {
         return this.snapshot(new SnapshotParameters(), null);
+    }
+
+    public int getNbMaterials() {
+        return nbMaterials;
     }
 }

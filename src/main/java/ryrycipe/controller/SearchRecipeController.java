@@ -14,13 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
 import ryrycipe.model.ComponentWrapper;
+import ryrycipe.model.Material;
 import ryrycipe.model.RecipeWrapper;
+import ryrycipe.model.view.MaterialView;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import static javafx.scene.control.Alert.AlertType;
@@ -32,13 +35,23 @@ public class SearchRecipeController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SearchRecipeController.class.getName());
 
+    /**
+     * Contains all RecipeComponents description the plan's recipe.
+     */
     @FXML
     private VBox planRecipeContainer;
 
+    /**
+     * {@link ListView} displaying local stored recipes.
+     */
     @FXML
     private ListView<RecipeWrapper> localRecipesView;
 
+    /**
+     * Reference to the {@link Ryrycipe} object.
+     */
     private Ryrycipe mainApp;
+
     private ResourceBundle resources;
     private ObservableList<RecipeWrapper> localRecipes = FXCollections.observableArrayList();
 
@@ -127,7 +140,16 @@ public class SearchRecipeController implements Initializable {
             System.out.println(componentWrapper.getComponent());
             controller.setComponent(componentWrapper.getComponent());
             controller.setupRecipeComponent();
+
+            for (Map.Entry<Material, Integer> entry: componentWrapper.getMaterials().entrySet()) {
+                controller.getMaterialsContainer().getChildren().add(
+                    0, new MaterialView(entry.getKey(), entry.getValue())
+                );
+                controller.updateIndicator(entry.getValue());
+            }
+
             planRecipeContainer.getChildren().add(recipeComponent);
+            LOGGER.info("Plan successfully extracted from xml file.");
         } catch (IOException | IllegalStateException e) {
             LOGGER.error(e.getMessage());
         }

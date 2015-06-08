@@ -65,10 +65,17 @@ public class RyrycipeController implements Initializable {
     @FXML
     public Button saveBtn;
 
+    /**
+     * Main widget of the application.
+     */
     @FXML
     private BorderPane mainPane;
 
+    /**
+     * Reference to the {@link Ryrycipe} object.
+     */
     private Ryrycipe mainApp;
+
     private ResourceBundle resources;
 
     @Override
@@ -255,11 +262,11 @@ public class RyrycipeController implements Initializable {
     private List<ComponentWrapper> getRecipeComponent() {
         List<ComponentWrapper> componentWrappers = new ArrayList<>();
         for(Node node: mainApp.getCreatorController().componentsContainer.getChildren()) {
-            List<Material> materials = new ArrayList<>();
+            Map<Material, Integer> materials = new HashMap<>();
             RecipeComponentController controller = (RecipeComponentController) node.getUserData();
             for(Node child: controller.getMaterialsContainer().getChildren()) {
                 MaterialView materialView = (MaterialView) child;
-                materials.add(materialView.getMaterial());
+                materials.put(materialView.getMaterial(), materialView.getNbMaterials());
             }
             ComponentWrapper componentWrapper = new ComponentWrapper();
             componentWrapper.setComponent(controller.getComponent());
