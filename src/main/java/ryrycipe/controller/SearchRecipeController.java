@@ -136,18 +136,22 @@ public class SearchRecipeController implements Initializable {
             loader.setLocation(this.getClass().getResource("/ryrycipe/view/RecipeComponent.fxml"));
             AnchorPane recipeComponent = loader.load();
 
+            // Disable click listener changing the componentCB value from material filter
+            recipeComponent.setOnMouseClicked(null);
+
             RecipeComponentController controller = loader.getController();
-            System.out.println(componentWrapper.getComponent());
             controller.setComponent(componentWrapper.getComponent());
             controller.setupRecipeComponent();
 
+            // Add each MaterialView to the RecipeComponent
             for (Map.Entry<Material, Integer> entry: componentWrapper.getMaterials().entrySet()) {
-                controller.getMaterialsContainer().getChildren().add(
-                    0, new MaterialView(entry.getKey(), entry.getValue())
-                );
+                MaterialView materialView = new MaterialView(entry.getKey(), entry.getValue());
+                materialView.setRCController(controller);
+                controller.getMaterialsContainer().getChildren().add(0, materialView);
                 controller.updateIndicator(entry.getValue());
             }
 
+            // Add each filled RecipeComponent to the plan
             planRecipeContainer.getChildren().add(recipeComponent);
             LOGGER.info("Plan successfully extracted from xml file.");
         } catch (IOException | IllegalStateException e) {

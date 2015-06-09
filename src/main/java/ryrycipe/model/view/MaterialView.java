@@ -27,13 +27,11 @@ import ryrycipe.controller.MaterialStatsDialogController;
 import ryrycipe.controller.RecipeComponentController;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.model.Material;
+import ryrycipe.util.LocaleUtil;
 
 import java.io.IOException;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Aspect of a {@link ryrycipe.model.Material} in the application.
@@ -117,8 +115,12 @@ public class MaterialView extends ImageView {
                 // Change eventFilter to be able to be added again
                 RCController.getMaterialsContainer().getChildren().remove(this);
 
-                // Do not move back the used material to the material chooser if it's empty
-                if (!creatorController.materialChooser.getChildren().isEmpty())
+                /**
+                 * Do not move back the used material to the material chooser if it's empty or the
+                 * filter's chosen component does not match.
+                 */
+                if (!creatorController.materialChooser.getChildren().isEmpty() &&
+                    creatorController.componentCB.getValue() == RCController.getComponent())
                     creatorController.materialChooser.getChildren().add(this);
 
                 this.setOnMouseClicked(this.mouseEventAddMaterial);
@@ -188,6 +190,12 @@ public class MaterialView extends ImageView {
 
         Tooltip tooltip = new Tooltip(this.material.getDescription());
         Tooltip.install(this, tooltip);
+
+        this.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
+                showMaterialStatsDialog();
+            }
+        });
     }
 
     /**
@@ -270,7 +278,7 @@ public class MaterialView extends ImageView {
             // Retrieve dialog's fxml file
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/ryrycipe/view/MaterialStatsDialog.fxml"));
-            loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
+            loader.setResources(ResourceBundle.getBundle("lang", new Locale(LocaleUtil.getLanguage())));
             AnchorPane dialogPane = loader.load();
 
             // Setup dialog

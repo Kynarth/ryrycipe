@@ -217,7 +217,7 @@ public class Material {
             return null;
         }
 
-        JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonUrl.openStream()));
+        JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonUrl.openStream(), "UTF-8"));
 
         // Return JsonObject containing stats for the given material and component
         Gson gson = new Gson();

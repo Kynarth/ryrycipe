@@ -45,8 +45,15 @@ task convertUtf8 << {
     FileTree tree = fileTree(dir: 'src/main/resources')
     tree.include '**/*.properties'
 
-    tree.each {File file -> exec {
-        commandLine 'native2ascii', '-encoding', 'utf-8', file, file}
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        tree.each {
+            File file -> exec {
+                commandLine "${System.env.JAVA_HOME}${File.separator}bin${File.separator}native2ascii",
+                        '-encoding', 'utf-8', file, file
+            }
+        }
+    } else {
+        tree.each {File file -> exec {commandLine "native2ascii", '-encoding', 'utf-8', file, file}}
     }
 }
 
@@ -56,7 +63,7 @@ task buildSelfContainedApp << {
     exec {
         workingDir "${project.projectDir.absolutePath}"
 
-        commandLine "${System.env.'JAVA_HOME'}/bin/javafxpackager",
+        commandLine "${System.env.JAVA_HOME}${File.separator}bin${File.separator}javafxpackager",
                 "-deploy",
                 "-native",
                 "-name", "Ryrycipe",
