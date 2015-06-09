@@ -226,4 +226,17 @@ public class Material {
 
         return map.get(this.id).get("stats").get(componentCode);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if((object == null) || (object.getClass() != this.getClass())) {
+            return false;
+        }
+
+        Material material = (Material) object;
+
+        return this.name.equals(material.name) &&
+            this.faction.getName().equals(material.faction.getName()) &&
+            this.quality.equals(material.quality);
+    }
 }

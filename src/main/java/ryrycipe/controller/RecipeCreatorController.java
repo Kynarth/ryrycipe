@@ -129,7 +129,7 @@ public class RecipeCreatorController implements Initializable {
     private Plan currentPlan;  // Save the plan chose by the user.
     private ResourceBundle resources;
     private Ryrycipe mainApp;
-    private List<String> usedMaterials = new ArrayList<>();
+    private List<MaterialView> usedMaterials = new ArrayList<>();
 
     /**
      * {@link RecipeComponentController} corresponding to the selected component from
@@ -421,7 +421,7 @@ public class RecipeCreatorController implements Initializable {
         this.mainApp = mainApp;
     }
 
-    public List<String> getUsedMaterials() {
+    public List<MaterialView> getUsedMaterials() {
         return usedMaterials;
     }
 }

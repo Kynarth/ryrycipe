@@ -117,11 +117,15 @@ public class MaterialView extends ImageView {
 
                 /**
                  * Do not move back the used material to the material chooser if it's empty or the
-                 * filter's chosen component does not match.
+                 * filter's options component does not match.
                  */
                 if (!creatorController.materialChooser.getChildren().isEmpty() &&
-                    creatorController.componentCB.getValue() == RCController.getComponent())
+                    (creatorController.componentCB.getValue() == RCController.getComponent()) &&
+                    creatorController.factionCB.getValue() == this.getMaterial().getFaction() &&
+                    creatorController.qualityCB.getValue() == this.getMaterial().getQuality()
+                    ) {
                     creatorController.materialChooser.getChildren().add(this);
+                }
 
                 this.setOnMouseClicked(this.mouseEventAddMaterial);
 
@@ -130,7 +134,7 @@ public class MaterialView extends ImageView {
                 this.setImage(this.material.getImage());
 
                 // Remove the materials from the list of the ones used.
-                creatorController.getUsedMaterials().remove(this.material.getName());
+                creatorController.getUsedMaterials().remove(this);
             } else if (event.getClickCount() == 1) {
                 creatorController.materialStatsContainer.getChildren().clear();
                 creatorController.materialDescription.setVisible(true);
@@ -203,7 +207,7 @@ public class MaterialView extends ImageView {
      */
     public void addToRecipe() {
         // Add the material to list of plan incorporated one
-        creatorController.getUsedMaterials().add(this.material.getName());
+        creatorController.getUsedMaterials().add(this);
 
         if (RCController != null) {
             // Get the number of materials to used via a dialog
