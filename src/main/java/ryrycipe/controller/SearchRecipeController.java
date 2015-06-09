@@ -64,6 +64,7 @@ public class SearchRecipeController implements Initializable {
      * Add each local recipes in the localRecipesView ListView to get selected.
      */
     public void searchLocalRecipes() {
+        localRecipes.clear();
         File recipesFolder = new File(mainApp.getSavedRecipesFolder());
 
         if (recipesFolder.exists()) {
@@ -98,8 +99,47 @@ public class SearchRecipeController implements Initializable {
         }
 
         LOGGER.info("Local recipes have been listed.");
-
     }
+
+    /**
+     * Add each recipes from given folder in the localRecipesView ListView to get selected.
+     */
+    public void searchLocalRecipes(File recipesFolder) {
+        localRecipes.clear();
+        if (recipesFolder.exists()) {
+            File[] recipes = recipesFolder.listFiles();
+
+            // User had created recipes
+            if (recipes != null && recipes.length > 0) {
+                for (File recipe: recipes) {
+                    if (recipe.isFile()) {
+                        loadRecipeFromFile(recipe);
+                    }
+                }
+
+                localRecipesView.setItems(localRecipes);
+            } else {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle(resources.getString("dialog.norecipedir.title"));
+                alert.setHeaderText(resources.getString("dialog.norecipedir.header"));
+                alert.setContentText(resources.getString("dialog.norecipedir.content"));
+
+                LOGGER.warn("No recipes found.");
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle(resources.getString("dialog.norecipedir.title"));
+            alert.setHeaderText(resources.getString("dialog.norecipedir.header"));
+            alert.setContentText(resources.getString("dialog.norecipedir.content"));
+
+            LOGGER.warn("No recipes found.");
+            alert.showAndWait();
+        }
+
+        LOGGER.info("Local recipes have been listed.");
+    }
+
 
     /**
      * Load a {@link RecipeWrapper}from given file.

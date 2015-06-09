@@ -152,26 +152,6 @@ public class RecipeCreatorController implements Initializable {
     }
 
     /**
-     * Add a new and save recipe buttons specific to this pane.
-     */
-    public void initializeSpecificToolBar() {
-        // Button to create new recipe
-        Button newRecipe = new Button("");
-        newRecipe.setId("newBtn");
-        newRecipe.setPrefSize(32,32);
-        newRecipe.setOnAction(e -> mainApp.getRyrycipeController().newRecipe());
-
-        // Button to save current recipe
-        Button saveRecipe = new Button("");
-        saveRecipe.setId("saveBtn");
-        saveRecipe.setPrefSize(32,32);
-        saveRecipe.setOnAction(e -> mainApp.getRyrycipeController().save());
-
-        mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().clear();
-        mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().addAll(newRecipe, saveRecipe);
-    }
-
-    /**
      * Fill the {@link RecipeCreatorController#planCB} with {@link Plan} in function of selected quality from
      * {@link RecipeCreatorController#planQualityCB}.
      */

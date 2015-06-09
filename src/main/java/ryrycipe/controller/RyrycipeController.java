@@ -82,6 +82,7 @@ public class RyrycipeController implements Initializable {
      */
     private Ryrycipe mainApp;
 
+    private SearchRecipeController searchController;
     private ResourceBundle resources;
 
     @Override
@@ -93,7 +94,7 @@ public class RyrycipeController implements Initializable {
     public void createRecipe() {
         // Load previous CreatorPane with his tool bar else create new one.
         if (mainApp.getRecipeCreatorPane() != null) {
-            mainApp.getCreatorController().initializeSpecificToolBar();
+            initCreatePaneTB();
             mainApp.getRootLayout().setCenter(mainApp.getRecipeCreatorPane());
         } else {
             newRecipe();
@@ -108,7 +109,7 @@ public class RyrycipeController implements Initializable {
     public void searchRecipe() {
         // Check if a previous search pane has been created to load it otherwise create a new one
         if (mainApp.getRecipeSearchPane() != null) {
-            mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().clear();
+            initSearchPaneTB();
             mainApp.getRootLayout().setCenter(mainApp.getRecipeSearchPane());
         } else {
             try {
@@ -118,14 +119,14 @@ public class RyrycipeController implements Initializable {
                 mainApp.setRecipeSearchPane(loader.load());
 
                 // Get the corresponding controller
-                SearchRecipeController searchController = loader.getController();
+                searchController = loader.getController();
                 searchController.setMainApp(mainApp);
                 searchController.searchLocalRecipes();  // Add local recipes to the SearchRecipe's list view
 
                 mainPane.setCenter(mainApp.getRecipeSearchPane());
 
                 // Load corresponding tool bar
-                mainApp.getRyrycipeController().getSpecificToolBtns().getChildren().clear();
+                initSearchPaneTB();
             } catch (IOException | IllegalStateException e) {
                 e.printStackTrace();
             }
@@ -137,7 +138,6 @@ public class RyrycipeController implements Initializable {
      */
     @FXML
     public void changeLanguage() {
-
         // Ask for confirmation
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(resources.getString("dialog.language.title"));
@@ -162,14 +162,12 @@ public class RyrycipeController implements Initializable {
 
             LOGGER.info("Language changed");
         }
-
     }
 
     /**
      * Create a new recipe.
      */
     public void newRecipe() {
-
         // Ask for confirmation
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(resources.getString("dialog.newrecipe.title"));
@@ -222,6 +220,50 @@ public class RyrycipeController implements Initializable {
 
             alert.showAndWait();
         }
+    }
+
+    /**
+     * Refresh search pane in case where new recipes are added.
+     */
+    public void refresh() {
+        searchController.searchLocalRecipes(new File(mainApp.getSavedRecipesFolder()));
+    }
+
+    /**
+     * Add a new and save recipe tool buttons to create pane tool bar
+     */
+    public void initCreatePaneTB() {
+        // Button to create new recipe
+        Button newRecipeBtn = new Button("");
+        newRecipeBtn.setId("newBtn");
+        newRecipeBtn.setPrefSize(32, 32);
+        Tooltip.install(newRecipeBtn, new Tooltip(resources.getString("toolbtn.new.tip")));
+        newRecipeBtn.setOnAction(e -> newRecipe());
+
+        // Button to save current recipe
+        Button saveRecipeBtn = new Button("");
+        saveRecipeBtn.setId("saveBtn");
+        saveRecipeBtn.setPrefSize(32, 32);
+        Tooltip.install(saveRecipeBtn, new Tooltip(resources.getString("toolbtn.save.tip")));
+        saveRecipeBtn.setOnAction(e -> save());
+
+        specificToolBtns.getChildren().clear();
+        specificToolBtns.getChildren().addAll(newRecipeBtn, saveRecipeBtn);
+    }
+
+    /**
+     * Add a refresh tool button to search pane tool bar
+     */
+    public void initSearchPaneTB() {
+        // Button to refresh recipes in search pane
+        Button refreshBtn = new Button("");
+        refreshBtn.setId("refreshBtn");
+        refreshBtn.setPrefSize(32, 32);
+        Tooltip.install(refreshBtn, new Tooltip(resources.getString("toolbtn.refresh.tip")));
+        refreshBtn.setOnAction(e -> refresh());
+
+        specificToolBtns.getChildren().clear();
+        specificToolBtns.getChildren().addAll(refreshBtn);
     }
 
     /**
@@ -343,9 +385,5 @@ public class RyrycipeController implements Initializable {
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
-    }
-
-    public HBox getSpecificToolBtns() {
-        return specificToolBtns;
     }
 }

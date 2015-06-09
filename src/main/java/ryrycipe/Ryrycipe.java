@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.controller.RyrycipeController;
+import ryrycipe.controller.SearchRecipeController;
 import ryrycipe.util.LocaleUtil;
 
 import java.io.File;
@@ -107,7 +108,7 @@ public class Ryrycipe extends Application {
             // Get the corresponding controller
             creatorController = loader.getController();
             creatorController.setMainApp(this);
-            creatorController.initializeSpecificToolBar();
+            ryrycipeController.initCreatePaneTB();
 
             rootLayout.setCenter(recipeCreatorPane);
         } catch (IOException | IllegalStateException e) {
