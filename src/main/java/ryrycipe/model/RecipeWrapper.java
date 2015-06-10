@@ -14,15 +14,17 @@ public class RecipeWrapper {
     private String recipeName;
     private String recipeAuthor;
     private String recipeComment;
+    private String planName;
 
     private List<ComponentWrapper> components;
 
     public RecipeWrapper() {}
 
-    public RecipeWrapper(String authorName, String recipeName, String comment) {
+    public RecipeWrapper(String authorName, String recipeName, String comment, String planName) {
         this.recipeName = recipeName;
         this.recipeAuthor = authorName;
         this.recipeComment = comment;
+        this.planName = planName;
     }
 
     @XmlAttribute(name = "name")
@@ -61,7 +63,21 @@ public class RecipeWrapper {
         this.components = components;
     }
 
-    public String toString() {
-        return this.recipeAuthor + "_" + this.recipeName;
+    @XmlElement(name = "plan_name")
+    public String getPlanName() {
+        return planName;
     }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public String fileName() {
+        return toString() + ".xml";
+    }
+
+    public String toString() {
+        return this.recipeAuthor + "_" + this.planName + "_" + this.recipeName;
+    }
+
 }

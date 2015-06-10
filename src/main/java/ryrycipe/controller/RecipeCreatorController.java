@@ -424,4 +424,8 @@ public class RecipeCreatorController implements Initializable {
     public List<MaterialView> getUsedMaterials() {
         return usedMaterials;
     }
+
+    public ComboBox<Plan> getPlanCB() {
+        return planCB;
+    }
 }

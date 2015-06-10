@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.controller.RyrycipeController;
-import ryrycipe.controller.SearchRecipeController;
 import ryrycipe.util.LocaleUtil;
 
 import java.io.File;
@@ -170,16 +169,16 @@ public class Ryrycipe extends Application {
         return savedRecipesFolder;
     }
 
-    public RyrycipeController getRyrycipeController() {
-        return ryrycipeController;
-    }
-
     public BorderPane getRootLayout() {
         return rootLayout;
     }
 
     public SplitPane getRecipeCreatorPane() {
         return recipeCreatorPane;
+    }
+
+    public void setRecipeCreatorPane(SplitPane recipeCreatorPane) {
+        this.recipeCreatorPane = recipeCreatorPane;
     }
 
     public void setRecipeSearchPane(SplitPane recipeSearchPane) {
