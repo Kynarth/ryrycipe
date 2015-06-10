@@ -76,7 +76,7 @@ public class SaveRecipeDialogController implements Initializable {
                 alert.setTitle(resources.getString("dialog.save.success.title"));
                 alert.setHeaderText(null);
                 alert.setContentText(resources.getString("dialog.save.success.content"));
-                LOGGER.info("{}'s Recipe {} saved", authorName, recipeName);
+                LOGGER.info("{}'s Recipe {} saved", authorName.getText(), recipeName.getText());
 
                 alert.showAndWait();
                 dialogStage.close();
@@ -87,17 +87,17 @@ public class SaveRecipeDialogController implements Initializable {
                 alert.setHeaderText(resources.getString("dialog.save.fail.header"));
                 alert.setContentText(resources.getString("dialog.save.error.content"));
 
-                LOGGER.warn("{}'s Recipe {} couldn't be saved", authorName, recipeName);
+                LOGGER.warn("{}'s Recipe {} couldn't be saved", authorName.getText(), recipeName.getText());
                 alert.showAndWait();
             }
         } else { // Saving failed
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle(resources.getString("dialog.save.fail.title"));
-            alert.setHeaderText(resources.getString("dialog.save.fail.header"));
-            alert.setContentText(resources.getString("dialog.save.error.content"));
+            alert.setTitle(resources.getString("dialog.noinfo.title"));
+            alert.setHeaderText(resources.getString("dialog.noinfo.header"));
+            alert.setContentText(resources.getString("dialog.noinfo.content"));
 
-            LOGGER.warn("{}'s Recipe {} couldn't be saved", authorName, recipeName);
+            LOGGER.warn("{}'s Recipe {} couldn't be saved", authorName.getText(), recipeName.getText());
             alert.showAndWait();
         }
     }

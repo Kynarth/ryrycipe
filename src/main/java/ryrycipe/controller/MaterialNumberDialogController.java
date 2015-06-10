@@ -66,10 +66,6 @@ public class MaterialNumberDialogController implements Initializable {
         this.materialImg.setImage(materialView.getImage());
     }
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
     /**
      * Set the number of materials needed for a recipe a component and put it as default value in the
      * {@link MaterialNumberDialogController#nbMaterialField}
@@ -113,5 +109,9 @@ public class MaterialNumberDialogController implements Initializable {
 
     public TextField getNbMaterialField() {
         return nbMaterialField;
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
     }
 }
