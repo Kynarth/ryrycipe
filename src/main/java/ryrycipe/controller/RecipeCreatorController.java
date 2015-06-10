@@ -40,24 +40,24 @@ public class RecipeCreatorController implements Initializable {
      * Contains all stats from a selected material in the filter.
      */
     @FXML
-    public GridPane materialStatsContainer;
+    private GridPane materialStatsContainer;
 
     /**
      * ImageView containing image from clicked MaterialView
      */
     @FXML
-    public ImageView materialIcon;
+    private ImageView materialIcon;
 
     /**
      * Material's description of selected MaterialView
      */
     @FXML
-    public Label materialDescription;
+    private Label materialDescription;
 
     /**
      */
     @FXML
-    public TextArea recipeComment;
+    private TextArea recipeComment;
 
     /**
      * Contains all controls allowing the user to select materials in functions of parameters.
@@ -81,25 +81,25 @@ public class RecipeCreatorController implements Initializable {
      * Display {@link Material}s that can be used as selected component.
      */
     @FXML
-    public ComboBox<Component> componentCB;
+    private ComboBox<Component> componentCB;
 
     /**
      * Display {@link Material}s with selected quality.
      */
     @FXML
-    public ComboBox<String> qualityCB;
+    private ComboBox<String> qualityCB;
 
     /**
      * Display {@link Material}s belonging to the selected faction.
      */
     @FXML
-    public ComboBox<Faction> factionCB;
+    private ComboBox<Faction> factionCB;
 
     /**
      * Contains filtered {@link Material}s.
      */
     @FXML
-    public FlowPane materialChooser;
+    private FlowPane materialChooser;
 
     /**
      * Choose {@link Plan}'s quality.
@@ -117,7 +117,7 @@ public class RecipeCreatorController implements Initializable {
      * Contain RecipeComponent for each {@link Plan}'s {@link Component}.
      */
     @FXML
-    public VBox componentsContainer;
+    private VBox componentsContainer;
 
     // ObservableList for each combobox.
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
@@ -126,10 +126,25 @@ public class RecipeCreatorController implements Initializable {
     private ObservableList<String> qualityItems = FXCollections.observableArrayList();
     private ObservableList<Faction> factionItems = FXCollections.observableArrayList();
 
-    private Plan currentPlan;  // Save the plan chose by the user.
-    private ResourceBundle resources;
+    /**
+     * Save the plan chose by the user.
+     */
+    private Plan currentPlan;
+
+    /**
+     * Reference to {@link Ryrycipe}
+     */
     private Ryrycipe mainApp;
-    private List<MaterialView> usedMaterials = new ArrayList<>();
+
+    /**
+     * {@link List} of {@link MaterialView} that have been added to the recipe.
+     */
+    private List<Material> usedMaterials = new ArrayList<>();
+
+    /**
+     * {@link ResourceBundle}
+     */
+    private ResourceBundle resources;
 
     /**
      * {@link RecipeComponentController} corresponding to the selected component from
@@ -156,7 +171,7 @@ public class RecipeCreatorController implements Initializable {
      * {@link RecipeCreatorController#planQualityCB}.
      */
     @FXML
-    public void initializePlansCB() {
+    private void initializePlansCB() {
         planItems.clear();
         PlanManager planManager = new PlanManager();
         planItems.addAll(planManager.getAll(planQualityCB.getValue()));
@@ -168,7 +183,7 @@ public class RecipeCreatorController implements Initializable {
      * Action performed when the user chooses a {@link Plan} from the associated combobox.
      */
     @FXML
-    public void selectPlan() {
+    private void selectPlan() {
         usedMaterials.clear();  // To free previous used materials for the new plan
         componentsContainer.getChildren().clear();
 
@@ -303,7 +318,7 @@ public class RecipeCreatorController implements Initializable {
      * {@link RecipeCreatorController#componentCB}.
      */
     @FXML
-    public void updateComponent() {
+    private void updateComponent() {
         componentsContainer.getChildren().stream().filter(
             node -> componentCB.getValue().toString().equals(node.getId())
         ).forEach(
@@ -385,7 +400,7 @@ public class RecipeCreatorController implements Initializable {
 
         for (Material material : materialManager.filter(getFilterParameters())) {
             // Check if the material has already been added to the plan
-            if (this.usedMaterials.contains(material.getName()))
+            if (this.usedMaterials.contains(material))
                 continue;
 
             MaterialView materialView = new MaterialView(material.getImage(), material);
@@ -421,11 +436,47 @@ public class RecipeCreatorController implements Initializable {
         this.mainApp = mainApp;
     }
 
-    public List<MaterialView> getUsedMaterials() {
+    public List<Material> getUsedMaterials() {
         return usedMaterials;
     }
 
     public ComboBox<Plan> getPlanCB() {
         return planCB;
+    }
+
+    public GridPane getMaterialStatsContainer() {
+        return materialStatsContainer;
+    }
+
+    public Label getMaterialDescription() {
+        return materialDescription;
+    }
+
+    public ImageView getMaterialIcon() {
+        return materialIcon;
+    }
+
+    public ComboBox<Component> getComponentCB() {
+        return componentCB;
+    }
+
+    public ComboBox<String> getQualityCB() {
+        return qualityCB;
+    }
+
+    public ComboBox<Faction> getFactionCB() {
+        return factionCB;
+    }
+
+    public FlowPane getMaterialChooser() {
+        return materialChooser;
+    }
+
+    public TextArea getRecipeComment() {
+        return recipeComment;
+    }
+
+    public VBox getComponentsContainer() {
+        return componentsContainer;
     }
 }

@@ -81,6 +81,9 @@ public class RyrycipeController implements Initializable {
      */
     private Ryrycipe mainApp;
 
+    /**
+     * Reference to {@link SearchRecipeController}.
+     */
     private SearchRecipeController searchController;
     private ResourceBundle resources;
 
@@ -90,7 +93,7 @@ public class RyrycipeController implements Initializable {
     }
 
     @FXML
-    public void createRecipe() {
+    private void createRecipe() {
         // Load previous CreatorPane with his tool bar else create new one.
         if (mainApp.getRecipeCreatorPane() != null) {
             initCreatePaneTB();
@@ -105,7 +108,7 @@ public class RyrycipeController implements Initializable {
      * Load the pane to search for recipes.
      */
     @FXML
-    public void searchRecipe() {
+    private void searchRecipe() {
         // Check if a previous search pane has been created to load it otherwise create a new one
         if (mainApp.getRecipeSearchPane() != null) {
             initSearchPaneTB();
@@ -136,7 +139,7 @@ public class RyrycipeController implements Initializable {
      * Toggle language between french and english.
      */
     @FXML
-    public void changeLanguage() {
+    private void changeLanguage() {
         // Ask for confirmation
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(resources.getString("dialog.language.title"));
@@ -169,7 +172,7 @@ public class RyrycipeController implements Initializable {
     /**
      * Create a new recipe.
      */
-    public void newRecipe() {
+    private void newRecipe() {
         // Ask for confirmation
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(resources.getString("dialog.newrecipe.title"));
@@ -189,7 +192,8 @@ public class RyrycipeController implements Initializable {
     /**
      * Ask for saving current recipe when the user click in the save tool button.
      */
-    public void save() {
+    @FXML
+    private void save() {
         if (mainApp.getCreatorController().isPlanFilled()) {
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -228,7 +232,8 @@ public class RyrycipeController implements Initializable {
     /**
      * Refresh search pane in case where new recipes are added.
      */
-    public void refresh() {
+    @FXML
+    private void refresh() {
         searchController.searchLocalRecipes(new File(mainApp.getSavedRecipesFolder()));
     }
 
@@ -257,7 +262,7 @@ public class RyrycipeController implements Initializable {
     /**
      * Add a refresh tool button to search pane tool bar
      */
-    public void initSearchPaneTB() {
+    private void initSearchPaneTB() {
         // Button to refresh recipes in search pane
         Button refreshBtn = new Button("");
         refreshBtn.setId("refreshBtn");

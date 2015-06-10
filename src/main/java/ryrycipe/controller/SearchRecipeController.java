@@ -52,7 +52,14 @@ public class SearchRecipeController implements Initializable {
      */
     private Ryrycipe mainApp;
 
+    /**
+     * {@link ResourceBundle}
+     */
     private ResourceBundle resources;
+
+    /**
+     * {@link ObservableList} of {@link RecipeWrapper} for {@link SearchRecipeController#localRecipesView}.
+     */
     private ObservableList<RecipeWrapper> localRecipes = FXCollections.observableArrayList();
 
     @Override
@@ -143,9 +150,10 @@ public class SearchRecipeController implements Initializable {
 
     /**
      * Load a {@link RecipeWrapper}from given file.
+     *
      * @param recipesFile {@link File} containing XML data representing a user's recipe.
      */
-    public void loadRecipeFromFile(File recipesFile) {
+    private void loadRecipeFromFile(File recipesFile) {
         try {
             JAXBContext context = JAXBContext.newInstance(RecipeWrapper.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();

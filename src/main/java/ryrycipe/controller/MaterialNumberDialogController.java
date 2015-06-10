@@ -22,18 +22,27 @@ public class MaterialNumberDialogController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MaterialNumberDialogController.class.getName());
 
+    /**
+     * {@link ImageView} of selected {@link MaterialView} to be introduced in the recipe
+     */
     @FXML
     private ImageView materialImg;
 
+    /**
+     * {@link TextField} where the user enter the number of materials he wants.
+     */
     @FXML
     private TextField nbMaterialField;
-
-    private Stage dialogStage;
 
     /**
      * Number of materials needed for recipe component.
      */
     private int materialAmount;
+
+    /**
+     * Reference to the dialog's {@link Stage} to be enable to close it.
+     */
+    private Stage dialogStage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,15 +67,6 @@ public class MaterialNumberDialogController implements Initializable {
     }
 
     /**
-     * Set the imageView with the selected MaterialView from {@link RecipeCreatorController#materialChooser}
-     *
-     * @param materialView {@link MaterialView}
-     */
-    public void setMaterialImage(MaterialView materialView) {
-        this.materialImg.setImage(materialView.getImage());
-    }
-
-    /**
      * Set the number of materials needed for a recipe a component and put it as default value in the
      * {@link MaterialNumberDialogController#nbMaterialField}
      *
@@ -84,7 +84,7 @@ public class MaterialNumberDialogController implements Initializable {
      * Note: Do nothing if no value is chosen.
      */
     @FXML
-    public void handleOKBtn() {
+    private void handleOKBtn() {
         dialogStage.close();
 
         LOGGER.info("USer chose {} materials", nbMaterialField);
@@ -94,17 +94,26 @@ public class MaterialNumberDialogController implements Initializable {
      * Close the dialog when the user clicks the cancel button.
      */
     @FXML
-    public void handleCancelBtn() {
+    private void handleCancelBtn() {
         // Set TextField to '0' in order to remove potential numbers from the it before leaving the dialog
         nbMaterialField.setText("0");
         dialogStage.close();
     }
 
     @FXML
-    public void handleEnterPressed(KeyEvent event) {
+    private void handleEnterPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             handleOKBtn();
         }
+    }
+
+    /**
+     * Set the imageView with the selected MaterialView from {@link RecipeCreatorController#materialChooser}
+     *
+     * @param materialView {@link MaterialView}
+     */
+    public void setMaterialImage(MaterialView materialView) {
+        this.materialImg.setImage(materialView.getImage());
     }
 
     public TextField getNbMaterialField() {

@@ -20,21 +20,50 @@ public class RecipeComponentController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RecipeComponentController.class.getName());
 
+    /**
+     * {@link ImageView representing the component}
+     */
     @FXML
     private ImageView componentIcon;
 
+    /**
+     * {@link Label} with name of the component
+     */
     @FXML
     private Label componentName;
 
+    /**
+     * {@link Label} indicating the number of {@link ryrycipe.model.Material} in the recipe for this component
+     * and the number of {@link ryrycipe.model.Material} needed.
+     *
+     */
     @FXML
     private Label componentIndicator;
 
+    /**
+     * {@link FlowPane} with all {@link MaterialView} introduced in the recipe for this component.
+     */
     @FXML
     private FlowPane materialsContainer;
 
+    /**
+     * Reference to {@link RecipeCreatorController}.
+     */
     private RecipeCreatorController creatorController;
+
+    /**
+     * {@link Component} defining the RecipeComponent.
+     */
     private Component component;
+
+    /**
+     * Number of material in the RecipeComponent.
+     */
     private int nbMaterials = 0;
+
+    /**
+     * Boolean with true if the RecipeComponent contains enough {@link ryrycipe.model.Material} to fill it.
+     */
     private boolean filled;
 
     @Override
@@ -86,7 +115,7 @@ public class RecipeComponentController implements Initializable {
      */
     @FXML
     public void clicked() {
-        this.creatorController.componentCB.setValue(this.component);
+        this.creatorController.getComponentCB().setValue(this.component);
     }
 
     /**

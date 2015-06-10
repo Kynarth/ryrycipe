@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,16 +30,32 @@ public class SaveRecipeDialogController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SaveRecipeDialogController.class.getName());
 
+    /**
+     * {@link TextField} to enter the name of the recipe's author.
+     */
     @FXML
     private TextField authorName;
 
+    /**
+     * {@link TextField} to enter the name of the recipe's name.
+     */
     @FXML
     private TextField recipeName;
 
-    private ResourceBundle resources;
-
+    /**
+     * Reference to dialog {@link Stage} to close it later.
+     */
     private Stage dialogStage;
+
+    /**
+     * Reference to {@link Ryrycipe}.
+     */
     private Ryrycipe mainApp;
+
+    /**
+     * {@link ResourceBundle}
+     */
+    private ResourceBundle resources;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,12 +70,15 @@ public class SaveRecipeDialogController implements Initializable {
         }
     }
 
+    /**
+     * Save the user's recipe when he has filled the form and clicked the OK button
+     */
     @FXML
-    private void okClick() {
+    private void handleOKClick() {
         if (!authorName.getText().isEmpty() && !recipeName.getText().isEmpty()) {
             // Wrapping user's recipe
             RecipeWrapper wrapper = new RecipeWrapper(
-                authorName.getText(), recipeName.getText(), mainApp.getCreatorController().recipeComment.getText(),
+                authorName.getText(), recipeName.getText(), mainApp.getCreatorController().getRecipeComment().getText(),
                 mainApp.getCreatorController().getPlanCB().getValue().getName()
             );
             wrapper.setComponents(getRecipeComponent());
@@ -102,8 +123,11 @@ public class SaveRecipeDialogController implements Initializable {
         }
     }
 
+    /**
+     * Cancel recipe's saving.
+     */
     @FXML
-    private void cancelClick() {
+    private void handleCancelClick() {
         dialogStage.close();
     }
 
@@ -150,7 +174,7 @@ public class SaveRecipeDialogController implements Initializable {
      */
     private List<ComponentWrapper> getRecipeComponent() {
         List<ComponentWrapper> componentWrappers = new ArrayList<>();
-        for(Node node: mainApp.getCreatorController().componentsContainer.getChildren()) {
+        for(Node node: mainApp.getCreatorController().getComponentsContainer().getChildren()) {
             Map<Material, Integer> materials = new HashMap<>();
             RecipeComponentController controller = (RecipeComponentController) node.getUserData();
             for(Node child: controller.getMaterialsContainer().getChildren()) {
@@ -198,6 +222,18 @@ public class SaveRecipeDialogController implements Initializable {
         }
 
         return false;
+    }
+
+    /**
+     * Validate saving when user push enter key in {@link SaveRecipeDialogController#recipeName} text field.
+     *
+     * @param event {@link KeyEvent}
+     */
+    @FXML
+    private void handleEnterPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleOKClick();
+        }
     }
 
     public void setMainApp(Ryrycipe mainApp) {

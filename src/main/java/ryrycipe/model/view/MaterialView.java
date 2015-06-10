@@ -76,15 +76,15 @@ public class MaterialView extends ImageView {
             }
             // Show selected MaterialView stats in function of selected component from the filter in Material Stats tab.
             else if (event.getClickCount() == 1) {
-                creatorController.materialStatsContainer.getChildren().clear();
-                creatorController.materialDescription.setVisible(true);
-                creatorController.materialDescription.setText(this.material.getDescription());
-                creatorController.materialIcon.setImage(this.getMaterialViewImage());
+                creatorController.getMaterialStatsContainer().getChildren().clear();
+                creatorController.getMaterialDescription().setVisible(true);
+                creatorController.getMaterialDescription().setText(this.material.getDescription());
+                creatorController.getMaterialIcon().setImage(this.getMaterialViewImage());
                 try {
-                    JsonObject stats = this.material.getStats(creatorController.componentCB.getValue().getId());
+                    JsonObject stats = this.material.getStats(creatorController.getComponentCB().getValue().getId());
                     int index = 0; // materialStatsContainer row index
                     for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
-                        creatorController.materialStatsContainer.addRow(index,
+                        creatorController.getMaterialStatsContainer().addRow(index,
                             new Label(entry.getKey()), new ProgressBar(entry.getValue().getAsDouble() / 100),
                             new Label(entry.getValue().getAsString())
                         );
@@ -119,12 +119,12 @@ public class MaterialView extends ImageView {
                  * Do not move back the used material to the material chooser if it's empty or the
                  * filter's options component does not match.
                  */
-                if (!creatorController.materialChooser.getChildren().isEmpty() &&
-                    (creatorController.componentCB.getValue() == RCController.getComponent()) &&
-                    creatorController.factionCB.getValue() == this.getMaterial().getFaction() &&
-                    creatorController.qualityCB.getValue() == this.getMaterial().getQuality()
-                    ) {
-                    creatorController.materialChooser.getChildren().add(this);
+                if (!creatorController.getMaterialChooser().getChildren().isEmpty() &&
+                    (creatorController.getComponentCB().getValue().getName().equals(RCController.getComponent().getName()) &&
+                    creatorController.getFactionCB().getValue().getName().equals(this.getMaterial().getFaction().getName()) &&
+                    creatorController.getQualityCB().getValue().equals(this.getMaterial().getQuality())
+                    )) {
+                    creatorController.getMaterialChooser().getChildren().add(this);
                 }
 
                 this.setOnMouseClicked(this.mouseEventAddMaterial);
@@ -134,17 +134,17 @@ public class MaterialView extends ImageView {
                 this.setImage(this.material.getImage());
 
                 // Remove the materials from the list of the ones used.
-                creatorController.getUsedMaterials().remove(this);
+                creatorController.getUsedMaterials().remove(this.material);
             } else if (event.getClickCount() == 1) {
-                creatorController.materialStatsContainer.getChildren().clear();
-                creatorController.materialDescription.setVisible(true);
-                creatorController.materialDescription.setText(this.material.getDescription());
-                creatorController.materialIcon.setImage(this.getMaterialViewImage());
+                creatorController.getMaterialStatsContainer().getChildren().clear();
+                creatorController.getMaterialDescription().setVisible(true);
+                creatorController.getMaterialDescription().setText(this.material.getDescription());
+                creatorController.getMaterialIcon().setImage(this.getMaterialViewImage());
                 try {
                     JsonObject stats = this.material.getStats(RCController.getComponent().getId());
                     int index = 0; // materialStatsContainer row index
                     for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
-                        creatorController.materialStatsContainer.addRow(index,
+                        creatorController.getMaterialStatsContainer().addRow(index,
                             new Label(entry.getKey()), new ProgressBar(entry.getValue().getAsDouble() / 100),
                             new Label(entry.getValue().getAsString())
                         );
@@ -207,7 +207,7 @@ public class MaterialView extends ImageView {
      */
     public void addToRecipe() {
         // Add the material to list of plan incorporated one
-        creatorController.getUsedMaterials().add(this);
+        creatorController.getUsedMaterials().add(this.material);
 
         if (RCController != null) {
             // Get the number of materials to used via a dialog
@@ -220,8 +220,7 @@ public class MaterialView extends ImageView {
             if (nbMaterials != 0) {
                 // Remove the event filter after that the material view get into RecipeComponent
                 // to replace with event filter to remove it by double click
-                this.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventAddMaterial);
-                this.addEventFilter(MouseEvent.MOUSE_CLICKED, this.mouseEventRemoveMaterial);
+                this.setOnMouseClicked(mouseEventRemoveMaterial);
                 RCController.getMaterialsContainer().getChildren().add(0, this);
                 RCController.updateIndicator(nbMaterials);
                 addMaterialInfos();
@@ -296,14 +295,14 @@ public class MaterialView extends ImageView {
             MaterialStatsDialogController controller = loader.getController();
 
             // Setup infos
-            controller.materialDescription.setText(material.getDescription());
-            controller.materialIcon.setImage(this.getMaterialViewImage());
+            controller.getMaterialDescription().setText(material.getDescription());
+            controller.getMaterialIcon().setImage(this.getMaterialViewImage());
 
             JsonObject stats = this.material.getStats(RCController.getComponent().getId());
 
             int index = 0; // materialStatsContainer row index
             for(Map.Entry<String, JsonElement> entry: stats.entrySet()) {
-                controller.materialStatsContainer.addRow(index,
+                controller.getMaterialStatsContainer().addRow(index,
                     new Label(entry.getKey()), new ProgressBar(entry.getValue().getAsDouble() / 100),
                     new Label(entry.getValue().getAsString())
                 );

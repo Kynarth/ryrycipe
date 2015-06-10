@@ -45,11 +45,11 @@
                </GridPane.margin>
             </Label>
             <TextField fx:id="authorName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="recipeName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="recipeName" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                <buttons>
-                  <Button onAction="#okClick" mnemonicParsing="false" text="%button.ok.text" />
-                  <Button onAction="#cancelClick" mnemonicParsing="false" text="%button.cancel.text" />
+                  <Button onAction="#handleOKClick" mnemonicParsing="false" text="%button.ok.text" />
+                  <Button onAction="#handleCancelClick" mnemonicParsing="false" text="%button.cancel.text" />
                </buttons>
             </ButtonBar>
          </children>

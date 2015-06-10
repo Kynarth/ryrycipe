@@ -13,16 +13,28 @@ import java.util.ResourceBundle;
 public class MaterialStatsDialogController implements Initializable {
 
     @FXML
-    public GridPane materialStatsContainer;
+    private GridPane materialStatsContainer;
 
     @FXML
-    public ImageView materialIcon;
+    private ImageView materialIcon;
 
     @FXML
-    public Label materialDescription;
+    private Label materialDescription;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public GridPane getMaterialStatsContainer() {
+        return materialStatsContainer;
+    }
+
+    public ImageView getMaterialIcon() {
+        return materialIcon;
+    }
+
+    public Label getMaterialDescription() {
+        return materialDescription;
     }
 }

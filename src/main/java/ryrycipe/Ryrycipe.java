@@ -38,8 +38,20 @@ public class Ryrycipe extends Application {
      */
     private String savedRecipesFolder;
 
+    /**
+     * Application {@link Locale}.
+     */
     private Locale locale;
+
+    /**
+     * Application {@link Stage}.
+     */
     private Stage primaryStage;
+
+    /**
+     * Application root layout
+     * @see BorderPane
+     */
     private BorderPane rootLayout;
 
     /**
@@ -52,7 +64,14 @@ public class Ryrycipe extends Application {
      */
     private SplitPane recipeSearchPane;
 
+    /**
+     * Reference to {@link RyrycipeController}
+     */
     RyrycipeController ryrycipeController;
+
+    /**
+     * Reference to {@link RecipeCreatorController}
+     */
     RecipeCreatorController creatorController;
 
     @Override
@@ -116,14 +135,6 @@ public class Ryrycipe extends Application {
     }
 
     /**
-     * Application's launcher
-     * @param args Application's parameters
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    /**
      * Create a directory to save user's recipes.
      */
     private void createSavedRecipesDir() {
@@ -147,6 +158,14 @@ public class Ryrycipe extends Application {
         } catch (URISyntaxException e) {
             LOGGER.error(e.getMessage());
         }
+    }
+
+    /**
+     * Application's launcher
+     * @param args Application's parameters
+     */
+    public static void main(String[] args) {
+        launch(args);
     }
 
     public Stage getPrimaryStage() {
@@ -175,10 +194,6 @@ public class Ryrycipe extends Application {
 
     public SplitPane getRecipeCreatorPane() {
         return recipeCreatorPane;
-    }
-
-    public void setRecipeCreatorPane(SplitPane recipeCreatorPane) {
-        this.recipeCreatorPane = recipeCreatorPane;
     }
 
     public void setRecipeSearchPane(SplitPane recipeSearchPane) {
