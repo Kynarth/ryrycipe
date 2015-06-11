@@ -51,6 +51,11 @@ public class MaterialView extends ImageView {
     private Material material;
 
     /**
+     * Material's quality level
+     */
+    private String matQualityLevel;
+
+    /**
      * Number of {@link Material}s contained within it
      */
     private int nbMaterials;
@@ -132,6 +137,7 @@ public class MaterialView extends ImageView {
                 // Return to Material View default value
                 this.nbMaterials = 0;
                 this.setImage(this.material.getImage());
+                this.addMaterialQualityLevel();
 
                 // Remove the materials from the list of the ones used.
                 creatorController.getUsedMaterials().remove(this.material);
@@ -169,10 +175,13 @@ public class MaterialView extends ImageView {
         this.nbMaterials = 0;
     }
 
-    public MaterialView(Image image, Material material) {
+    public MaterialView(Image image, Material material, String matQualityLevel) {
         super(image);
         this.material = material;
         this.nbMaterials = 0;
+        this.matQualityLevel = matQualityLevel;
+
+        addMaterialQualityLevel();
 
         Tooltip tooltip = new Tooltip(this.material.getDescription());
         Tooltip.install(this, tooltip);
@@ -312,6 +321,27 @@ public class MaterialView extends ImageView {
         } catch (IOException | IllegalStateException e) {
             LOGGER.error(e.getMessage());
         }
+    }
+
+    /**
+     * Draw material's quality level on MaterialView's image.
+     */
+    private void addMaterialQualityLevel() {
+        Canvas canvas = new Canvas(40, 40);
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.drawImage(this.getImage(), 0, 0);
+
+        List<Image> numbers = new ArrayList<>();
+        for (char digit: this.matQualityLevel.toCharArray()) {
+            numbers.add(new Image("/images/foregrounds/Numbers_" + digit + ".png"));
+        }
+
+        for (int i=matQualityLevel.length() - 1; i >= 0; i--) {
+            graphicsContext.drawImage(numbers.get((matQualityLevel.length() - 1) - i), 35 - (i*5), 31);
+        }
+
+        WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
+        this.setImage(snapshot);
     }
 
     /**

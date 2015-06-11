@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -167,17 +169,22 @@ public class RecipeCreatorController implements Initializable {
             Pattern pattern = Pattern.compile("^[0-9]+$");
 
             if (!newValue.isEmpty()){
+                if (newValue.equals("0")) {
+                    matQualityLevel.setText("");
+                    return; // to not enter following if statements
+                }
+
                 // Check if the new entered value is a number. If not set the oldValue
                 if (!pattern.matcher(newValue).matches()) {
                     matQualityLevel.setText(oldValue);
-                    return; // to not enter in the second if statement
+                    return; // to not enter following if statements
                 }
 
                 // Check if the user enters a '0' before other numbers to remove it.
                 if (newValue.charAt(0) == '0' && newValue.length() > 1)
                     matQualityLevel.setText(newValue.substring(1));
 
-                // Check if the entered value does not exceed the max qality level: 250
+                // Check if the entered value does not exceed the max quality level: 250
                 if (!newValue.isEmpty() && Integer.valueOf(newValue) > 250) {
                     matQualityLevel.setText("250");
                 }
@@ -426,12 +433,20 @@ public class RecipeCreatorController implements Initializable {
         MaterialManager materialManager = new MaterialManager();
         materialChooser.getChildren().clear();
 
-        for (Material material : materialManager.filter(getFilterParameters())) {
+        Map<String, String> filterParameter = getFilterParameters();
+
+        // Check if the user has choose a material category
+        if (filterParameter.get("foraged") == null && filterParameter.get("quartered") == null) {
+            LOGGER.info("Materials not displayed: No category.");
+            return;
+        }
+
+        for (Material material : materialManager.filter(filterParameter)) {
             // Check if the material has already been added to the plan
             if (this.usedMaterials.contains(material))
                 continue;
 
-            MaterialView materialView = new MaterialView(material.getImage(), material);
+            MaterialView materialView = new MaterialView(material.getImage(), material, matQualityLevel.getText());
             materialView.setRCController(RCController);
             materialView.setCreatorController(this);
             materialView.setMainApp(mainApp);
@@ -458,6 +473,16 @@ public class RecipeCreatorController implements Initializable {
         }
 
         return true;
+    }
+
+    /**
+     * Displays material in function of entered level quality in {@link RecipeCreatorController#matQualityLevel}.
+     */
+    @FXML
+    private void handleEnterPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            displayMaterials();
+        }
     }
 
     public void setMainApp(Ryrycipe mainApp) {

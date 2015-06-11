@@ -52,7 +52,7 @@ public class MaterialNumberDialogController implements Initializable {
                 // Check if the new entered value is a number. If not set the oldValue
                 if (!pattern.matcher(newValue).matches()) {
                     nbMaterialField.setText(oldValue);
-                    return; // to not enter in the second if statement
+                    return; // to not enter in following if statements
                 }
                 // Check if the user enters a '0' before other numbers to remove it.
                 if (newValue.charAt(0) == '0' && newValue.length() > 1)
