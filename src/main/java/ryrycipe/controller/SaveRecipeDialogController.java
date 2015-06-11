@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
-import ryrycipe.model.ComponentWrapper;
+import ryrycipe.model.wrapper.ComponentWrapper;
 import ryrycipe.model.Material;
-import ryrycipe.model.RecipeWrapper;
+import ryrycipe.model.wrapper.RecipeWrapper;
 import ryrycipe.model.view.MaterialView;
 
 import javax.xml.bind.JAXBContext;
@@ -170,7 +170,7 @@ public class SaveRecipeDialogController implements Initializable {
     /**
      * Retrieve the list of RecipeComponent and associated materials.
      *
-     * @return List<ComponentWrapper>
+     * @return {@link List} of {@link ComponentWrapper}s.
      */
     private List<ComponentWrapper> getRecipeComponent() {
         List<ComponentWrapper> componentWrappers = new ArrayList<>();

@@ -13,9 +13,9 @@ import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
-import ryrycipe.model.ComponentWrapper;
+import ryrycipe.model.wrapper.ComponentWrapper;
 import ryrycipe.model.Material;
-import ryrycipe.model.RecipeWrapper;
+import ryrycipe.model.wrapper.RecipeWrapper;
 import ryrycipe.model.view.MaterialView;
 
 import javax.xml.bind.JAXBContext;
@@ -110,6 +110,8 @@ public class SearchRecipeController implements Initializable {
 
     /**
      * Add each recipes from given folder in the localRecipesView ListView to get selected.
+     *
+     * @param recipesFolder {@link File} pointing to the folder with user's saved recipes.
      */
     public void searchLocalRecipes(File recipesFolder) {
         localRecipes.clear();

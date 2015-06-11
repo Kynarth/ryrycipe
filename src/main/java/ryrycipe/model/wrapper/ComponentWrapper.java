@@ -1,4 +1,7 @@
-package ryrycipe.model;
+package ryrycipe.model.wrapper;
+
+import ryrycipe.model.Component;
+import ryrycipe.model.Material;
 
 import java.util.Map;
 

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -78,6 +79,7 @@ public class Ryrycipe extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Ryrycipe");
+        this.primaryStage.getIcons().add(new Image("/images/logo.png"));
 
         this.locale = new Locale(LocaleUtil.getLanguage());
 

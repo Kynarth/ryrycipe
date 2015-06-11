@@ -205,7 +205,7 @@ public class Material {
      *
      * @param componentCode {@link Component}'s id
      * @return {@link JsonObject} with all material's stats.
-     * @throws IOException
+     * @throws IOException Problem with reading the json file containing materials' stats.
      */
     public JsonObject getStats(String componentCode) throws IOException {
         // Get json file with materials' stats
