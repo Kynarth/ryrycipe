@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import static javafx.scene.control.Alert.AlertType;
 
@@ -48,11 +49,6 @@ public class SearchRecipeController implements Initializable {
     private ListView<RecipeWrapper> localRecipesView;
 
     /**
-     * Reference to the {@link Ryrycipe} object.
-     */
-    private Ryrycipe mainApp;
-
-    /**
      * {@link ResourceBundle}
      */
     private ResourceBundle resources;
@@ -68,16 +64,19 @@ public class SearchRecipeController implements Initializable {
     }
 
     /**
-     * Add each local recipes in the localRecipesView ListView to get selected.
+     * Add each recipes from given folder in the localRecipesView ListView to get selected.
      */
     public void searchLocalRecipes() {
         localRecipes.clear();
-        File recipesFolder = new File(mainApp.getSavedRecipesFolder());
+
+        // Get folder where recipes are saved
+        Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
+        File recipesFolder = new File(prefs.get("recipeFolder", ""));
 
         if (recipesFolder.exists()) {
             File[] recipes = recipesFolder.listFiles();
 
-            // User had created recipes
+            // User has created recipes
             if (recipes != null && recipes.length > 0) {
                 for (File recipe: recipes) {
                     if (recipe.isFile()) {
@@ -86,7 +85,7 @@ public class SearchRecipeController implements Initializable {
                 }
 
                 localRecipesView.setItems(localRecipes);
-            } else {
+            } else {  // recipes' folder is empty
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle(resources.getString("dialog.norecipedir.title"));
                 alert.setHeaderText(resources.getString("dialog.norecipedir.header"));
@@ -95,48 +94,7 @@ public class SearchRecipeController implements Initializable {
                 LOGGER.warn("No recipes found.");
                 alert.showAndWait();
             }
-        } else {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle(resources.getString("dialog.norecipedir.title"));
-            alert.setHeaderText(resources.getString("dialog.norecipedir.header"));
-            alert.setContentText(resources.getString("dialog.norecipedir.content"));
-
-            LOGGER.warn("No recipes found.");
-            alert.showAndWait();
-        }
-
-        LOGGER.info("Local recipes have been listed.");
-    }
-
-    /**
-     * Add each recipes from given folder in the localRecipesView ListView to get selected.
-     *
-     * @param recipesFolder {@link File} pointing to the folder with user's saved recipes.
-     */
-    public void searchLocalRecipes(File recipesFolder) {
-        localRecipes.clear();
-        if (recipesFolder.exists()) {
-            File[] recipes = recipesFolder.listFiles();
-
-            // User had created recipes
-            if (recipes != null && recipes.length > 0) {
-                for (File recipe: recipes) {
-                    if (recipe.isFile()) {
-                        loadRecipeFromFile(recipe);
-                    }
-                }
-
-                localRecipesView.setItems(localRecipes);
-            } else {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle(resources.getString("dialog.norecipedir.title"));
-                alert.setHeaderText(resources.getString("dialog.norecipedir.header"));
-                alert.setContentText(resources.getString("dialog.norecipedir.content"));
-
-                LOGGER.warn("No recipes found.");
-                alert.showAndWait();
-            }
-        } else {
+        } else {  // User hasn't set a folder directory yet
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle(resources.getString("dialog.norecipedir.title"));
             alert.setHeaderText(resources.getString("dialog.norecipedir.header"));
@@ -216,9 +174,5 @@ public class SearchRecipeController implements Initializable {
     public void onClickRecipe() {
         planRecipeContainer.getChildren().clear();
         localRecipesView.getSelectionModel().getSelectedItem().getComponents().forEach(this::addRecipeComponent);
-    }
-
-    public void setMainApp(Ryrycipe mainApp) {
-        this.mainApp = mainApp;
     }
 }

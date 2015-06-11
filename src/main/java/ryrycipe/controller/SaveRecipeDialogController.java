@@ -6,18 +6,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
-import ryrycipe.model.wrapper.ComponentWrapper;
 import ryrycipe.model.Material;
-import ryrycipe.model.wrapper.RecipeWrapper;
 import ryrycipe.model.view.MaterialView;
+import ryrycipe.model.wrapper.ComponentWrapper;
+import ryrycipe.model.wrapper.RecipeWrapper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -34,13 +36,25 @@ public class SaveRecipeDialogController implements Initializable {
      * {@link TextField} to enter the name of the recipe's author.
      */
     @FXML
-    private TextField authorName;
+    private TextField authorNameTF;
 
     /**
      * {@link TextField} to enter the name of the recipe's name.
      */
     @FXML
-    private TextField recipeName;
+    private TextField recipeNameTF;
+
+    /**
+     * {@link TextField} asking for path to user's saved recipes
+     */
+    @FXML
+    private TextField recipesFolderTF;
+
+    /**
+     * {@link Button} asking the user to choose a folder to save within user's recipes.
+     */
+    @FXML
+    private Button chooseDirBtn;
 
     /**
      * Reference to dialog {@link Stage} to close it later.
@@ -57,16 +71,46 @@ public class SaveRecipeDialogController implements Initializable {
      */
     private ResourceBundle resources;
 
+    /**
+     * {@link File} where user's recipes are saved.
+     */
+    private File savedRecipesFolder;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
 
         Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
-        authorName.setText(prefs.get("userName", ""));
+        authorNameTF.setText(prefs.get("userName", ""));
+
+        String prefRecipeFolder = prefs.get("recipeFolder", "");
+        if (!prefRecipeFolder.isEmpty()) { // Previous folder path has been saved
+            if (new File(prefRecipeFolder).exists()) {  // folder still exists
+                recipesFolderTF.setText(prefRecipeFolder);
+            } else { // folder not longer exists
+                recipesFolderTF.setPromptText(resources.getString("dialog.save.folder.prompt.notfound"));
+            }
+        }
 
         // Set focus on recipe name text field if author name has already been entered
-        if (!authorName.getText().isEmpty()) {
-            Platform.runLater(recipeName::requestFocus);
+        if (!authorNameTF.getText().isEmpty()) {
+            Platform.runLater(recipeNameTF::requestFocus);
+        }
+    }
+
+    /**
+     * Make the user select a directory to save his recipes.
+     */
+    @FXML
+    private void handleChooseDirClick() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(resources.getString("dialog.save.choosedir.title"));
+        savedRecipesFolder = directoryChooser.showDialog(dialogStage);
+
+        if (savedRecipesFolder != null) {
+            recipesFolderTF.setText(savedRecipesFolder.getPath() + "");
+        } else {
+            recipesFolderTF.setPromptText(resources.getString("dialog.save.folder.prompt"));
         }
     }
 
@@ -75,50 +119,74 @@ public class SaveRecipeDialogController implements Initializable {
      */
     @FXML
     private void handleOKClick() {
-        if (!authorName.getText().isEmpty() && !recipeName.getText().isEmpty()) {
-            // Wrapping user's recipe
-            RecipeWrapper wrapper = new RecipeWrapper(
-                authorName.getText(), recipeName.getText(), mainApp.getCreatorController().getRecipeComment().getText(),
-                mainApp.getCreatorController().getPlanCB().getValue().getName()
-            );
-            wrapper.setComponents(getRecipeComponent());
+        // Check if user filled the form and warn him to fil fields
+        if (authorNameTF.getText().isEmpty() || recipeNameTF.getText().isEmpty()
+            || recipesFolderTF.getText().isEmpty()) {
 
-            // Check if user's recipe name already exists
-            if (checkDuplication(wrapper)) {
-                // User doesn't want to erase previous recipe
-                LOGGER.info("The old recipe has not been overwritten.");
-                return;
+            if (authorNameTF.getText().isEmpty()) {
+                authorNameTF.setPromptText(resources.getString("dialog.save.author.prompt"));
             }
 
-            // Try to save user's recipe
-            if (saveRecipe(wrapper)) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(mainApp.getPrimaryStage());
-                alert.setTitle(resources.getString("dialog.save.success.title"));
-                alert.setHeaderText(null);
-                alert.setContentText(resources.getString("dialog.save.success.content"));
-                LOGGER.info("{}'s Recipe {} saved", authorName.getText(), recipeName.getText());
-
-                alert.showAndWait();
-                dialogStage.close();
-            } else { // Saving failed
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.initOwner(mainApp.getPrimaryStage());
-                alert.setTitle(resources.getString("dialog.save.fail.title"));
-                alert.setHeaderText(resources.getString("dialog.save.fail.header"));
-                alert.setContentText(resources.getString("dialog.save.error.content"));
-
-                LOGGER.warn("{}'s Recipe {} couldn't be saved", authorName.getText(), recipeName.getText());
-                alert.showAndWait();
+            if (recipeNameTF.getText().isEmpty()) {
+                recipeNameTF.setPromptText(resources.getString("dialog.save.recipename.prompt"));
             }
+
+            if (recipesFolderTF.getText().isEmpty()) {
+                recipesFolderTF.setPromptText(resources.getString("dialog.save.folder.prompt"));
+            }
+
+            LOGGER.info("User did not filled the saving form.");
+            return;
+        }
+
+        Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
+        prefs.put("userName", authorNameTF.getText());
+
+        // Check if given path exist and is a directory
+        savedRecipesFolder = new File(recipesFolderTF.getText());
+
+        if (savedRecipesFolder.exists() && savedRecipesFolder.isDirectory()) {
+            prefs.put("recipeFolder", recipesFolderTF.getText());
+        } else {
+            recipesFolderTF.setText(null);
+            recipesFolderTF.setPromptText(resources.getString("dialog.save.folder.prompt"));
+            return;
+        }
+
+        // Wrapping user's recipe
+        RecipeWrapper wrapper = new RecipeWrapper(
+            authorNameTF.getText(), recipeNameTF.getText(),
+            mainApp.getCreatorController().getRecipeComment().getText(),
+            mainApp.getCreatorController().getPlanCB().getValue().getName()
+        );
+        wrapper.setComponents(getRecipeComponent());
+
+        // Check if user's recipe name already exists
+        if (checkDuplication(wrapper)) {
+            // User doesn't want to erase previous recipe
+            LOGGER.info("The old recipe has not been overwritten.");
+            return;
+        }
+
+        // Try to save user's recipe
+        if (saveRecipe(wrapper)) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle(resources.getString("dialog.save.success.title"));
+            alert.setHeaderText(null);
+            alert.setContentText(resources.getString("dialog.save.success.content"));
+            LOGGER.info("{}'s Recipe {} saved", authorNameTF.getText(), recipeNameTF.getText());
+
+            alert.showAndWait();
+            dialogStage.close();
         } else { // Saving failed
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle(resources.getString("dialog.noinfo.title"));
-            alert.setHeaderText(resources.getString("dialog.noinfo.header"));
-            alert.setContentText(resources.getString("dialog.noinfo.content"));
+            alert.setTitle(resources.getString("dialog.save.fail.title"));
+            alert.setHeaderText(resources.getString("dialog.save.fail.header"));
+            alert.setContentText(resources.getString("dialog.save.error.content"));
 
-            LOGGER.warn("{}'s Recipe {} couldn't be saved", authorName.getText(), recipeName.getText());
+            LOGGER.warn("{}'s Recipe {} couldn't be saved", authorNameTF.getText(), recipeNameTF.getText());
             alert.showAndWait();
         }
     }
@@ -145,10 +213,9 @@ public class SaveRecipeDialogController implements Initializable {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             // Marshalling and saving XML to the file
-            File savedRecipe = new File(
-                mainApp.getSavedRecipesFolder() + authorName.getText() + "_" +
+            File savedRecipe = new File(savedRecipesFolder, authorNameTF.getText() + "_" +
                     mainApp.getCreatorController().getPlanCB().getValue().getName() +
-                    "_" + recipeName.getText() + ".xml"
+                    "_" + recipeNameTF.getText() + ".xml"
             );
             marshaller.marshal(wrapper, savedRecipe);
             return true;
@@ -197,26 +264,22 @@ public class SaveRecipeDialogController implements Initializable {
      * @return true if a duplication is founded and user don't want to erase the first recipe.
      */
     private boolean checkDuplication(RecipeWrapper wrapper) {
-        File recipesFolder = new File(mainApp.getSavedRecipesFolder());
+        File[] recipes = savedRecipesFolder.listFiles();
 
-        if (recipesFolder.exists()) {
-            File[] recipes = recipesFolder.listFiles();
+        if (recipes != null && recipes.length > 0) {
+            for (File recipe : recipes) {
+                if (recipe.isFile() && wrapper.fileName().equals(recipe.getName())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle(resources.getString("dialog.duplication.title"));
+                    alert.setHeaderText(resources.getString("dialog.duplication.header"));
+                    alert.setContentText(resources.getString("dialog.duplication.content"));
 
-            if (recipes != null && recipes.length > 0) {
-                for (File recipe : recipes) {
-                    if (recipe.isFile() && wrapper.fileName().equals(recipe.getName())) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle(resources.getString("dialog.duplication.title"));
-                        alert.setHeaderText(resources.getString("dialog.duplication.header"));
-                        alert.setContentText(resources.getString("dialog.duplication.content"));
+                    ButtonType okButton = new ButtonType(resources.getString("button.ok.text"));
+                    ButtonType cancelButton = new ButtonType(resources.getString("button.cancel.text"));
+                    alert.getButtonTypes().setAll(okButton, cancelButton);
 
-                        ButtonType okButton = new ButtonType(resources.getString("button.ok.text"));
-                        ButtonType cancelButton = new ButtonType(resources.getString("button.cancel.text"));
-                        alert.getButtonTypes().setAll(okButton, cancelButton);
-
-                        Optional<ButtonType> response = alert.showAndWait();
-                        return response.get() != okButton;
-                    }
+                    Optional<ButtonType> response = alert.showAndWait();
+                    return response.get() != okButton;
                 }
             }
         }
@@ -225,7 +288,7 @@ public class SaveRecipeDialogController implements Initializable {
     }
 
     /**
-     * Validate saving when user push enter key in {@link SaveRecipeDialogController#recipeName} text field.
+     * Validate saving when user push enter key in {@link SaveRecipeDialogController#recipeNameTF} text field.
      *
      * @param event {@link KeyEvent}
      */
@@ -243,4 +306,5 @@ public class SaveRecipeDialogController implements Initializable {
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
+
 }

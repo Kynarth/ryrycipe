@@ -13,13 +13,9 @@ import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.controller.RyrycipeController;
 import ryrycipe.util.LocaleUtil;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * <h1>Application to manage Ryzom's craft plans</h1>
@@ -33,11 +29,6 @@ import java.util.regex.Pattern;
 public class Ryrycipe extends Application {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Ryrycipe.class.getName());
-
-    /**
-     * Path to folder where user's recipes are saved.
-     */
-    private String savedRecipesFolder;
 
     /**
      * Application {@link Locale}.
@@ -82,8 +73,6 @@ public class Ryrycipe extends Application {
         this.primaryStage.getIcons().add(new Image("/images/logo.png"));
 
         this.locale = new Locale(LocaleUtil.getLanguage());
-
-        createSavedRecipesDir();
 
         initialize();
         showRecipeCreator();
@@ -137,32 +126,6 @@ public class Ryrycipe extends Application {
     }
 
     /**
-     * Create a directory to save user's recipes.
-     */
-    private void createSavedRecipesDir() {
-        try {
-            String executablePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-            Pattern pattern = Pattern.compile("/[^/]+\\.\\w{3}$");
-            Matcher matcher = pattern.matcher(executablePath);
-            if (matcher.find()) {
-                savedRecipesFolder = matcher.replaceFirst("/recipes/");
-            } else { // case when use IDE to launch application
-                savedRecipesFolder = executablePath + "recipes/";
-            }
-
-            File dir = new File(savedRecipesFolder);
-            if (!dir.exists()) {
-                if (dir.mkdir())
-                    LOGGER.info("Succeed to create {} directory", savedRecipesFolder);
-                else
-                    LOGGER.warn("Could not create {} directory", savedRecipesFolder);
-            }
-        } catch (URISyntaxException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
      * Application's launcher
      * @param args Application's parameters
      */
@@ -184,10 +147,6 @@ public class Ryrycipe extends Application {
 
     public RecipeCreatorController getCreatorController() {
         return creatorController;
-    }
-
-    public String getSavedRecipesFolder() {
-        return savedRecipesFolder;
     }
 
     public BorderPane getRootLayout() {

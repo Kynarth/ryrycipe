@@ -16,7 +16,6 @@ import ryrycipe.Ryrycipe;
 import ryrycipe.util.DBConnection;
 import ryrycipe.util.LocaleUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
@@ -122,7 +121,6 @@ public class RyrycipeController implements Initializable {
 
                 // Get the corresponding controller
                 searchController = loader.getController();
-                searchController.setMainApp(mainApp);
                 searchController.searchLocalRecipes();  // Add local recipes to the SearchRecipe's list view
 
                 mainPane.setCenter(mainApp.getRecipeSearchPane());
@@ -234,7 +232,7 @@ public class RyrycipeController implements Initializable {
      */
     @FXML
     private void refresh() {
-        searchController.searchLocalRecipes(new File(mainApp.getSavedRecipesFolder()));
+        searchController.searchLocalRecipes();
     }
 
     /**
