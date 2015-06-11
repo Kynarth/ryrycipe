@@ -28,6 +28,7 @@ import ryrycipe.model.view.MaterialView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Controller for the RecipeCreator view.
@@ -102,6 +103,12 @@ public class RecipeCreatorController implements Initializable {
     private FlowPane materialChooser;
 
     /**
+     * Choose which level of quality for filtered {@link Material}s.
+     */
+    @FXML
+    private TextField matQualityLevel;
+
+    /**
      * Choose {@link Plan}'s quality.
      */
     @FXML
@@ -155,6 +162,27 @@ public class RecipeCreatorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
+
+        matQualityLevel.textProperty().addListener(((observable, oldValue, newValue) -> {
+            Pattern pattern = Pattern.compile("^[0-9]+$");
+
+            if (!newValue.isEmpty()){
+                // Check if the new entered value is a number. If not set the oldValue
+                if (!pattern.matcher(newValue).matches()) {
+                    matQualityLevel.setText(oldValue);
+                    return; // to not enter in the second if statement
+                }
+
+                // Check if the user enters a '0' before other numbers to remove it.
+                if (newValue.charAt(0) == '0' && newValue.length() > 1)
+                    matQualityLevel.setText(newValue.substring(1));
+
+                // Check if the entered value does not exceed the max qality level: 250
+                if (!newValue.isEmpty() && Integer.valueOf(newValue) > 250) {
+                    matQualityLevel.setText("250");
+                }
+            }
+        }));
 
         // Initialize the combobox containing the different plan's quality
         planQualityItems.addAll(resources.getString("combobox.quality.items").split(","));
