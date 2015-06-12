@@ -445,8 +445,8 @@ public class RecipeCreatorController implements Initializable {
             // Check if the material has already been added to the plan
             if (this.usedMaterials.contains(material))
                 continue;
-
-            MaterialView materialView = new MaterialView(material.getImage(), material, matQualityLevel.getText());
+            material.setMatQualityLevel(matQualityLevel.getText());
+            MaterialView materialView = new MaterialView(material.getImage(), material);
             materialView.setRCController(RCController);
             materialView.setCreatorController(this);
             materialView.setMainApp(mainApp);
