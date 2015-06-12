@@ -227,6 +227,11 @@ public class RyrycipeController implements Initializable {
         }
     }
 
+    @FXML
+    private void addRecipesFolder() {
+        System.out.println("Ajout !");
+    }
+
     /**
      * Refresh search pane in case where new recipes are added.
      */
@@ -261,6 +266,13 @@ public class RyrycipeController implements Initializable {
      * Add a refresh tool button to search pane tool bar
      */
     private void initSearchPaneTB() {
+        // Button to add a folder to look for saved recipes
+        Button addFolderBtn = new Button("");
+        addFolderBtn.setId("addFolderBtn");
+        addFolderBtn.setPrefSize(32, 32);
+        Tooltip.install(addFolderBtn, new Tooltip(resources.getString("toolbtn.addfolder.tip")));
+        addFolderBtn.setOnAction(e -> addRecipesFolder());
+
         // Button to refresh recipes in search pane
         Button refreshBtn = new Button("");
         refreshBtn.setId("refreshBtn");
@@ -269,7 +281,7 @@ public class RyrycipeController implements Initializable {
         refreshBtn.setOnAction(e -> refresh());
 
         specificToolBtns.getChildren().clear();
-        specificToolBtns.getChildren().addAll(refreshBtn);
+        specificToolBtns.getChildren().addAll(addFolderBtn, refreshBtn);
     }
 
     public void setMainApp(Ryrycipe mainApp) {
