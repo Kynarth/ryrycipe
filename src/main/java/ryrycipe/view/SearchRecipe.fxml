@@ -8,7 +8,7 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <TabPane layoutX="-2.0" layoutY="-1.0" prefHeight="398.0" prefWidth="295.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TabPane fx:id="recipeTabPane" layoutX="-2.0" layoutY="-1.0" prefHeight="398.0" prefWidth="295.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
                 <Tab closable="false" text="%search.tab.local.name">
                   <content>
@@ -26,12 +26,24 @@
          <children>
             <TabPane layoutX="48.0" layoutY="45.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
-                <Tab text="%search.tab.plan.name">
+                <Tab fx:id="planTab" text="%search.tab.plan.name">
                   <content>
-                        <VBox fx:id="planRecipeContainer" />
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="286.0" minHeight="10.0" prefHeight="286.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox fx:id="planRecipeContainer" />
+                              <TextArea fx:id="commentArea" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
                   </content>
                 </Tab>
-                <Tab text="%search.tab.stats.name">
+                <Tab fx:id="planStatsTab" text="%search.tab.stats.name">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>

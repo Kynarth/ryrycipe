@@ -6,8 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
@@ -35,6 +34,13 @@ public class SearchRecipeController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SearchRecipeController.class.getName());
 
+
+    /**
+     * {@link TabPane} that manage tabs displaying users recipes.
+     */
+    @FXML
+    private TabPane recipeTabPane;
+
     /**
      * Contains all RecipeComponents description the plan's recipe.
      */
@@ -46,6 +52,23 @@ public class SearchRecipeController implements Initializable {
      */
     @FXML
     private ListView<RecipeWrapper> localRecipesView;
+
+    /**
+     * Display selected plan's component with associated comment
+     */
+    @FXML
+    private Tab planTab;
+
+    /**
+     * {@link TextArea} containing plan's comment
+     */
+    public TextArea commentArea;
+
+    /**
+     * Display selected plan's stats
+     */
+    @FXML
+    private Tab planStatsTab;
 
     /**
      * {@link ResourceBundle}
@@ -78,7 +101,7 @@ public class SearchRecipeController implements Initializable {
             // User has created recipes
             if (recipes != null && recipes.length > 0) {
                 for (File recipe: recipes) {
-                    if (recipe.isFile()) {
+                    if (recipe.isFile() && recipe.getName().endsWith(".xml")) {
                         loadRecipeFromFile(recipe);
                     }
                 }
@@ -132,6 +155,30 @@ public class SearchRecipeController implements Initializable {
     }
 
     /**
+     * Load a {@link RecipeWrapper}from given file to add it in a {@link ObservableList}.
+     *
+     * @param recipesFile {@link File} containing XML data representing a user's recipe.
+     */
+    public void loadRecipeFromFile(File recipesFile, ObservableList<RecipeWrapper> recipesList) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(RecipeWrapper.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            RecipeWrapper wrapper = (RecipeWrapper) unmarshaller.unmarshal(recipesFile);
+
+            recipesList.add(wrapper);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle(resources.getString("dialog.loaddataerror.title"));
+            alert.setHeaderText(resources.getString("dialog.loaddataerror.header"));
+            alert.setContentText(resources.getString("dialog.loaddataerror.content" + recipesFile.getPath()));
+
+            alert.showAndWait();
+        }
+    }
+
+    /**
      * Add a RecipeComponent to the Plan's tab with all informations from loaded recipe.
      *
      * @param componentWrapper {@link ComponentWrapper}
@@ -170,8 +217,29 @@ public class SearchRecipeController implements Initializable {
      * Extract data from loaded {@link RecipeWrapper} to display recipe's components.
      */
     @FXML
-    public void onClickRecipe() {
+    private void onClickRecipe() {
         planRecipeContainer.getChildren().clear();
-        localRecipesView.getSelectionModel().getSelectedItem().getComponents().forEach(this::addRecipeComponent);
+
+        // Verify that user's do not select nothing
+        if (localRecipesView.getSelectionModel().getSelectedItem() != null) {
+            // Display RecipeComponent composing the user's plan
+            localRecipesView.getSelectionModel().getSelectedItem().getComponents().forEach(this::addRecipeComponent);
+
+            // Display associated comment
+            commentArea.setText(localRecipesView.getSelectionModel().getSelectedItem().getRecipeComment()
+            );
+        }
+    }
+
+    public TabPane getRecipeTabPane() {
+        return recipeTabPane;
+    }
+
+    public VBox getPlanRecipeContainer() {
+        return planRecipeContainer;
+    }
+
+    public TextArea getCommentArea() {
+        return commentArea;
     }
 }

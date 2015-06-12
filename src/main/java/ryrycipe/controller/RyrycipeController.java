@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import ryrycipe.Ryrycipe;
 import ryrycipe.util.DBConnection;
 import ryrycipe.util.LocaleUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
@@ -227,9 +229,40 @@ public class RyrycipeController implements Initializable {
         }
     }
 
+    /**
+     * Allow the user to add a new {@link Tab} with recipes from selected folder.
+     */
     @FXML
     private void addRecipesFolder() {
-        System.out.println("Ajout !");
+        // Make the user choose a folder containing recipes
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(resources.getString("search.dialog.addfolder.title"));
+        File recipesFolder = directoryChooser.showDialog(mainApp.getPrimaryStage());
+
+        if (recipesFolder == null) {
+            LOGGER.warn("Problem with folder selection.");
+            return;
+        }
+
+        // Load new tab for recipes
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/RecipesTab.fxml"));
+            loader.setResources(resources);
+            Tab tab = loader.load();
+
+            RecipesTabController controller = loader.getController();
+            controller.getRecipesTab().setText(recipesFolder.getName());
+            controller.setSearchController(searchController);
+
+            controller.test(recipesFolder);
+
+            searchController.getRecipeTabPane().getTabs().add(tab);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        LOGGER.info("User choose another recipes' folder: {}", recipesFolder.getPath());
     }
 
     /**
@@ -283,6 +316,8 @@ public class RyrycipeController implements Initializable {
         specificToolBtns.getChildren().clear();
         specificToolBtns.getChildren().addAll(addFolderBtn, refreshBtn);
     }
+
+
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
