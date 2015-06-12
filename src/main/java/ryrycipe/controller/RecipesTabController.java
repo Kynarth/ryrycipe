@@ -16,6 +16,8 @@ import ryrycipe.model.view.MaterialView;
 import ryrycipe.model.wrapper.ComponentWrapper;
 import ryrycipe.model.wrapper.RecipeWrapper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -55,13 +57,18 @@ public class RecipesTabController implements Initializable {
         this.resources = resources;
     }
 
-    public void test(File recipesFolder) {
+    /**
+     * list all xml files from given folder to extract recipe from them.
+     *
+     * @param recipesFolder {@link File} selected by user via {@link javafx.stage.DirectoryChooser} containing recipes.
+     */
+    public void ListRecipes(File recipesFolder) {
         ObservableList<RecipeWrapper> newFolderRecipes = FXCollections.observableArrayList();
         File[] recipes = recipesFolder.listFiles();
         if (recipes != null && recipes.length > 0) {
             for (File recipe : recipes) {
                 if (recipe.isFile() && recipe.getName().endsWith(".xml")) {
-                    searchController.loadRecipeFromFile(recipe, newFolderRecipes);
+                    loadRecipeFromFile(recipe, newFolderRecipes);
                 }
             }
         } else {  // User chose an empty or invalid folder
@@ -75,6 +82,30 @@ public class RecipesTabController implements Initializable {
         }
 
         recipesListView.setItems(newFolderRecipes);
+    }
+
+    /**
+     * Load a {@link RecipeWrapper}from given file to add it in a {@link ObservableList}.
+     *
+     * @param recipesFile {@link File} containing XML data representing a user's recipe.
+     */
+    private void loadRecipeFromFile(File recipesFile, ObservableList<RecipeWrapper> recipesList) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(RecipeWrapper.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            RecipeWrapper wrapper = (RecipeWrapper) unmarshaller.unmarshal(recipesFile);
+
+            recipesList.add(wrapper);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(resources.getString("dialog.loaddataerror.title"));
+            alert.setHeaderText(resources.getString("dialog.loaddataerror.header"));
+            alert.setContentText(resources.getString("dialog.loaddataerror.content" + recipesFile.getPath()));
+
+            alert.showAndWait();
+        }
     }
 
     /**
