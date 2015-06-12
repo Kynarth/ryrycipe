@@ -94,7 +94,6 @@ public class SearchRecipeController implements Initializable {
         }
     }
 
-
     public TabPane getRecipeTabPane() {
         return recipeTabPane;
     }

@@ -16,6 +16,7 @@ import ryrycipe.util.LocaleUtil;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 /**
  * <h1>Application to manage Ryzom's craft plans</h1>
@@ -94,8 +95,16 @@ public class Ryrycipe extends Application {
             ryrycipeController = loader.getController();
             ryrycipeController.setMainApp(this);
 
-            // Create a scene with the loaded layout
-            Scene scene = new Scene(rootLayout, 700, 445);
+            // Create a scene with the loaded layout at preferred user's size
+            Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
+            Scene scene = new Scene(rootLayout, prefs.getDouble("appWidth", 700), prefs.getDouble("appHeight", 445));
+            scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+                prefs.putDouble("appWidth", newValue.doubleValue());
+            });
+            scene.heightProperty().addListener((observable, oldValue, newValue) -> {
+                prefs.putDouble("appHeight", newValue.doubleValue());
+            });
+
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException | IllegalStateException e) {
