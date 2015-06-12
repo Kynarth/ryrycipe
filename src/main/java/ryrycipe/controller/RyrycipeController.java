@@ -123,7 +123,6 @@ public class RyrycipeController implements Initializable {
 
                 // Get the corresponding controller
                 searchController = loader.getController();
-//                searchController.searchLocalRecipes();  // Add local recipes to the SearchRecipe's list view
 
                 mainPane.setCenter(mainApp.getRecipeSearchPane());
 
@@ -254,8 +253,10 @@ public class RyrycipeController implements Initializable {
             RecipesTabController controller = loader.getController();
             controller.getRecipesTab().setText(recipesFolder.getName());
             controller.setSearchController(searchController);
+            controller.setRecipesFolder(recipesFolder);
+            tab.setUserData(controller); // to use his controller later
 
-            controller.ListRecipes(recipesFolder);
+            controller.ListRecipes();
 
             searchController.getRecipeTabPane().getTabs().add(tab);
         } catch (IOException e) {
@@ -271,6 +272,13 @@ public class RyrycipeController implements Initializable {
     @FXML
     private void refresh() {
         //searchController.searchLocalRecipes();
+        RecipesTabController controller = (RecipesTabController) searchController
+            .getRecipeTabPane()
+            .getSelectionModel()
+            .getSelectedItem()
+            .getUserData();
+
+        controller.ListRecipes();
     }
 
     /**

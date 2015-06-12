@@ -477,6 +477,8 @@ public class RecipeCreatorController implements Initializable {
 
     /**
      * Displays material in function of entered level quality in {@link RecipeCreatorController#matQualityLevel}.
+     *
+     * @param event {@link KeyEvent}
      */
     @FXML
     private void handleEnterPressed(KeyEvent event) {

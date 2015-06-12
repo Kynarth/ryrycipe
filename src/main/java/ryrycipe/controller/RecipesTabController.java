@@ -48,6 +48,16 @@ public class RecipesTabController implements Initializable {
     private SearchRecipeController searchController;
 
     /**
+     * {@link File} containing user's recipes in xml format.
+     */
+    private File recipesFolder;
+
+    /**
+     * {@link ObservableList} of {@link RecipeWrapper} representing recipes in {@link RecipesTabController#recipesFolder}
+     */
+    private ObservableList<RecipeWrapper> recipesList = FXCollections.observableArrayList();
+
+    /**
      * {@link ResourceBundle}
      */
     private ResourceBundle resources;
@@ -59,16 +69,15 @@ public class RecipesTabController implements Initializable {
 
     /**
      * list all xml files from given folder to extract recipe from them.
-     *
-     * @param recipesFolder {@link File} selected by user via {@link javafx.stage.DirectoryChooser} containing recipes.
      */
-    public void ListRecipes(File recipesFolder) {
-        ObservableList<RecipeWrapper> newFolderRecipes = FXCollections.observableArrayList();
+    public void ListRecipes() {
+        recipesList.clear();
+
         File[] recipes = recipesFolder.listFiles();
         if (recipes != null && recipes.length > 0) {
             for (File recipe : recipes) {
                 if (recipe.isFile() && recipe.getName().endsWith(".xml")) {
-                    loadRecipeFromFile(recipe, newFolderRecipes);
+                    loadRecipeFromFile(recipe);
                 }
             }
         } else {  // User chose an empty or invalid folder
@@ -81,19 +90,19 @@ public class RecipesTabController implements Initializable {
             alert.showAndWait();
         }
 
-        recipesListView.setItems(newFolderRecipes);
+        recipesListView.setItems(recipesList);
     }
 
     /**
      * Load a {@link RecipeWrapper}from given file to add it in a {@link ObservableList}.
      *
-     * @param recipesFile {@link File} containing XML data representing a user's recipe.
+     * @param recipeFile {@link File} containing XML data representing a user's recipe.
      */
-    private void loadRecipeFromFile(File recipesFile, ObservableList<RecipeWrapper> recipesList) {
+    private void loadRecipeFromFile(File recipeFile) {
         try {
             JAXBContext context = JAXBContext.newInstance(RecipeWrapper.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            RecipeWrapper wrapper = (RecipeWrapper) unmarshaller.unmarshal(recipesFile);
+            RecipeWrapper wrapper = (RecipeWrapper) unmarshaller.unmarshal(recipeFile);
 
             recipesList.add(wrapper);
         } catch (Exception e) {
@@ -102,7 +111,7 @@ public class RecipesTabController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(resources.getString("dialog.loaddataerror.title"));
             alert.setHeaderText(resources.getString("dialog.loaddataerror.header"));
-            alert.setContentText(resources.getString("dialog.loaddataerror.content" + recipesFile.getPath()));
+            alert.setContentText(resources.getString("dialog.loaddataerror.content" + recipeFile.getPath()));
 
             alert.showAndWait();
         }
@@ -168,5 +177,9 @@ public class RecipesTabController implements Initializable {
 
     public void setSearchController(SearchRecipeController searchController) {
         this.searchController = searchController;
+    }
+
+    public void setRecipesFolder(File recipesFolder) {
+        this.recipesFolder = recipesFolder;
     }
 }

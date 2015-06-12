@@ -58,6 +58,9 @@ public class SearchRecipeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
+        File recipesFolder = new File(prefs.get("recipeFolder", ""));
+
         // Load tab with recipes from last selected folder to save user's recipes
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -69,13 +72,14 @@ public class SearchRecipeController implements Initializable {
             RecipesTabController controller = loader.getController();
             controller.getRecipesTab().setText(resources.getString("search.tab.local.name"));
             controller.setSearchController(this);
+            controller.setRecipesFolder(recipesFolder);
 
-            Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
-            File recipesFolder = new File(prefs.get("recipeFolder", ""));
+            tab.setUserData(controller); // to use his controller later
+
+            recipeTabPane.getTabs().add(tab);
 
             if (recipesFolder.exists()) {
-                controller.ListRecipes(recipesFolder);
-
+                controller.ListRecipes();
             } else {  // User hasn't yet chosen a directory
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(resources.getString("dialog.norecipedir.title"));
@@ -84,9 +88,7 @@ public class SearchRecipeController implements Initializable {
 
                 LOGGER.warn("No recipes found.");
                 alert.showAndWait();
-        }
-
-            recipeTabPane.getTabs().add(tab);
+            }
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
