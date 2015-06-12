@@ -13,17 +13,16 @@ import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
-import ryrycipe.model.wrapper.ComponentWrapper;
 import ryrycipe.model.Material;
-import ryrycipe.model.wrapper.RecipeWrapper;
 import ryrycipe.model.view.MaterialView;
+import ryrycipe.model.wrapper.ComponentWrapper;
+import ryrycipe.model.wrapper.RecipeWrapper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -152,11 +151,11 @@ public class SearchRecipeController implements Initializable {
             controller.setupRecipeComponent();
 
             // Add each MaterialView to the RecipeComponent
-            for (Map.Entry<Material, Integer> entry: componentWrapper.getMaterials().entrySet()) {
-                MaterialView materialView = new MaterialView(entry.getKey(), entry.getValue());
+            for (Material material: componentWrapper.getMaterials()) {
+                MaterialView materialView = new MaterialView(material);
                 materialView.setRCController(controller);
                 controller.getMaterialsContainer().getChildren().add(0, materialView);
-                controller.updateIndicator(entry.getValue());
+                controller.updateIndicator(material.getNbMaterials());
             }
 
             // Add each filled RecipeComponent to the plan

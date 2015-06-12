@@ -12,7 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.util.LocaleUtil;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.text.Normalizer;
@@ -72,6 +73,11 @@ public class Material {
      * Material's quality level
      */
     private String matQualityLevel = "0";
+
+    /**
+     * Number of Materials contained in a {@link ryrycipe.model.view.MaterialView}.
+     */
+    private int nbMaterials = 0;
 
     /**
      * A {@link List} of {@link Component}s defining in which {@link Component} a material can be used.
@@ -258,7 +264,19 @@ public class Material {
         return name;
     }
 
+    public String getMatQualityLevel() {
+        return matQualityLevel;
+    }
+
     public void setMatQualityLevel(String matQualityLevel) {
         this.matQualityLevel = matQualityLevel;
+    }
+
+    public int getNbMaterials() {
+        return nbMaterials;
+    }
+
+    public void setNbMaterials(int nbMaterials) {
+        this.nbMaterials = nbMaterials;
     }
 }

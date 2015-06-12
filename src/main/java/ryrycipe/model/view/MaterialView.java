@@ -51,11 +51,6 @@ public class MaterialView extends ImageView {
     private Material material;
 
     /**
-     * Number of {@link Material}s contained within it
-     */
-    private int nbMaterials;
-
-    /**
      * Reference to {@link RecipeCreatorController} to perform actions on the MaterialView.
      */
     private RecipeCreatorController creatorController;
@@ -110,7 +105,7 @@ public class MaterialView extends ImageView {
             event.consume(); // To not trigger RecipeComponent#clicked method
             if(event.getClickCount() == 2){
                 // Update RecipeComponent's indicator
-                RCController.updateIndicator(-this.nbMaterials);
+                RCController.updateIndicator(-this.material.getNbMaterials());
 
                 // Change eventFilter to be able to be added again
                 RCController.getMaterialsContainer().getChildren().remove(this);
@@ -130,7 +125,7 @@ public class MaterialView extends ImageView {
                 this.setOnMouseClicked(this.mouseEventAddMaterial);
 
                 // Return to Material View default value
-                this.nbMaterials = 0;
+                this.material.setNbMaterials(0);
                 this.setImage(this.material.getImage());
 
                 // Remove the materials from the list of the ones used.
@@ -166,13 +161,11 @@ public class MaterialView extends ImageView {
      */
     public MaterialView() {
         super(new Image("/images/backgrounds/BK_empty.png"));
-        this.nbMaterials = 0;
     }
 
     public MaterialView(Image image, Material material) {
         super(image);
         this.material = material;
-        this.nbMaterials = 0;
 
         Tooltip tooltip = new Tooltip(this.material.getDescription());
         Tooltip.install(this, tooltip);
@@ -184,12 +177,10 @@ public class MaterialView extends ImageView {
      * Constructor used to load plan's recipe from file.
      *
      * @param material {@link Material}
-     * @param number Number of materials present in the recipe.
      */
-    public MaterialView(Material material, int number) {
+    public MaterialView(Material material) {
         super(material.getImage());
         this.material = material;
-        this.nbMaterials = number;
         this.addMaterialInfos();
 
         Tooltip tooltip = new Tooltip(this.material.getDescription());
@@ -212,17 +203,19 @@ public class MaterialView extends ImageView {
         if (RCController != null) {
             // Get the number of materials to used via a dialog
             try {
-                this.nbMaterials = Integer.valueOf(showMaterialNumberDialog(RCController.getNeededMaterialNb()));
+                this.material.setNbMaterials(
+                    Integer.valueOf(showMaterialNumberDialog(RCController.getNeededMaterialNb()))
+                );
             } catch (NumberFormatException e) {
-                this.nbMaterials = 0;
+                this.material.setNbMaterials(0);
             }
 
-            if (nbMaterials != 0) {
+            if (this.material.getNbMaterials() != 0) {
                 // Remove the event filter after that the material view get into RecipeComponent
                 // to replace with event filter to remove it by double click
                 this.setOnMouseClicked(mouseEventRemoveMaterial);
                 RCController.getMaterialsContainer().getChildren().add(0, this);
-                RCController.updateIndicator(nbMaterials);
+                RCController.updateIndicator(this.material.getNbMaterials());
                 addMaterialInfos();
             }
 
@@ -330,7 +323,7 @@ public class MaterialView extends ImageView {
         // Write the number on the image
         // Get an image of each digits composing the number of chosen materials
         List<Image> numbers = new ArrayList<>();
-        for (char digit: String.valueOf(this.nbMaterials).toCharArray()) {
+        for (char digit: String.valueOf(this.material.getNbMaterials()).toCharArray()) {
             numbers.add(new Image("/images/foregrounds/Numbers_" + digit + ".png"));
         }
 
@@ -381,9 +374,5 @@ public class MaterialView extends ImageView {
 
     public Image getMaterialViewImage() {
         return this.snapshot(new SnapshotParameters(), null);
-    }
-
-    public int getNbMaterials() {
-        return nbMaterials;
     }
 }

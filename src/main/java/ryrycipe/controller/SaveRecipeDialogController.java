@@ -25,7 +25,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 public class SaveRecipeDialogController implements Initializable {
@@ -242,11 +245,11 @@ public class SaveRecipeDialogController implements Initializable {
     private List<ComponentWrapper> getRecipeComponent() {
         List<ComponentWrapper> componentWrappers = new ArrayList<>();
         for(Node node: mainApp.getCreatorController().getComponentsContainer().getChildren()) {
-            Map<Material, Integer> materials = new HashMap<>();
+            List<Material> materials = new ArrayList<>();
             RecipeComponentController controller = (RecipeComponentController) node.getUserData();
             for(Node child: controller.getMaterialsContainer().getChildren()) {
                 MaterialView materialView = (MaterialView) child;
-                materials.put(materialView.getMaterial(), materialView.getNbMaterials());
+                materials.add(materialView.getMaterial());
             }
             ComponentWrapper componentWrapper = new ComponentWrapper();
             componentWrapper.setComponent(controller.getComponent());
