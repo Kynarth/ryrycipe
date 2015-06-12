@@ -83,9 +83,11 @@ public class SaveRecipeDialogController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
 
+        // Get user's name if he entered it in previous recipe's save
         Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
         authorNameTF.setText(prefs.get("userName", ""));
 
+        // Get path where recipes are saved if the user entered it in previous recipe's save
         String prefRecipeFolder = prefs.get("recipeFolder", "");
         if (!prefRecipeFolder.isEmpty()) { // Previous folder path has been saved
             if (new File(prefRecipeFolder).exists()) {  // folder still exists
@@ -142,12 +144,12 @@ public class SaveRecipeDialogController implements Initializable {
             return;
         }
 
+        // Set user's name if it has been entered previously
         Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
         prefs.put("userName", authorNameTF.getText());
 
-        // Check if given path exist and is a directory
+        // Check if given path exist and is a directory otherwise warn the user
         savedRecipesFolder = new File(recipesFolderTF.getText());
-
         if (savedRecipesFolder.exists() && savedRecipesFolder.isDirectory()) {
             prefs.put("recipeFolder", recipesFolderTF.getText());
         } else {
@@ -224,13 +226,12 @@ public class SaveRecipeDialogController implements Initializable {
             return true;
 
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(resources.getString("dialog.save.fail.title"));
             alert.setHeaderText(resources.getString("dialog.save.fail.header"));
             alert.setContentText(resources.getString("dialog.save.error.content"));
 
+            LOGGER.error(e.getMessage());
             alert.showAndWait();
         }
 
@@ -261,7 +262,7 @@ public class SaveRecipeDialogController implements Initializable {
     }
 
     /**
-     * Check if recipe name is already taken.
+     * Check if recipe name is already taken and ask the user if he wants to erase the older one.
      *
      * @param wrapper Loaded recipe from file.
      * @return true if a duplication is founded and user don't want to erase the first recipe.

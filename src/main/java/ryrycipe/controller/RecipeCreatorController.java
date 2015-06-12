@@ -430,9 +430,8 @@ public class RecipeCreatorController implements Initializable {
      */
     @FXML
     private void displayMaterials() {
-        MaterialManager materialManager = new MaterialManager();
         materialChooser.getChildren().clear();
-
+        MaterialManager materialManager = new MaterialManager();
         Map<String, String> filterParameter = getFilterParameters();
 
         // Check if the user has choose a material category
@@ -468,8 +467,6 @@ public class RecipeCreatorController implements Initializable {
                 if (!controller.isFilled())
                     return false;
             }
-        } else {
-            return false;
         }
 
         return true;

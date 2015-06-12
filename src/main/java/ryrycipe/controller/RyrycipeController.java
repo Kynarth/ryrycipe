@@ -93,6 +93,9 @@ public class RyrycipeController implements Initializable {
         this.resources = resources;
     }
 
+    /**
+     * Display the pane to create recipes.
+     */
     @FXML
     private void createRecipe() {
         // Load previous CreatorPane with his tool bar else create new one.
@@ -116,6 +119,7 @@ public class RyrycipeController implements Initializable {
             mainApp.getRootLayout().setCenter(mainApp.getRecipeSearchPane());
         } else {
             try {
+                // Load SearchRecipe view
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(this.getClass().getResource("/ryrycipe/view/SearchRecipe.fxml"));
                 loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
@@ -147,6 +151,7 @@ public class RyrycipeController implements Initializable {
 
         Optional < ButtonType > result = alert.showAndWait();
 
+        // Switch language
         if (result.get() == ButtonType.OK) {
 
             if (mainApp.getLocale().toString().equals("fr")) {
@@ -158,6 +163,8 @@ public class RyrycipeController implements Initializable {
                 DBConnection.changeLanguage();  // update the path to the database in function of language
                 mainApp.setLocale(new Locale("fr"));
             }
+
+            // Reinitialize application
             mainApp.initialize();
             mainApp.showRecipeCreator();
 
@@ -194,12 +201,14 @@ public class RyrycipeController implements Initializable {
     @FXML
     private void save() {
         if (mainApp.getCreatorController().isPlanFilled()) {
+            // Load SaveRecipeDialog view
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(this.getClass().getResource("/ryrycipe/view/SaveRecipeDialog.fxml"));
                 loader.setResources(ResourceBundle.getBundle("lang", mainApp.getLocale()));
                 AnchorPane dialogPane = loader.load();
 
+                // Dialog configuration
                 Stage dialogStage = new Stage();
                 dialogStage.setTitle(loader.getResources().getString("dialog.save.title"));
                 dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -208,6 +217,7 @@ public class RyrycipeController implements Initializable {
                 dialogStage.setScene(scene);
                 dialogStage.setResizable(false);
 
+                // Initialize associated controller
                 SaveRecipeDialogController controller = loader.getController();
                 controller.setMainApp(mainApp);
                 controller.setDialogStage(dialogStage);
@@ -216,7 +226,7 @@ public class RyrycipeController implements Initializable {
             } catch (IOException | IllegalStateException e) {
                 LOGGER.error(e.getMessage());
             }
-        } else {
+        } else { // Use hasn't filled his recipe before saving
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
             alert.setTitle(resources.getString("dialog.save.fail.title"));
@@ -243,19 +253,21 @@ public class RyrycipeController implements Initializable {
             return;
         }
 
-        // Load new tab for recipes
         try {
+            // Create a new RecipeTab
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource("/ryrycipe/view/RecipesTab.fxml"));
             loader.setResources(resources);
             Tab tab = loader.load();
 
+            // Initialize tab's controller
             RecipesTabController controller = loader.getController();
             controller.getRecipesTab().setText(recipesFolder.getName());
             controller.setSearchController(searchController);
             controller.setRecipesFolder(recipesFolder);
             tab.setUserData(controller); // to use his controller later
 
+            // Added all recipes of selected folder to the inner ListView
             controller.ListRecipes();
 
             searchController.getRecipeTabPane().getTabs().add(tab);
@@ -267,11 +279,10 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
-     * Refresh search pane in case where new recipes are added.
+     * Refresh current recipe's tab in case where new recipes are saved in his associated folder
      */
     @FXML
     private void refresh() {
-        //searchController.searchLocalRecipes();
         RecipesTabController controller = (RecipesTabController) searchController
             .getRecipeTabPane()
             .getSelectionModel()
@@ -282,7 +293,7 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
-     * Add a new and save recipe tool buttons to create pane tool bar
+     * Add a new and save recipe tool buttons to creator pane tool bar
      */
     public void initCreatePaneTB() {
         // Button to create new recipe
@@ -299,6 +310,7 @@ public class RyrycipeController implements Initializable {
         Tooltip.install(saveRecipeBtn, new Tooltip(resources.getString("toolbtn.save.tip")));
         saveRecipeBtn.setOnAction(e -> save());
 
+        // Add buttons to the tool bar
         specificToolBtns.getChildren().clear();
         specificToolBtns.getChildren().addAll(newRecipeBtn, saveRecipeBtn);
     }
@@ -321,11 +333,10 @@ public class RyrycipeController implements Initializable {
         Tooltip.install(refreshBtn, new Tooltip(resources.getString("toolbtn.refresh.tip")));
         refreshBtn.setOnAction(e -> refresh());
 
+        // Add buttons to the tool bar
         specificToolBtns.getChildren().clear();
         specificToolBtns.getChildren().addAll(addFolderBtn, refreshBtn);
     }
-
-
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;

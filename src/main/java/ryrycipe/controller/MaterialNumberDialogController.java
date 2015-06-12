@@ -75,7 +75,6 @@ public class MaterialNumberDialogController implements Initializable {
     public void setMaterialAmount(int amount) {
         this.materialAmount = amount;
         nbMaterialField.setText(String.valueOf(amount));
-
         nbMaterialField.selectNextWord();
     }
 
