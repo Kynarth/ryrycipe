@@ -106,13 +106,12 @@ public class RecipesTabController implements Initializable {
 
             recipesList.add(wrapper);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(resources.getString("dialog.loaddataerror.title"));
             alert.setHeaderText(resources.getString("dialog.loaddataerror.header"));
-            alert.setContentText(resources.getString("dialog.loaddataerror.content" + recipeFile.getPath()));
+            alert.setContentText(resources.getString("dialog.loaddataerror.content") + " " + recipeFile.getName());
 
+            LOGGER.warn("Problem while reading {} file", recipeFile.getPath());
             alert.showAndWait();
         }
     }
