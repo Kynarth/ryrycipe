@@ -18,6 +18,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,6 +76,12 @@ public class Material {
     private String matQualityLevel = "0";
 
     /**
+     * Material's stats for specific {@link Component}.
+     * String corresponding to {@link Component#id}
+     */
+    private Map<String, JsonObject> stats;
+
+    /**
      * Number of Materials contained in a {@link ryrycipe.model.view.MaterialView}.
      */
     private int nbMaterials = 0;
@@ -84,7 +91,9 @@ public class Material {
      */
     private List<Component> asComponent;
 
-    public Material() {}
+    public Material() {
+        this.stats = new HashMap<>();
+    }
 
     public Material(String id, String description, String category, String type, String quality, Faction faction,
                     String icon, String name, List<Component> asComponent) {
@@ -97,6 +106,7 @@ public class Material {
         this.quality = quality;
         this.faction = faction;
         this.asComponent = asComponent;
+        this.stats = new HashMap<>();
     }
 
     /**
@@ -159,23 +169,34 @@ public class Material {
      * @throws IOException Problem with reading the json file containing materials' stats.
      */
     public JsonObject getStats(String componentCode) throws IOException {
-        // Get json file with materials' stats
-        URL jsonUrl = Material.class.getClassLoader().getResource(
-            "json/resource_stats_" + LocaleUtil.getLanguage() + ".json"
-        );
-        if (jsonUrl == null) {
-            LOGGER.error("Could not find json file with all materials' stats.");
-            return null;
+        try {
+            if (!this.stats.get(componentCode).isJsonNull()) {
+                return this.stats.get(componentCode);
+            } else {
+                LOGGER.warn("Problem with loading stats for the material: {}", this.name);
+                return (new JsonObject());
+            }
+
+        } catch (NullPointerException e) {
+            // Get json file with materials' stats
+            URL jsonUrl = Material.class.getClassLoader().getResource(
+                "json/resource_stats_" + LocaleUtil.getLanguage() + ".json"
+            );
+            if (jsonUrl == null) {
+                LOGGER.error("Could not find json file with all materials' stats.");
+                return null;
+            }
+
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonUrl.openStream(), "UTF-8"));
+
+            // Return JsonObject containing stats for the given material and component
+            Gson gson = new Gson();
+            Type mapOfMapsType = new TypeToken<Map<String, Map<String, Map<String, JsonObject>>>>() {}.getType();
+            Map<String, Map<String, Map<String, JsonObject>>> map = gson.fromJson(jsonReader, mapOfMapsType);
+
+            this.stats.put(componentCode, map.get(this.id).get("stats").get(componentCode));
+            return map.get(this.id).get("stats").get(componentCode);
         }
-
-        JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonUrl.openStream(), "UTF-8"));
-
-        // Return JsonObject containing stats for the given material and component
-        Gson gson = new Gson();
-        Type mapOfMapsType = new TypeToken<Map<String, Map<String, Map<String, JsonObject>>>>() {}.getType();
-        Map<String, Map<String, Map<String, JsonObject>>> map = gson.fromJson(jsonReader, mapOfMapsType);
-
-        return map.get(this.id).get("stats").get(componentCode);
     }
 
     @Override
