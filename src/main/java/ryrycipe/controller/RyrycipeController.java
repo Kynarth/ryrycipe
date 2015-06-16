@@ -133,9 +133,40 @@ public class RyrycipeController implements Initializable {
                 // Load corresponding tool bar
                 initSearchPaneTB();
             } catch (IOException | IllegalStateException e) {
-                e.printStackTrace();
+               LOGGER.error(e.getMessage());
             }
         }
+    }
+
+    /**
+     * Upload current recipe.
+     */
+    @FXML
+    private void uploadRecipe() {
+        // Display a dialog to make the user choose or add a dropbox to save current recipe
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SelectCloudDialog.fxml"));
+            loader.setResources(resources);
+            AnchorPane dialogPane = loader.load();
+
+            // Setup dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(loader.getResources().getString("dialog.cloud.title"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(mainApp.getPrimaryStage());
+            Scene scene = new Scene(dialogPane);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            SelectCloudDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error(e.getMessage());
+        }
+
     }
 
     /**
