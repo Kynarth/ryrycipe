@@ -1,18 +1,28 @@
 package ryrycipe;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.controller.RecipeCreatorController;
 import ryrycipe.controller.RyrycipeController;
+import ryrycipe.model.DropBoxAccount;
+import ryrycipe.model.wrapper.DropBoxAccountWrapper;
 import ryrycipe.util.LocaleUtil;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -67,13 +77,31 @@ public class Ryrycipe extends Application {
      */
     RecipeCreatorController creatorController;
 
+    private File savedDPAccounts;
+
+    /**
+     * {@link ObservableList} of {@link DropBoxAccount} to upload user's recipes within them.
+     */
+    private ObservableList<DropBoxAccount> DPAccounts = FXCollections.observableArrayList();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Ryrycipe");
         this.primaryStage.getIcons().add(new Image("/images/logo.png"));
 
+        // Save list of DropBox accounts when user close the application
+        this.primaryStage.setOnCloseRequest(this::saveDPAccounts);
+
         this.locale = new Locale(LocaleUtil.getLanguage());
+
+        // Initialize file where dropbox accounts will be saved
+        String exePath = Ryrycipe.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+        String savingPath = exePath.substring(0, exePath.lastIndexOf(File.separator));
+        savedDPAccounts = new File(savingPath, "dp_accounts.xml");
+
+        // Load user's dropbox accounts
+        this.loadDPAccounts();
 
         initialize();
         showRecipeCreator();
@@ -135,6 +163,41 @@ public class Ryrycipe extends Application {
     }
 
     /**
+     * Save user's list of {@link DropBoxAccount} to load it next time.
+     */
+    private void saveDPAccounts(WindowEvent windowEvent) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(DropBoxAccountWrapper.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            DropBoxAccountWrapper wrapper = new DropBoxAccountWrapper();
+            wrapper.setDPAccounts(DPAccounts);
+
+            marshaller.marshal(wrapper, savedDPAccounts);
+        } catch (JAXBException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Load user's list of {@link DropBoxAccount}s.
+     */
+    private void loadDPAccounts() {
+        try {
+            JAXBContext context = JAXBContext.newInstance(DropBoxAccountWrapper.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+
+            // Reading XML from the file and unmarshalling.
+            DropBoxAccountWrapper wrapper = (DropBoxAccountWrapper) unmarshaller.unmarshal(savedDPAccounts);
+            DPAccounts.addAll(wrapper.getDPAccounts());
+
+        } catch (JAXBException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+        /**
      * Application's launcher
      * @param args Application's parameters
      */
@@ -172,5 +235,9 @@ public class Ryrycipe extends Application {
 
     public SplitPane getRecipeSearchPane() {
         return recipeSearchPane;
+    }
+
+    public ObservableList<DropBoxAccount> getDPAccounts() {
+        return DPAccounts;
     }
 }

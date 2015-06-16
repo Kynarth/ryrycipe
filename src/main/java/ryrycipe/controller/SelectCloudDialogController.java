@@ -1,20 +1,18 @@
 package ryrycipe.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ryrycipe.Ryrycipe;
 import ryrycipe.model.DropBoxAccount;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -52,15 +50,33 @@ public class SelectCloudDialogController implements Initializable {
     private Stage dialogStage;
 
     /**
-     * {@link ObservableList} of {@link DropBoxAccount}.
+     * {@link ResourceBundle}
      */
-    private ObservableList<DropBoxAccount> DPAccounts = FXCollections.observableArrayList();
+    private ResourceBundle resources;
+
+    /**
+     * Reference to {@link Ryrycipe}.
+     */
+    private Ryrycipe mainApp;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DropBoxAccount publicAccount = new DropBoxAccount("Ryrycipe");
-        DPAccounts.add(publicAccount);
-        dropboxListView.setItems(DPAccounts);
+        this.resources = resources;
+
+    }
+
+    /**
+     * Load the list of user's {@link DropBoxAccount}s.
+     */
+    public void loadDPAccounts() {
+        if (mainApp.getDPAccounts().isEmpty()) {
+            DropBoxAccount publicAccount = new DropBoxAccount("Ryrycipe");
+            mainApp.getDPAccounts().add(publicAccount);
+        }
+
+        // Setup ListView and select public account by default
+        dropboxListView.setItems(mainApp.getDPAccounts());
+        dropboxListView.getSelectionModel().select(0);
     }
 
     /**
@@ -69,7 +85,19 @@ public class SelectCloudDialogController implements Initializable {
      */
     @FXML
     private void handleAddBtn() {
-        System.out.println("Ajout !");
+        // Dialog to ask name of Dropbox account
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle(resources.getString("dialog.cloud.add.title"));
+        dialog.setHeaderText(resources.getString("dialog.cloud.add.header"));
+        dialog.setContentText(resources.getString("dialog.cloud.add.content"));
+
+        Optional<String> accountName = dialog.showAndWait();
+
+        accountName.ifPresent(name -> {
+            DropBoxAccount newAccount = new DropBoxAccount(name);
+            mainApp.getDPAccounts().add(newAccount);
+        });
+
     }
 
     /**
@@ -77,11 +105,19 @@ public class SelectCloudDialogController implements Initializable {
      */
     @FXML
     private void handleOKBtn() {
-        dialogStage.close();
+        if ( dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
+            LOGGER.info("Recipe have been uploaded on account: {}",
+                dropboxListView.getSelectionModel().getSelectedItem().toString()
+            );
+            dialogStage.close();
+        } else { // user didn't choose an account before clicking OK button or press enter
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(resources.getString("dialog.cloud.warn.title"));
+            alert.setHeaderText(resources.getString("dialog.cloud.warn.header"));
+            alert.setContentText(resources.getString("dialog.cloud.warn.content"));
 
-        LOGGER.info("Recipe have been uploaded on {} account",
-            dropboxListView.getSelectionModel().getSelectedItem().toString()
-        );
+            alert.showAndWait();
+        }
     }
 
     /**
@@ -96,10 +132,16 @@ public class SelectCloudDialogController implements Initializable {
     private void handleEnterPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
             handleOKBtn();
+        } else {
+            System.out.println("index: " + dropboxListView.getSelectionModel().getSelectedIndex());
         }
     }
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+    }
+
+    public void setMainApp(Ryrycipe mainApp) {
+        this.mainApp = mainApp;
     }
 }

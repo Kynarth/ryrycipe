@@ -12,6 +12,11 @@ public class DropBoxAccount {
     private String name;
 
     /**
+     * Token to get access to the associated dropbox.
+     */
+    private String accessToken;
+
+    /**
      * Define if the user entered the access token for the account.
      */
     private boolean isAuthenticated = false;
@@ -20,6 +25,22 @@ public class DropBoxAccount {
 
     public DropBoxAccount(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public boolean isAuthenticated() {

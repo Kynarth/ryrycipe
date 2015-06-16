@@ -159,8 +159,11 @@ public class RyrycipeController implements Initializable {
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
 
+            // Initialization
             SelectCloudDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setMainApp(mainApp);
+            controller.loadDPAccounts();
 
             dialogStage.showAndWait();
         } catch (IOException | IllegalStateException e) {
