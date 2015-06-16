@@ -62,21 +62,17 @@ public class SelectCloudDialogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
-
     }
 
     /**
      * Load the list of user's {@link DropBoxAccount}s.
      */
     public void loadDPAccounts() {
-        if (mainApp.getDPAccounts().isEmpty()) {
-            DropBoxAccount publicAccount = new DropBoxAccount("Ryrycipe");
-            mainApp.getDPAccounts().add(publicAccount);
-        }
-
         // Setup ListView and select public account by default
-        dropboxListView.setItems(mainApp.getDPAccounts());
-        dropboxListView.getSelectionModel().select(0);
+        if (mainApp.getDpAccounts().size() >= 1) {
+            dropboxListView.setItems(mainApp.getDpAccounts());
+            dropboxListView.getSelectionModel().select(0);
+        }
     }
 
     /**
@@ -95,9 +91,8 @@ public class SelectCloudDialogController implements Initializable {
 
         accountName.ifPresent(name -> {
             DropBoxAccount newAccount = new DropBoxAccount(name);
-            mainApp.getDPAccounts().add(newAccount);
+            mainApp.getDpAccounts().add(newAccount);
         });
-
     }
 
     /**
@@ -132,8 +127,6 @@ public class SelectCloudDialogController implements Initializable {
     private void handleEnterPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
             handleOKBtn();
-        } else {
-            System.out.println("index: " + dropboxListView.getSelectionModel().getSelectedIndex());
         }
     }
 

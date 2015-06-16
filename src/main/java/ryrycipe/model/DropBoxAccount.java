@@ -1,5 +1,9 @@
 package ryrycipe.model;
 
+import ryrycipe.util.EncryptedStringXmlAdapter;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Represents a DropBox Account
  * @see <a href="https://www.dropbox.com">DropBox</a>
@@ -35,6 +39,7 @@ public class DropBoxAccount {
         this.name = name;
     }
 
+    @XmlJavaTypeAdapter(value = EncryptedStringXmlAdapter.class)
     public String getAccessToken() {
         return accessToken;
     }

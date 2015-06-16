@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.controller.RecipeCreatorController;
@@ -77,12 +78,20 @@ public class Ryrycipe extends Application {
      */
     RecipeCreatorController creatorController;
 
+    /**
+     * User's {@link Preferences}.
+     */
+    private Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
+
+    /**
+     * {@link File} where dropbox accounts will be saved.
+     */
     private File savedDPAccounts;
 
     /**
      * {@link ObservableList} of {@link DropBoxAccount} to upload user's recipes within them.
      */
-    private ObservableList<DropBoxAccount> DPAccounts = FXCollections.observableArrayList();
+    private ObservableList<DropBoxAccount> dpAccounts = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -93,6 +102,7 @@ public class Ryrycipe extends Application {
         // Save list of DropBox accounts when user close the application
         this.primaryStage.setOnCloseRequest(this::saveDPAccounts);
 
+        // Get user's language
         this.locale = new Locale(LocaleUtil.getLanguage());
 
         // Initialize file where dropbox accounts will be saved
@@ -100,9 +110,16 @@ public class Ryrycipe extends Application {
         String savingPath = exePath.substring(0, exePath.lastIndexOf(File.separator));
         savedDPAccounts = new File(savingPath, "dp_accounts.xml");
 
-        // Load user's dropbox accounts
+        // Generate random string as key to encrypt dropbox account's access token
+        if (prefs.get("cryptKey", null) == null) {
+            String key = RandomStringUtils.randomAlphanumeric(18);
+            prefs.put("cryptKey", key);
+        }
+
+        // Load user's dropbox accounts if exists
         this.loadDPAccounts();
 
+        // Initialize GUI
         initialize();
         showRecipeCreator();
 
@@ -124,7 +141,6 @@ public class Ryrycipe extends Application {
             ryrycipeController.setMainApp(this);
 
             // Create a scene with the loaded layout at preferred user's size
-            Preferences prefs = Preferences.userNodeForPackage(Ryrycipe.class);
             Scene scene = new Scene(rootLayout, prefs.getDouble("appWidth", 700), prefs.getDouble("appHeight", 445));
             scene.widthProperty().addListener((observable, oldValue, newValue) -> {
                 prefs.putDouble("appWidth", newValue.doubleValue());
@@ -172,7 +188,7 @@ public class Ryrycipe extends Application {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             DropBoxAccountWrapper wrapper = new DropBoxAccountWrapper();
-            wrapper.setDPAccounts(DPAccounts);
+            wrapper.setDPAccounts(dpAccounts);
 
             marshaller.marshal(wrapper, savedDPAccounts);
         } catch (JAXBException e) {
@@ -188,10 +204,16 @@ public class Ryrycipe extends Application {
             JAXBContext context = JAXBContext.newInstance(DropBoxAccountWrapper.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
-            // Reading XML from the file and unmarshalling.
-            DropBoxAccountWrapper wrapper = (DropBoxAccountWrapper) unmarshaller.unmarshal(savedDPAccounts);
-            DPAccounts.addAll(wrapper.getDPAccounts());
+            if (savedDPAccounts.exists()) {
+                DropBoxAccountWrapper wrapper = (DropBoxAccountWrapper) unmarshaller.unmarshal(savedDPAccounts);
 
+                if (wrapper.getDPAccounts() != null) {
+                    dpAccounts.addAll(wrapper.getDPAccounts());
+                }
+            } else {
+                DropBoxAccount publicAccount = new DropBoxAccount("Ryrycipe");
+                dpAccounts.add(publicAccount);
+            }
         } catch (JAXBException e) {
             LOGGER.error(e.getMessage());
         }
@@ -237,7 +259,7 @@ public class Ryrycipe extends Application {
         return recipeSearchPane;
     }
 
-    public ObservableList<DropBoxAccount> getDPAccounts() {
-        return DPAccounts;
+    public ObservableList<DropBoxAccount> getDpAccounts() {
+        return dpAccounts;
     }
 }

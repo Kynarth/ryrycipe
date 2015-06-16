@@ -12,10 +12,9 @@ import java.util.List;
 @XmlRootElement(name = "accounts")
 public class DropBoxAccountWrapper {
 
-
     private List<DropBoxAccount> DPAccounts;
 
-    @XmlElement(name = "account")
+    @XmlElement(name = "account", required = true)
     public List<DropBoxAccount> getDPAccounts() {
         return DPAccounts;
     }
