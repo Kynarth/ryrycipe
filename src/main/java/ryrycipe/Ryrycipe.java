@@ -227,6 +227,8 @@ public class Ryrycipe extends Application {
         launch(args);
     }
 
+    // -------------------- Accessors -------------------- //
+
     public Stage getPrimaryStage() {
         return primaryStage;
     }

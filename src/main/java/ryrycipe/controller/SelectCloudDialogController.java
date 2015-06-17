@@ -1,18 +1,25 @@
 package ryrycipe.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
 import ryrycipe.model.DropBoxAccount;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -81,18 +88,32 @@ public class SelectCloudDialogController implements Initializable {
      */
     @FXML
     private void handleAddBtn() {
-        // Dialog to ask name of Dropbox account
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle(resources.getString("dialog.cloud.add.title"));
-        dialog.setHeaderText(resources.getString("dialog.cloud.add.header"));
-        dialog.setContentText(resources.getString("dialog.cloud.add.content"));
+        // Dialog to ask name and access token of Dropbox account
+        try {
+            // Load fxml file containing GUI information for the dialog
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/NewCloudAccount.fxml"));
+            loader.setResources(resources);
+            AnchorPane dialogPane = loader.load();
 
-        Optional<String> accountName = dialog.showAndWait();
+            // Setup dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(loader.getResources().getString("dialog.cloud.add.title"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(mainApp.getPrimaryStage());
+            Scene scene = new Scene(dialogPane);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
 
-        accountName.ifPresent(name -> {
-            DropBoxAccount newAccount = new DropBoxAccount(name);
-            mainApp.getDpAccounts().add(newAccount);
-        });
+            // Setup controller
+            NewCloudAccountController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(mainApp);
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
@@ -100,10 +121,33 @@ public class SelectCloudDialogController implements Initializable {
      */
     @FXML
     private void handleOKBtn() {
+
+
         if ( dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
-            LOGGER.info("Recipe have been uploaded on account: {}",
-                dropboxListView.getSelectionModel().getSelectedItem().toString()
-            );
+
+            // Ask access token for dropbox accounts if not provided
+            if (!dropboxListView.getSelectionModel().getSelectedItem().isAuthenticated()) {
+//            BufferedInputStream inputStream = null;
+//            File inputFile = new File("README.md");
+//            try {
+//                inputStream = new BufferedInputStream(new FileInputStream(inputFile));
+//                DbxEntry.File uploadedFile = client.uploadFile("/README.md",
+//                    DbxWriteMode.add(), inputFile.length(), inputStream
+//                );
+//                System.out.println("Uploaded: " + uploadedFile.toString());
+//            } catch (IOException | DbxException e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    if (inputStream != null) {
+//                        inputStream.close();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+            }
+
             dialogStage.close();
         } else { // user didn't choose an account before clicking OK button or press enter
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -129,6 +173,8 @@ public class SelectCloudDialogController implements Initializable {
             handleOKBtn();
         }
     }
+
+    // -------------------- Accessors -------------------- //
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;

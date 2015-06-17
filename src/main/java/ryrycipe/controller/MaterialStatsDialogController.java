@@ -26,6 +26,8 @@ public class MaterialStatsDialogController implements Initializable {
 
     }
 
+    // -------------------- Accessors -------------------- //
+
     public GridPane getMaterialStatsContainer() {
         return materialStatsContainer;
     }

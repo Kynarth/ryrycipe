@@ -303,6 +303,8 @@ public class SaveRecipeDialogController implements Initializable {
         }
     }
 
+    // -------------------- Accessors -------------------- //
+
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
     }

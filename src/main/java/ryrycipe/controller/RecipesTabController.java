@@ -170,6 +170,8 @@ public class RecipesTabController implements Initializable {
         }
     }
 
+    // -------------------- Accessors -------------------- //
+
     public Tab getRecipesTab() {
         return recipesTab;
     }

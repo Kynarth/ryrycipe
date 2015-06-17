@@ -118,6 +118,8 @@ public class RecipeComponentController implements Initializable {
         this.creatorController.getComponentCB().setValue(this.component);
     }
 
+    // -------------------- Accessors -------------------- //
+
     /**
      * Return the number of remaining of {@link ryrycipe.model.Material}s to fill the recipe component.
      *

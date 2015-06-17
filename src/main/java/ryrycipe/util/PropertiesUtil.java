@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -28,20 +29,20 @@ public class PropertiesUtil {
      */
     @Nullable
     public static Properties loadProperties(URL filePath) {
-        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
         Properties properties = new Properties();
 
         try {
-            inputStreamReader = new InputStreamReader(filePath.openStream());
-            properties.load(inputStreamReader);
+            bufferedReader = new BufferedReader(new InputStreamReader(filePath.openStream(), "UTF-8"));
+            properties.load(bufferedReader);
 
             return properties;
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         } finally {
-            if (inputStreamReader != null) {
+            if (bufferedReader != null) {
                 try {
-                    inputStreamReader.close();
+                    bufferedReader.close();
                 } catch (IOException e) {
                     LOGGER.error(e.getMessage());
                 }

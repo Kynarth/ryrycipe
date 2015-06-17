@@ -31,6 +31,12 @@ public class DropBoxAccount {
         this.name = name;
     }
 
+    public DropBoxAccount(String name, String accessToken) {
+        this.name = name;
+        this.accessToken = accessToken;
+        this.isAuthenticated = true;
+    }
+
     public String getName() {
         return name;
     }

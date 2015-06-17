@@ -169,7 +169,6 @@ public class RyrycipeController implements Initializable {
         } catch (IOException | IllegalStateException e) {
             LOGGER.error(e.getMessage());
         }
-
     }
 
     /**
@@ -371,6 +370,8 @@ public class RyrycipeController implements Initializable {
         specificToolBtns.getChildren().clear();
         specificToolBtns.getChildren().addAll(addFolderBtn, refreshBtn);
     }
+
+    // -------------------- Accessors -------------------- //
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;

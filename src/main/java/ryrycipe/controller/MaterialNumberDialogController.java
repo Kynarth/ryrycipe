@@ -106,6 +106,8 @@ public class MaterialNumberDialogController implements Initializable {
         }
     }
 
+    // -------------------- Accessors -------------------- //
+
     /**
      * Set the imageView with the selected MaterialView from {@link RecipeCreatorController#materialChooser}
      *

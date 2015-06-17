@@ -94,6 +94,8 @@ public class SearchRecipeController implements Initializable {
         }
     }
 
+    // -------------------- Accessors -------------------- //
+
     public TabPane getRecipeTabPane() {
         return recipeTabPane;
     }
