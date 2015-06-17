@@ -1,3 +1,5 @@
+// Application tool buttons
+
 #createBtn {
     -fx-background-image: url('/images/toolbar/create.png');
     -fx-background-size: 30 30;
@@ -12,19 +14,14 @@
     -fx-background-position: center;
 }
 
-#uploadBtn {
-    -fx-background-image: url('/images/toolbar/upload.png');
-    -fx-background-size: 30 30;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-
 #languageBtn {
     -fx-background-image: url('/images/toolbar/change_lang.png');
     -fx-background-size: 30 30;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+// Creator pane tool buttons
 
 #newBtn {
     -fx-background-image: url('/images/toolbar/new.png');
@@ -39,6 +36,15 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+#uploadBtn {
+    -fx-background-image: url('/images/toolbar/upload.png');
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+// Search pane tool buttons
 
 #addFolderBtn {
     -fx-background-image: url('/images/toolbar/add_recipes_folder.png');

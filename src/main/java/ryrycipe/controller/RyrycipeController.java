@@ -35,41 +35,10 @@ public class RyrycipeController implements Initializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(RyrycipeController.class.getName());
 
     /**
-     * Display the pane for create recipe.
-     */
-    @FXML
-    private Button createBtn;
-
-    /**
-     * Search for user's saved recipe.
-     */
-    @FXML
-    private Button searchBtn;
-
-    /**
-     * Upload the current recipe.
-     */
-    @FXML
-    private Button uploadBtn;
-
-    /**
-     * Call a dialog to ask to change current language.
-     * Application has to restart to apply changes.
-     */
-    @FXML
-    private Button languageBtn;
-
-    /**
      * {@link ButtonBar} containing tool buttons for each specific application pane like creation or search pane.
      */
     @FXML
     private HBox specificToolBtns;
-
-    /**
-     * Save current recipe.
-     */
-    @FXML
-    private Button saveBtn;
 
     /**
      * Main widget of the application.
@@ -343,9 +312,16 @@ public class RyrycipeController implements Initializable {
         Tooltip.install(saveRecipeBtn, new Tooltip(resources.getString("toolbtn.save.tip")));
         saveRecipeBtn.setOnAction(e -> save());
 
+        // Button to upload current recipe
+        Button uploadRecipeBtn = new Button("");
+        uploadRecipeBtn.setId("uploadBtn");
+        uploadRecipeBtn.setPrefSize(32, 32);
+        Tooltip.install(uploadRecipeBtn, new Tooltip(resources.getString("toolbtn.upload.tip")));
+        uploadRecipeBtn.setOnAction(e -> uploadRecipe());
+
         // Add buttons to the tool bar
         specificToolBtns.getChildren().clear();
-        specificToolBtns.getChildren().addAll(newRecipeBtn, saveRecipeBtn);
+        specificToolBtns.getChildren().addAll(newRecipeBtn, saveRecipeBtn, uploadRecipeBtn);
     }
 
     /**
