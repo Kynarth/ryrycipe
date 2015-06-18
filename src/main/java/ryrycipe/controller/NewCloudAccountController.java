@@ -1,8 +1,11 @@
 package ryrycipe.controller;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -23,6 +26,12 @@ import java.util.ResourceBundle;
 public class NewCloudAccountController implements Initializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(NewCloudAccountController.class.getName());
+
+    /**
+     * {@link Button} trying to create a new account.
+     */
+    @FXML
+    private Button okBtn;
 
     /**
      * {@link TextField} containing entered dropbox account's name.
@@ -99,9 +108,10 @@ public class NewCloudAccountController implements Initializable {
         }
 
         // Check validity if account's access token
-        Thread validationThread = new Thread(new AccessTokenValidation(
-            mainApp, accountNameTF, accessTokenTF, accessTokenPF, resources, dialogStage
-        ));
+        Task validationTask = new AccessTokenValidation(this);
+        okBtn.disableProperty().bind(validationTask.stateProperty().isNotEqualTo(Worker.State.READY));
+
+        Thread validationThread = new Thread(validationTask);
         validationThread.setDaemon(true);
         validationThread.start();
     }
@@ -126,5 +136,29 @@ public class NewCloudAccountController implements Initializable {
 
     public void setMainApp(Ryrycipe mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public ResourceBundle getResources() {
+        return resources;
+    }
+
+    public Stage getDialogStage() {
+        return dialogStage;
+    }
+
+    public Ryrycipe getMainApp() {
+        return mainApp;
+    }
+
+    public TextField getAccountNameTF() {
+        return accountNameTF;
+    }
+
+    public TextField getAccessTokenTF() {
+        return accessTokenTF;
+    }
+
+    public PasswordField getAccessTokenPF() {
+        return accessTokenPF;
     }
 }

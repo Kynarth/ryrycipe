@@ -8,16 +8,12 @@ import javafx.concurrent.Task;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ryrycipe.Ryrycipe;
+import ryrycipe.controller.NewCloudAccountController;
 import ryrycipe.model.DropBoxAccount;
 
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 /**
  * {@link javafx.concurrent.Task} checking if accounts access is valid and if there is an account
@@ -27,50 +23,18 @@ public class AccessTokenValidation extends Task<Void> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(AccessTokenValidation.class.getName());
 
-    /**
-     * Reference to {@link Ryrycipe} to get access to the list of saved {@link DropBoxAccount}.
-     */
-    private Ryrycipe mainApp;
+    NewCloudAccountController controller;
 
-    /**
-     * {@link TextField} where account's name is filled in.
-     */
-    private TextField accountNameTF;
-
-    /**
-     * {@link TextField} where access token's is filled in.
-     */
-    private TextField accessTokenTF;
-
-    /**
-     * {@link PasswordField} where access token's is filled in with a mask.
-     */
-    private PasswordField accessTokenPF;
-
-    /**
-     * Reference to {@link Stage} to close the dialog.
-     */
-    private Stage dialogStage;
-
-    private ResourceBundle resources;
-
-    public AccessTokenValidation(
-        Ryrycipe mainApp, TextField accountNameTF, TextField accessTokenTF,
-        PasswordField accessTokenPF, ResourceBundle resources, Stage dialogStage)
+    public AccessTokenValidation(NewCloudAccountController controller)
     {
-        this.mainApp = mainApp;
-        this.accountNameTF = accountNameTF;
-        this.accessTokenTF = accessTokenTF;
-        this.accessTokenPF = accessTokenPF;
-        this.resources = resources;
-        this.dialogStage = dialogStage;
+        this.controller = controller;
     }
 
     @Override
     protected Void call() throws Exception {
         // Check if given access token is valid
-        DbxRequestConfig config = new DbxRequestConfig("Ryrycipe", mainApp.getLocale().toString());
-        DbxClient client = new DbxClient(config, accessTokenPF.getText());
+        DbxRequestConfig config = new DbxRequestConfig("Ryrycipe", controller.getMainApp().getLocale().toString());
+        DbxClient client = new DbxClient(config, controller.getAccessTokenPF().getText());
         try {
             client.getAccountInfo();
             LOGGER.info("User provides right access token.");
@@ -79,12 +43,16 @@ public class AccessTokenValidation extends Task<Void> {
             if (e.getMessage().contains("401")) {
                 // Warn user
                 Platform.runLater(() -> {
-                    if (accessTokenPF.isVisible()) {
-                        accessTokenPF.setText("");
-                        accessTokenPF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.wrong"));
+                    if (controller.getAccessTokenPF().isVisible()) {
+                        controller.getAccessTokenPF().setText("");
+                        controller.getAccessTokenPF().setPromptText(
+                            controller.getResources().getString("dialog.cloud.add.account.key.prompt.wrong")
+                        );
                     } else {
-                        accessTokenTF.setText("");
-                        accessTokenTF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.wrong"));
+                        controller.getAccessTokenTF().setText("");
+                        controller.getAccessTokenTF().setPromptText(
+                            controller.getResources().getString("dialog.cloud.add.account.key.prompt.wrong")
+                        );
                     }
 
                     LOGGER.info("User provides wrong access token.");
@@ -98,12 +66,12 @@ public class AccessTokenValidation extends Task<Void> {
 
         // Check if entered account name already exists and ask if he wants to erase the old account
         Platform.runLater(() -> {
-            for (DropBoxAccount account : mainApp.getDpAccounts()) {
-                if (account.getName().equals(accountNameTF.getText())) {
+            for (DropBoxAccount account : controller.getMainApp().getDpAccounts()) {
+                if (account.getName().equals(controller.getAccountNameTF().getText())) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle(resources.getString("dialog.cloud.add.warn.title"));
-                    alert.setHeaderText(resources.getString("dialog.cloud.add.warn.header"));
-                    alert.setContentText(resources.getString("dialog.cloud.add.warn.content"));
+                    alert.setTitle(controller.getResources().getString("dialog.cloud.add.warn.title"));
+                    alert.setHeaderText(controller.getResources().getString("dialog.cloud.add.warn.header"));
+                    alert.setContentText(controller.getResources().getString("dialog.cloud.add.warn.content"));
 
                     ButtonType okBtn = ButtonType.OK;
                     ButtonType cancelBtn = ButtonType.CANCEL;
@@ -113,21 +81,25 @@ public class AccessTokenValidation extends Task<Void> {
                     Optional<ButtonType> response = alert.showAndWait();
                     // Remove old account
                     if (response.get() == ButtonType.OK) {
-                        mainApp.getDpAccounts().remove(account);
+                        controller.getMainApp().getDpAccounts().remove(account);
                         break;
                     } else {
-                        accountNameTF.setText("");
-                        accountNameTF.setPromptText(resources.getString("dialog.cloud.add.account.name.prompt.exists"));
+                        controller.getAccountNameTF().setText("");
+                        controller.getAccountNameTF().setPromptText(controller.getResources().getString(
+                                "dialog.cloud.add.account.name.prompt.exists")
+                        );
                         return;
                     }
                 }
             }
 
-            DropBoxAccount newAccount = new DropBoxAccount(accountNameTF.getText(), accessTokenTF.getText());
-            mainApp.getDpAccounts().add(newAccount);
+            DropBoxAccount newAccount = new DropBoxAccount(
+                controller.getAccountNameTF().getText(), controller.getAccessTokenTF().getText()
+            );
+            controller.getMainApp().getDpAccounts().add(newAccount);
 
             LOGGER.info("New account: {} added.", newAccount.getName());
-            dialogStage.close();
+            controller.getDialogStage().close();
         });
 
             return null;
@@ -139,7 +111,7 @@ public class AccessTokenValidation extends Task<Void> {
     @Override
     protected void scheduled() {
         super.scheduled();
-        dialogStage.getScene().setCursor(Cursor.WAIT);
+        controller.getDialogStage().getScene().setCursor(Cursor.WAIT);
     }
 
     /**
@@ -148,6 +120,6 @@ public class AccessTokenValidation extends Task<Void> {
     @Override
     protected void succeeded() {
         super.succeeded();
-        dialogStage.getScene().setCursor(Cursor.DEFAULT);
+        controller.getDialogStage().getScene().setCursor(Cursor.DEFAULT);
     }
 }
