@@ -107,7 +107,7 @@ public class Ryrycipe extends Application {
 
         // Initialize file where dropbox accounts will be saved
         String exePath = Ryrycipe.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-        String savingPath = exePath.substring(0, exePath.lastIndexOf(File.separator));
+        String savingPath = exePath.substring(0, exePath.lastIndexOf("/"));
         savedDPAccounts = new File(savingPath, "dp_accounts.xml");
 
         // Generate random string as key to encrypt dropbox account's access token
