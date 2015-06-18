@@ -472,6 +472,8 @@ public class RecipeCreatorController implements Initializable {
                 if (!controller.isFilled())
                     return false;
             }
+        } else { // No plan chosen
+            return false;
         }
 
         return true;
