@@ -1,20 +1,20 @@
 package ryrycipe.controller;
 
-import com.dropbox.core.DbxClient;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
-import ryrycipe.model.DropBoxAccount;
+import ryrycipe.task.AccessTokenValidation;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -39,7 +39,8 @@ public class NewCloudAccountController implements Initializable {
     /**
      * {@link PasswordField} containing entered dropbox account's access token with a mask.
      */
-    public PasswordField accessTokenPF;
+    @FXML
+    private PasswordField accessTokenPF;
 
     /**
      * Switch between TextField and PasswordField to hide ot not access token.
@@ -75,7 +76,8 @@ public class NewCloudAccountController implements Initializable {
     }
 
     @FXML
-    private void handleOkBtn() {
+    private void handleOKBtn() {
+
         // Check if the form is filled and warn user if not
         if (accountNameTF.getText().isEmpty() || accessTokenPF.getText().isEmpty()) {
             // Check account name
@@ -96,66 +98,24 @@ public class NewCloudAccountController implements Initializable {
             return;
         }
 
-        // Check if given access token is valid
-        DbxRequestConfig config = new DbxRequestConfig("Ryrycipe", mainApp.getLocale().toString());
-        DbxClient client = new DbxClient(config, accessTokenPF.getText());
-        try {
-            client.getAccountInfo();
-        } catch (DbxException e) {
-            // 401 response -> unauthorized error
-            if (e.getMessage().contains("401")) {
-                // Warn user
-                if (accessTokenPF.isVisible()) {
-                    accessTokenPF.setText("");
-                    accessTokenPF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.wrong"));
-                } else {
-                    accessTokenTF.setText("");
-                    accessTokenTF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.wrong"));
-                }
-
-                LOGGER.info("User provides wrong access token.");
-                return;
-            } else {
-                LOGGER.error(e.getMessage());
-            }
-        }
-
-        // Check if entered account name already exists and ask if he wants to
-        for (DropBoxAccount account: mainApp.getDpAccounts()) {
-            if (account.getName().equals(accountNameTF.getText())) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle(resources.getString("dialog.cloud.add.warn.title"));
-                alert.setHeaderText(resources.getString("dialog.cloud.add.warn.header"));
-                alert.setContentText(resources.getString("dialog.cloud.add.warn.content"));
-
-                ButtonType okBtn = ButtonType.OK;
-                ButtonType cancelBtn = ButtonType.CANCEL;
-
-                alert.getButtonTypes().setAll(okBtn, cancelBtn);
-
-                Optional<ButtonType> response = alert.showAndWait();
-                // Remove old account
-                if (response.get() == ButtonType.OK) {
-                    mainApp.getDpAccounts().remove(account);
-                    break;
-                } else {
-                    accountNameTF.setText("");
-                    accountNameTF.setPromptText(resources.getString("dialog.cloud.add.account.name.prompt.exists"));
-                    return;
-                }
-            }
-        }
-
-        DropBoxAccount newAccount = new DropBoxAccount(accountNameTF.getText(), accessTokenTF.getText());
-        mainApp.getDpAccounts().add(newAccount);
-
-        LOGGER.info("New account: {} added.", newAccount.getName());
-        dialogStage.close();
+        // Check validity if account's access token
+        Thread validationThread = new Thread(new AccessTokenValidation(
+            mainApp, accountNameTF, accessTokenTF, accessTokenPF, resources, dialogStage
+        ));
+        validationThread.setDaemon(true);
+        validationThread.start();
     }
 
     @FXML
     private void handleCancelBtn() {
         dialogStage.close();
+    }
+
+    @FXML
+    private void handleEnterPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleOKBtn();
+        }
     }
 
     // -------------------- Accessors -------------------- //

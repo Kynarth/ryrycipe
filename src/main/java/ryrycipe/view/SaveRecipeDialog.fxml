@@ -46,7 +46,7 @@
                   <Insets />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="authorNameTF" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+            <TextField fx:id="authorNameTF" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
             <TextField fx:id="recipeNameTF" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
             <ButtonBar prefWidth="330.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
                <buttons>
@@ -55,7 +55,7 @@
                </buttons>
             </ButtonBar>
             <Label text="%dialog.save.folder" GridPane.rowIndex="3" />
-            <TextField fx:id="recipesFolderTF" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="recipesFolderTF" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Button fx:id="chooseDirBtn" onAction="#handleChooseDirClick" mnemonicParsing="false" text="..." GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>

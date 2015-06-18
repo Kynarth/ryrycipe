@@ -36,17 +36,17 @@
                </children>
             </HBox>
             <Label text="%dialog.cloud.add.account.key" GridPane.rowIndex="2" />
-            <TextField fx:id="accessTokenTF" managed="false" visible="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-            <PasswordField fx:id="accessTokenPF" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <TextField fx:id="accessTokenTF" onKeyPressed="#handleEnterPressed" managed="false" visible="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <PasswordField fx:id="accessTokenPF" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
             <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
               <buttons>
-                <Button fx:id="okBtn" onAction="#handleOkBtn" mnemonicParsing="false" text="%button.ok.text" />
+                <Button fx:id="okBtn" onAction="#handleOKBtn" mnemonicParsing="false" text="%button.ok.text" />
                   <Button fx:id="cancelBtn" onAction="#handleCancelBtn" mnemonicParsing="false" text="%button.cancel.text" />
               </buttons>
             </ButtonBar>
             <CheckBox fx:id="switchCB" mnemonicParsing="false" text="%dialog.cloud.add.checkbox" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
             <Label text="%dialog.cloud.add.account.name" GridPane.rowIndex="1" />
-            <TextField fx:id="accountNameTF" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <TextField fx:id="accountNameTF" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

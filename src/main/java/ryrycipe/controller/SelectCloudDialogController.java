@@ -4,10 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -20,6 +17,8 @@ import ryrycipe.model.DropBoxAccount;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -116,13 +115,40 @@ public class SelectCloudDialogController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleDeleteBtn() {
+        if ( dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
+            // Ask confirmation to user
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(resources.getString("dialog.cloud.delete.warn.title"));
+            alert.setHeaderText(resources.getString("dialog.cloud.delete.warn.header"));
+            alert.setContentText(MessageFormat.format(
+                resources.getString("dialog.cloud.delete.warn.content"),
+                dropboxListView.getSelectionModel().getSelectedItem().getName()
+            ));
+
+            ButtonType okBtn = ButtonType.OK;
+            ButtonType cancelBtn = ButtonType.CANCEL;
+
+            alert.getButtonTypes().setAll(okBtn, cancelBtn);
+
+            Optional<ButtonType> response = alert.showAndWait();
+
+            if (response.get() == ButtonType.OK) { // Remove selected account
+                mainApp.getDpAccounts().remove(dropboxListView.getSelectionModel().getSelectedItem());
+
+                LOGGER.info("The account: {} has been deleted.",
+                    dropboxListView.getSelectionModel().getSelectedItem().getName()
+                );
+            }
+        }
+    }
+
     /**
      * Upload the current recipe on selected {@link DropBoxAccount}.
      */
     @FXML
     private void handleOKBtn() {
-
-
         if ( dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
 
             // Ask access token for dropbox accounts if not provided
