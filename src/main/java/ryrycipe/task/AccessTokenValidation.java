@@ -27,12 +27,32 @@ public class AccessTokenValidation extends Task<Void> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(AccessTokenValidation.class.getName());
 
+    /**
+     * Reference to {@link Ryrycipe} to get access to the list of saved {@link DropBoxAccount}.
+     */
     private Ryrycipe mainApp;
+
+    /**
+     * {@link TextField} where account's name is filled in.
+     */
     private TextField accountNameTF;
+
+    /**
+     * {@link TextField} where access token's is filled in.
+     */
     private TextField accessTokenTF;
+
+    /**
+     * {@link PasswordField} where access token's is filled in with a mask.
+     */
     private PasswordField accessTokenPF;
-    private ResourceBundle resources;
+
+    /**
+     * Reference to {@link Stage} to close the dialog.
+     */
     private Stage dialogStage;
+
+    private ResourceBundle resources;
 
     public AccessTokenValidation(
         Ryrycipe mainApp, TextField accountNameTF, TextField accessTokenTF,
@@ -113,14 +133,20 @@ public class AccessTokenValidation extends Task<Void> {
             return null;
         }
 
-        @Override
-    public void scheduled() {
+    /**
+     * Change the cursor for waiting one just before the run.
+     */
+    @Override
+    protected void scheduled() {
         super.scheduled();
         dialogStage.getScene().setCursor(Cursor.WAIT);
     }
 
+    /**
+     * Change the cursor for default one at the end of task.
+     */
     @Override
-    public void succeeded() {
+    protected void succeeded() {
         super.succeeded();
         dialogStage.getScene().setCursor(Cursor.DEFAULT);
     }

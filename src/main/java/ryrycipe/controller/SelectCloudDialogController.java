@@ -153,25 +153,7 @@ public class SelectCloudDialogController implements Initializable {
 
             // Ask access token for dropbox accounts if not provided
             if (!dropboxListView.getSelectionModel().getSelectedItem().isAuthenticated()) {
-//            BufferedInputStream inputStream = null;
-//            File inputFile = new File("README.md");
-//            try {
-//                inputStream = new BufferedInputStream(new FileInputStream(inputFile));
-//                DbxEntry.File uploadedFile = client.uploadFile("/README.md",
-//                    DbxWriteMode.add(), inputFile.length(), inputStream
-//                );
-//                System.out.println("Uploaded: " + uploadedFile.toString());
-//            } catch (IOException | DbxException e) {
-//                e.printStackTrace();
-//            } finally {
-//                try {
-//                    if (inputStream != null) {
-//                        inputStream.close();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+
             }
 
             dialogStage.close();

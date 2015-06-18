@@ -108,39 +108,6 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
-     * Upload current recipe.
-     */
-    @FXML
-    private void uploadRecipe() {
-        // Display a dialog to make the user choose or add a dropbox to save current recipe
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SelectCloudDialog.fxml"));
-            loader.setResources(resources);
-            AnchorPane dialogPane = loader.load();
-
-            // Setup dialog
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle(loader.getResources().getString("dialog.cloud.title"));
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
-            Scene scene = new Scene(dialogPane);
-            dialogStage.setScene(scene);
-            dialogStage.setResizable(false);
-
-            // Initialization
-            SelectCloudDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setMainApp(mainApp);
-            controller.loadDPAccounts();
-
-            dialogStage.showAndWait();
-        } catch (IOException | IllegalStateException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
      * Toggle language between french and english.
      */
     @FXML
@@ -237,6 +204,39 @@ public class RyrycipeController implements Initializable {
 
             LOGGER.info("User didn't filled his recipe.");
             alert.showAndWait();
+        }
+    }
+
+    /**
+     * Upload current recipe.
+     */
+    @FXML
+    private void uploadRecipe() {
+        // Display a dialog to make the user choose or add a dropbox to save current recipe
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SelectCloudDialog.fxml"));
+            loader.setResources(resources);
+            AnchorPane dialogPane = loader.load();
+
+            // Setup dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(loader.getResources().getString("dialog.cloud.title"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(mainApp.getPrimaryStage());
+            Scene scene = new Scene(dialogPane);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            // Initialization
+            SelectCloudDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(mainApp);
+            controller.loadDPAccounts();
+
+            dialogStage.showAndWait();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 

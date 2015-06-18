@@ -23,9 +23,9 @@ import ryrycipe.model.Faction;
 import ryrycipe.model.Material;
 import ryrycipe.model.Plan;
 import ryrycipe.model.manager.FactionManager;
-import ryrycipe.model.manager.MaterialManager;
 import ryrycipe.model.manager.PlanManager;
 import ryrycipe.model.view.MaterialView;
+import ryrycipe.task.FilterMaterials;
 
 import java.io.IOException;
 import java.net.URL;
@@ -160,6 +160,11 @@ public class RecipeCreatorController implements Initializable {
      * {@link RecipeCreatorController#componentCB}.
      */
     private RecipeComponentController RCController;
+
+    /**
+     * {@link FilterMaterials} is a task in charge of filtering materials.
+     */
+    private FilterMaterials filterTask;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -406,7 +411,7 @@ public class RecipeCreatorController implements Initializable {
      *
      * @return {@link Map} with the value of each parameter from the {@link RecipeCreatorController#materialFilter}.
      */
-    private Map<String, String> getFilterParameters() {
+    public Map<String, String> getFilterParameters() {
         Map<String, String> parameters = new HashMap<>();
 
         if (foragedBtn.isSelected())
@@ -422,6 +427,7 @@ public class RecipeCreatorController implements Initializable {
         parameters.put("faction", factionCB.getValue().getName());
         parameters.put("quality", qualityCB.getValue());
         parameters.put("component", componentCB.getValue().getId());
+        parameters.put("qualityLvl", matQualityLevel.getText());
         return parameters;
     }
 
@@ -430,8 +436,8 @@ public class RecipeCreatorController implements Initializable {
      */
     @FXML
     private void displayMaterials() {
+        // Remove previous MaterialView and get filter's parameters
         materialChooser.getChildren().clear();
-        MaterialManager materialManager = new MaterialManager();
         Map<String, String> filterParameter = getFilterParameters();
 
         // Check if the user has choose a material category
@@ -440,19 +446,18 @@ public class RecipeCreatorController implements Initializable {
             return;
         }
 
-        for (Material material : materialManager.filter(filterParameter)) {
-            // Check if the material has already been added to the plan
-            if (this.usedMaterials.contains(material))
-                continue;
-            material.setMatQualityLevel(matQualityLevel.getText());
-            MaterialView materialView = new MaterialView(material.getImage(), material);
-            materialView.setRCController(RCController);
-            materialView.setCreatorController(this);
-            materialView.setMainApp(mainApp);
-            materialChooser.getChildren().add(materialView);
+        // Cancel previous running filtering task
+        if (filterTask != null && filterTask.isRunning()) {
+            filterTask.cancel();
         }
 
-        LOGGER.info("Materials displayed.");
+        // Create new filtering task
+        filterTask = new FilterMaterials(mainApp, this);
+
+        // launch filtering task
+        Thread filterThread = new Thread(filterTask);
+        filterThread.setDaemon(true);
+        filterThread.start();
     }
 
     /**
@@ -532,5 +537,9 @@ public class RecipeCreatorController implements Initializable {
 
     public VBox getComponentsContainer() {
         return componentsContainer;
+    }
+
+    public RecipeComponentController getRCController() {
+        return RCController;
     }
 }
