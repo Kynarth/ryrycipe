@@ -110,6 +110,7 @@ public class SelectCloudDialogController implements Initializable {
             controller.setMainApp(mainApp);
 
             dialogStage.showAndWait();
+
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
@@ -149,14 +150,41 @@ public class SelectCloudDialogController implements Initializable {
      */
     @FXML
     private void handleOKBtn() {
+        DropBoxAccount account;
         if ( dropboxListView.getSelectionModel().getSelectedIndex() != -1) {
+            account = dropboxListView.getSelectionModel().getSelectedItem();
 
-            // Ask access token for dropbox accounts if not provided
-            if (!dropboxListView.getSelectionModel().getSelectedItem().isAuthenticated()) {
+            // Check if selected account has been authorized and ask for access toke if this is not the case
+            if (!account.isAuthenticated()) {
+                try {
+                    // Load fxml file containing GUI information for the dialog
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(this.getClass().getResource("/ryrycipe/view/AskAccessTokenDialog.fxml"));
+                    loader.setResources(resources);
+                    AnchorPane dialogPane = loader.load();
 
+                    // Setup dialog
+                    Stage dialogStage = new Stage();
+                    dialogStage.setTitle(loader.getResources().getString("dialog.ask.token.title"));
+                    dialogStage.initModality(Modality.WINDOW_MODAL);
+                    dialogStage.initOwner(mainApp.getPrimaryStage());
+                    Scene scene = new Scene(dialogPane);
+                    dialogStage.setScene(scene);
+                    dialogStage.setResizable(false);
+
+                    // Setup controller
+                    AskAccessTokenDialogController controller = loader.getController();
+                    controller.setDialogStage(dialogStage);
+                    controller.setMainApp(mainApp);
+                    controller.setAccount(account);
+
+                    dialogStage.showAndWait();
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage());
+                }
+            } else {
+                System.out.println("Coucou");
             }
-
-            dialogStage.close();
         } else { // user didn't choose an account before clicking OK button or press enter
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle(resources.getString("dialog.cloud.warn.title"));

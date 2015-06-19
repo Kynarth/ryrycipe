@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane stylesheets="/css/dialog.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ryrycipe.controller.NewCloudAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="/css/dialog.css" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ryrycipe.controller.NewCloudAccountController">
    <children>
       <GridPane hgap="5.0" layoutX="152.0" layoutY="55.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
@@ -30,18 +30,18 @@
                   </ImageView>
                   <Label text="%dialog.cloud.add.header" wrapText="true">
                      <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="10.0" />
+                        <Insets left="5.0" right="5.0" top="15.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
             <Label text="%dialog.cloud.add.account.key" GridPane.rowIndex="2" />
-            <TextField fx:id="accessTokenTF" onKeyPressed="#handleEnterPressed" managed="false" visible="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <TextField fx:id="accessTokenTF" managed="false" onKeyPressed="#handleEnterPressed" visible="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
             <PasswordField fx:id="accessTokenPF" onKeyPressed="#handleEnterPressed" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
             <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
               <buttons>
-                <Button fx:id="okBtn" onAction="#handleOKBtn" mnemonicParsing="false" text="%button.ok.text" />
-                  <Button fx:id="cancelBtn" onAction="#handleCancelBtn" mnemonicParsing="false" text="%button.cancel.text" />
+                <Button fx:id="okBtn" mnemonicParsing="false" onAction="#handleOKBtn" text="%button.ok.text" />
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancelBtn" text="%button.cancel.text" />
               </buttons>
             </ButtonBar>
             <CheckBox fx:id="switchCB" mnemonicParsing="false" text="%dialog.cloud.add.checkbox" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />

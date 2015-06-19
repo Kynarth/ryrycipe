@@ -1,8 +1,6 @@
 package ryrycipe.controller;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,29 +13,21 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ryrycipe.Ryrycipe;
-import ryrycipe.task.AccountValidation;
+import ryrycipe.model.DropBoxAccount;
+import ryrycipe.task.AccessTokenValidation;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for NewCloudAccount view
+ * Controller for AskAccessToken view.
  */
-public class NewCloudAccountController implements Initializable {
+public class AskAccessTokenDialogController implements Initializable {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(NewCloudAccountController.class.getName());
+    private final static Logger LOGGER = LoggerFactory.getLogger(AskAccessTokenDialogController.class.getName());
 
-    /**
-     * {@link Button} trying to create a new account.
-     */
     @FXML
     private Button okBtn;
-
-    /**
-     * {@link TextField} containing entered dropbox account's name.
-     */
-    @FXML
-    private TextField accountNameTF;
 
     /**
      * {@link TextField} containing entered dropbox account's access token in clear text.
@@ -62,7 +52,12 @@ public class NewCloudAccountController implements Initializable {
      */
     private Stage dialogStage;
 
+    /**
+     * References to {@link Ryrycipe} to get access to {@link Ryrycipe#dpAccounts}
+     */
     private Ryrycipe mainApp;
+
+    private DropBoxAccount account;
 
     private ResourceBundle resources;
 
@@ -79,43 +74,33 @@ public class NewCloudAccountController implements Initializable {
 
         // Link both field to get same access token
         accessTokenTF.textProperty().bindBidirectional(accessTokenPF.textProperty());
-
-        // Set focus on to account name text field
-        Platform.runLater(accountNameTF::requestFocus);
     }
 
     @FXML
     private void handleOKBtn() {
-
-        // Check if the form is filled and warn user if not
-        if (accountNameTF.getText().isEmpty() || accessTokenPF.getText().isEmpty()) {
-            // Check account name
-            if (accountNameTF.getText().isEmpty()) {
-                accountNameTF.setPromptText(resources.getString("dialog.cloud.add.account.name.prompt.empty"));
+        // Check if access token is empty
+        if (accessTokenPF.getText().isEmpty()) {
+            if (accessTokenPF.isVisible()) {
+                accessTokenPF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.empty"));
+            } else {
+                accessTokenTF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.empty"));
             }
 
-            // Check access token
-            if (accessTokenPF.getText().isEmpty()) {
-                if (accessTokenPF.isVisible()) {
-                    accessTokenPF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.empty"));
-                } else {
-                    accessTokenTF.setPromptText(resources.getString("dialog.cloud.add.account.key.prompt.empty"));
-                }
-            }
-
-            LOGGER.info("User did not filled the adding account form.");
+            LOGGER.info("User did not fill the access token information.");
             return;
         }
 
-        // Check validity of the account
-        Task validationTask = new AccountValidation(this);
-        okBtn.disableProperty().bind(validationTask.stateProperty().isNotEqualTo(Worker.State.READY));
+        // Check validity of the account's access token
+        Task validationTask = new AccessTokenValidation(this);
 
         Thread validationThread = new Thread(validationTask);
         validationThread.setDaemon(true);
         validationThread.start();
     }
 
+    /**
+     * Close the dialog when the user clicks the cancel button.
+     */
     @FXML
     private void handleCancelBtn() {
         dialogStage.close();
@@ -134,10 +119,6 @@ public class NewCloudAccountController implements Initializable {
         this.dialogStage = dialogStage;
     }
 
-    public void setMainApp(Ryrycipe mainApp) {
-        this.mainApp = mainApp;
-    }
-
     public ResourceBundle getResources() {
         return resources;
     }
@@ -146,19 +127,31 @@ public class NewCloudAccountController implements Initializable {
         return dialogStage;
     }
 
-    public Ryrycipe getMainApp() {
-        return mainApp;
-    }
-
-    public TextField getAccountNameTF() {
-        return accountNameTF;
+    public PasswordField getAccessTokenPF() {
+        return accessTokenPF;
     }
 
     public TextField getAccessTokenTF() {
         return accessTokenTF;
     }
 
-    public PasswordField getAccessTokenPF() {
-        return accessTokenPF;
+    public Ryrycipe getMainApp() {
+        return mainApp;
+    }
+
+    public void setMainApp(Ryrycipe mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    public void setAccount(DropBoxAccount account) {
+        this.account = account;
+    }
+
+    public DropBoxAccount getAccount() {
+        return account;
+    }
+
+    public Button getOkBtn() {
+        return okBtn;
     }
 }
