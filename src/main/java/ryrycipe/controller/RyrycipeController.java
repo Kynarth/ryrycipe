@@ -108,6 +108,39 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
+     * Upload recipes to a cloud.
+     */
+    @FXML
+    private void uploadRecipe() {
+        // Display a dialog to make the user choose or add a dropbox to save current recipe
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SelectCloudDialog.fxml"));
+            loader.setResources(resources);
+            AnchorPane dialogPane = loader.load();
+
+            // Setup dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(loader.getResources().getString("dialog.cloud.title"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(mainApp.getPrimaryStage());
+            Scene scene = new Scene(dialogPane);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            // Initialization
+            SelectCloudDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(mainApp);
+            controller.loadDPAccounts();
+
+            dialogStage.showAndWait();
+        } catch (IOException | IllegalStateException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
      * Toggle language between french and english.
      */
     @FXML
@@ -208,39 +241,6 @@ public class RyrycipeController implements Initializable {
     }
 
     /**
-     * Upload current recipe.
-     */
-    @FXML
-    private void uploadRecipe() {
-        // Display a dialog to make the user choose or add a dropbox to save current recipe
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("/ryrycipe/view/SelectCloudDialog.fxml"));
-            loader.setResources(resources);
-            AnchorPane dialogPane = loader.load();
-
-            // Setup dialog
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle(loader.getResources().getString("dialog.cloud.title"));
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
-            Scene scene = new Scene(dialogPane);
-            dialogStage.setScene(scene);
-            dialogStage.setResizable(false);
-
-            // Initialization
-            SelectCloudDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setMainApp(mainApp);
-            controller.loadDPAccounts();
-
-            dialogStage.showAndWait();
-        } catch (IOException | IllegalStateException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
      * Allow the user to add a new {@link Tab} with recipes from selected folder.
      */
     @FXML
@@ -312,16 +312,9 @@ public class RyrycipeController implements Initializable {
         Tooltip.install(saveRecipeBtn, new Tooltip(resources.getString("toolbtn.save.tip")));
         saveRecipeBtn.setOnAction(e -> save());
 
-        // Button to upload current recipe
-        Button uploadRecipeBtn = new Button("");
-        uploadRecipeBtn.setId("uploadBtn");
-        uploadRecipeBtn.setPrefSize(32, 32);
-        Tooltip.install(uploadRecipeBtn, new Tooltip(resources.getString("toolbtn.upload.tip")));
-        uploadRecipeBtn.setOnAction(e -> uploadRecipe());
-
         // Add buttons to the tool bar
         specificToolBtns.getChildren().clear();
-        specificToolBtns.getChildren().addAll(newRecipeBtn, saveRecipeBtn, uploadRecipeBtn);
+        specificToolBtns.getChildren().addAll(newRecipeBtn, saveRecipeBtn);
     }
 
     /**

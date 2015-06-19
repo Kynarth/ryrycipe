@@ -59,12 +59,12 @@ public class AccessTokenValidation extends Task<Void> {
             }
         }
 
-        // Set the access token as valid
-        controller.getAccount().setAccessToken(controller.getAccessTokenTF().getText());
-        controller.getAccount().setIsAuthenticated(true);
-        LOGGER.info("Account: {} has been authenticated.", controller.getAccount().getName());
-
         Platform.runLater(() -> {
+            // Set the access token as valid
+            controller.getAccount().setAccessToken(controller.getAccessTokenTF().getText());
+            controller.getAccount().setIsAuthenticated(true);
+            LOGGER.info("Account: {} has been authenticated.", controller.getAccount().getName());
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(controller.getResources().getString("dialog.ask.token.valid.title"));
             alert.setHeaderText(controller.getResources().getString("dialog.ask.token.valid.header"));

@@ -183,7 +183,7 @@ public class SelectCloudDialogController implements Initializable {
                     LOGGER.error(e.getMessage());
                 }
             } else {
-                System.out.println("Coucou");
+                // Upload file corresponding to the current recipe
             }
         } else { // user didn't choose an account before clicking OK button or press enter
             Alert alert = new Alert(Alert.AlertType.WARNING);
