@@ -1,0 +1,9 @@
+// Show prompt with red color to be used as warning message
+.text-field {
+    -fx-prompt-text-fill: rgba(255, 0, 0, 1);
+}
+
+// Set message transparent to be invisible when user focus the text field
+.text-field:focused {
+    -fx-prompt-text-fill: transparent;
+}

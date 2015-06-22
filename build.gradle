@@ -7,10 +7,12 @@ version = '1.0'
 
 repositories {
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile "junit:junit:4.12"
+    testCompile "org.testfx:testfx-core:4.0.0-SNAPSHOT"
     compile 'com.intellij:annotations:12.0'
     compile 'org.xerial:sqlite-jdbc:3.8.9.1'
     compile 'org.slf4j:slf4j-api:1.7.12'
@@ -29,6 +31,19 @@ sourceSets {
             srcDirs = ['src/main/java', 'src/main/resources']
             includes = ['**/*.fxml', '**/*.properties', '**/*.png', '**/*.css', '**/*.db', '**/*.xml', '**/*.json']
         }
+    }
+
+    test {
+        resources {
+            srcDirs = ['src/main/java', 'src/main/resources']
+            includes = ['**/*.fxml', '**/*.properties', '**/*.png', '**/*.css', '**/*.db', '**/*.xml', '**/*.json']
+        }
+    }
+}
+
+test {
+    testLogging {
+        showStandardStreams = true
     }
 }
 
