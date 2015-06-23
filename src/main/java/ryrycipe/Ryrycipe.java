@@ -1,11 +1,18 @@
 package ryrycipe;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ryrycipe.util.LanguageUtil;
 
+import java.io.IOException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * <h1>Application to manage Ryzom's craft plans</h1>
@@ -17,6 +24,8 @@ import java.util.Locale;
  * </p>
  */
 public class Ryrycipe extends Application {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(Ryrycipe.class.getName());
 
     /**
      * Application's {@link Locale}.
@@ -38,7 +47,36 @@ public class Ryrycipe extends Application {
         // Get user's language
         this.locale = new Locale(LanguageUtil.getLanguage());
 
+        // Setup the MainWindow view
+        initMainWindow();
+
         this.primaryStage.show();
+    }
+
+    public void initMainWindow() {
+        try {
+            // Load MainWindow view from fxml file
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("view/MainWindow.fxml"));
+            loader.setResources(ResourceBundle.getBundle("lang", locale));
+            BorderPane rootLayout = loader.load();
+
+            // Setup MainWindow
+            Scene scene = new Scene(rootLayout);
+            primaryStage.setScene(scene);
+        } catch (IllegalStateException e) {
+            LOGGER.error("Couldn't find the MainWindow.fxml file.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Application's launcher
+     * @param args Application's parameters
+     */
+    public static void main(String[] args) {
+        launch(args);
     }
 
     public Locale getLocale() {
