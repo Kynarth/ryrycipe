@@ -11,8 +11,8 @@ repositories {
 }
 
 dependencies {
-    testCompile "junit:junit:4.12"
-    testCompile "org.testfx:testfx-core:4.0.0-SNAPSHOT"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.testfx:testfx-core:4.0.0-SNAPSHOT'
     compile 'com.intellij:annotations:12.0'
     compile 'org.xerial:sqlite-jdbc:3.8.9.1'
     compile 'org.slf4j:slf4j-api:1.7.12'

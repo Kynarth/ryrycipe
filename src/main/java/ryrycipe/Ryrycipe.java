@@ -3,6 +3,9 @@ package ryrycipe;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import ryrycipe.util.LanguageUtil;
+
+import java.util.Locale;
 
 /**
  * <h1>Application to manage Ryzom's craft plans</h1>
@@ -16,6 +19,12 @@ import javafx.stage.Stage;
 public class Ryrycipe extends Application {
 
     /**
+     * Application's {@link Locale}.
+     * It defines if the app's language is english or french.
+     */
+    private Locale locale;
+
+    /**
      * Application {@link Stage}.
      */
     private Stage primaryStage;
@@ -26,6 +35,17 @@ public class Ryrycipe extends Application {
         this.primaryStage.setTitle("Ryrycipe");
         this.primaryStage.getIcons().add(new Image("/images/logo.png"));
 
+        // Get user's language
+        this.locale = new Locale(LanguageUtil.getLanguage());
+
         this.primaryStage.show();
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }
