@@ -3,6 +3,7 @@ package ryrycipe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -38,6 +39,11 @@ public class Ryrycipe extends Application {
      */
     private Stage primaryStage;
 
+    /**
+     * Ryrycipe's main window.
+     */
+    private BorderPane rootLayout;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
@@ -47,19 +53,23 @@ public class Ryrycipe extends Application {
         // Get user's language
         this.locale = new Locale(LanguageUtil.getLanguage());
 
-        // Setup the MainWindow view
+        // Setup the MainWindow view with a CreatorPane.
         initMainWindow();
+        showCreatorPane();
 
         this.primaryStage.show();
     }
 
+    /**
+     * Load the main window UI.
+     */
     public void initMainWindow() {
         try {
             // Load MainWindow view from fxml file
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource("view/MainWindow.fxml"));
             loader.setResources(ResourceBundle.getBundle("lang", locale));
-            BorderPane rootLayout = loader.load();
+            rootLayout = loader.load();
 
             // Setup MainWindow
             Scene scene = new Scene(rootLayout);
@@ -67,7 +77,26 @@ public class Ryrycipe extends Application {
         } catch (IllegalStateException e) {
             LOGGER.error("Couldn't find the MainWindow.fxml file.");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Load a creator pane in the main window.
+     */
+    public void showCreatorPane() {
+        // Load CreatorPane view from fxml file
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("view/CreatorPane.fxml"));
+            loader.setResources(ResourceBundle.getBundle("lang", locale));
+            SplitPane creatorPane = loader.load();
+
+            rootLayout.setCenter(creatorPane);
+        } catch (IllegalStateException e) {
+            LOGGER.error("Couldn't find the MainWindow.fxml file.");
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
