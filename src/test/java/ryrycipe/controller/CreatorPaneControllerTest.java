@@ -4,11 +4,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
+import ryrycipe.model.Plan;
 import ryrycipe.util.LanguageUtil;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Test {@link CreatorPaneController}.
@@ -49,10 +52,20 @@ public class CreatorPaneControllerTest extends FxRobot {
 
     @Test
     public void testPlanQualityItems() {
-        ComboBox<String> planQuality = nodes().lookup("#planQualityCB").queryFirst();
+        ComboBox<String> planQualityCB = nodes().lookup("#planQualityCB").queryFirst();
         assertThat(
-            planQuality.getItems().toArray(),
+            planQualityCB.getItems().toArray(),
             is(resources.getString("combobox.quality.items").split(","))
         );
+    }
+
+    @Test
+    public void testPlanItems() {
+        ComboBox<Plan> planCB = nodes().lookup("#planCB").queryFirst();
+        GridPane filter = nodes().lookup("#materialFilter").queryFirst();
+
+        // check if no plan are selected at start and filter's parameter are disabled.
+        assertThat(planCB.getValue(), is(nullValue()));
+        filter.getChildren().forEach(node -> assertThat(node.isDisabled(), is(true)));
     }
 }
