@@ -1,11 +1,13 @@
 package ryrycipe.model;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * {@link Plan}'s category
  *
  * @see Plan#category
  */
-public class Category {
+public class Category implements Comparable<Category> {
 
     /**
      * Category's database id.
@@ -29,6 +31,17 @@ public class Category {
 
     public Category() {
         this.id = -1;
+    }
+
+    public Category(int id, String category) {
+        this.id = id;
+        this.category = category;
+    }
+
+    public Category(int id, String category, String subCategory) {
+        this.id = id;
+        this.category = category;
+        this.subCategory = subCategory;
     }
 
     public Category(int id, String category, String subCategory, int hand ) {
@@ -71,6 +84,14 @@ public class Category {
     }
 
     public String toString() {
-        return String.valueOf(id);
+        return "Id: " + String.valueOf(id) + "\n" +
+            "Category: " + this.category + "\n " +
+            "Subcategory: " + this.subCategory + "\n" +
+            "hand :" + this.hand;
+    }
+
+    @Override
+    public int compareTo(@NotNull Category o) {
+        return this.toString().compareTo(o.toString());
     }
 }
