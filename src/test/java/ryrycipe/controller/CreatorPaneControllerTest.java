@@ -34,7 +34,7 @@ public class CreatorPaneControllerTest extends FxRobot {
 
             // Load fxml file corresponding to CreatorPaneController
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(CreatorPaneControllerTest.class.getResource("/ryrycipe/view/CreatorPane.fxml"));
+            loader.setLocation(CreatorPaneController.class.getResource("/ryrycipe/view/CreatorPane.fxml"));
             loader.setResources(resources);
             SplitPane creatorPane = loader.load();
 

@@ -4,12 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import ryrycipe.model.Plan;
+import ryrycipe.model.manager.PlanManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,7 +37,13 @@ public class CreatorPaneController implements Initializable {
      * Display all type of plan like Spear, Vest, Pistol etc...
      */
     @FXML
-    private ComboBox planCB;
+    private ComboBox<Plan> planCB;
+
+    /**
+     * Area where each component from chosen {@link Plan} are displayed.
+     */
+    @FXML
+    private VBox componentsContainer;
 
     /**
      * {@link TextArea} where the user can leave a comment for his recipe.
@@ -95,6 +105,7 @@ public class CreatorPaneController implements Initializable {
 
     // ObservableList for each combobox.
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
+    private ObservableList<Plan> planItems = FXCollections.observableArrayList();
 
     private ResourceBundle resources;
 
@@ -106,5 +117,16 @@ public class CreatorPaneController implements Initializable {
         planQualityItems.addAll((resources.getString("combobox.quality.items").split(",")));
         planQualityCB.setItems(planQualityItems);
         planQualityCB.setValue(planQualityItems.get(planQualityItems.size() - 1));
+
+        // Set all possible type of plan in planCB
+        PlanManager planManager = new PlanManager();
+        planItems.addAll(planManager.getAll(planQualityCB.getValue()));
+        FXCollections.sort(planItems);
+        planCB.setItems(planItems);
+
+        // Disable all filter's parameters if no plan is selected in planCB
+        for (Node node: materialFilter.getChildren()) {
+            node.disableProperty().bind(planCB.valueProperty().isNull());
+        }
     }
 }
