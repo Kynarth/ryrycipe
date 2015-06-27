@@ -44,7 +44,7 @@ public class DBConnection {
     /**
      * Update the path to the database in function of chosen language.
      */
-    public static void changeLanguage() {
+    public static void update() {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(
