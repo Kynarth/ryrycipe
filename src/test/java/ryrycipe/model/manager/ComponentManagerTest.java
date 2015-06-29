@@ -57,25 +57,25 @@ public class ComponentManagerTest {
     public void testFindPlanComponents() {
         // Create list of components from normal axe, medium bow-pistol and high shield
         List<Component> axeComponents = new ArrayList<>();
-        axeComponents.add(new Component("mpftMpL", 35, "Blade", "ICO_Blade.png", 3));
-        axeComponents.add(new Component("mpftMpG", 35, "Grip", "ICO_Grip.png", 3));
-        axeComponents.add(new Component("mpftMpM", 35, "Shaft", "ICO_Shaft.png", 3));
-        axeComponents.add(new Component("mpftMpC", 35, "Counterweight", "ICO_Counterweight.png", 3));
+        axeComponents.add(new Component("mpftMpL", 25, "Blade", "ICO_Blade.png", 5));
+        axeComponents.add(new Component("mpftMpG", 25, "Grip", "ICO_Grip.png", 3));
+        axeComponents.add(new Component("mpftMpM", 25, "Shaft", "ICO_Shaft.png", 3));
+        axeComponents.add(new Component("mpftMpC", 25, "Counterweight", "ICO_Counterweight.png", 3));
 
         List<Component> bowPistolComponents = new ArrayList<>();
-        bowPistolComponents.add(new Component("mpftMpPE", 45, "Firing Pin", "ICO_Firing_pin.png", 2));
-        bowPistolComponents.add(new Component("mpftMpM", 45, "Shaft", "ICO_Shaft.png", 1));
-        bowPistolComponents.add(new Component("mpftMpCA", 45, "Barrel", "ICO_barrel.png", 2));
-        bowPistolComponents.add(new Component("mpftMpGA", 45, "Trigger", "ICO_trigger.png", 2));
+        bowPistolComponents.add(new Component("mpftMpPE", 94, "Firing Pin", "ICO_Firing_pin.png", 2));
+        bowPistolComponents.add(new Component("mpftMpM", 94, "Shaft", "ICO_Shaft.png", 1));
+        bowPistolComponents.add(new Component("mpftMpCA", 94, "Barrel", "ICO_barrel.png", 2));
+        bowPistolComponents.add(new Component("mpftMpGA", 94, "Trigger", "ICO_trigger.png", 2));
 
         List<Component> shieldComponents = new ArrayList<>();
-        shieldComponents.add(new Component("mpftMpCR", 134, "Armor Shell", "ICO_Armor_shell.png", 11));
-        shieldComponents.add(new Component("mpftMpAT", 134, "Armor Clip", "ICO_armor_clip.png", 10));
+        shieldComponents.add(new Component("mpftMpCR", 87, "Armor Shell", "ICO_Armor_shell.png", 11));
+        shieldComponents.add(new Component("mpftMpAT", 87, "Armor Clip", "ICO_armor_clip.png", 10));
 
         // Verify if the components manager find correct lists
-        assertThat(axeComponents, containsInAnyOrder(componentManager.findPlanComponents(35).toArray()));
-        assertThat(bowPistolComponents, containsInAnyOrder(componentManager.findPlanComponents(45).toArray()));
-        assertThat(shieldComponents, containsInAnyOrder(componentManager.findPlanComponents(134).toArray()));
+        assertThat(axeComponents, containsInAnyOrder(componentManager.findPlanComponents(25).toArray()));
+        assertThat(bowPistolComponents, containsInAnyOrder(componentManager.findPlanComponents(94).toArray()));
+        assertThat(shieldComponents, containsInAnyOrder(componentManager.findPlanComponents(87).toArray()));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ComponentManagerTest {
         // Excellent Forest Torbak Fang
         List<Component> fangComponents = new ArrayList<>();
         fangComponents.add(new Component("mpftMpRE", "Stuffing", "ICO_Stuffing.png"));
-        fangComponents.add(new Component("mpftMpE", "Explosif", "ICO_Explosif.png"));
+        fangComponents.add(new Component("mpftMpE", "Explosive", "ICO_Explosive.png"));
 
         // Supreme Prime Root Patee Wood Node
         List<Component> woodNodeComponents = new ArrayList<>();
