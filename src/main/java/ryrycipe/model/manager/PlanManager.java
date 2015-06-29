@@ -56,7 +56,7 @@ public class PlanManager {
 
                 // Retrieve plan's category and the list of its components
                 Category category = categoryManager.find(resultSet.getInt("category_id"));
-                List<Component> components = componentManager.getPlanComponents(resultSet.getInt("plan_id"));
+                List<Component> components = componentManager.findPlanComponents(resultSet.getInt("plan_id"));
 
                 plan = new Plan(
                     resultSet.getInt("plan_id"), name, quality,
@@ -94,7 +94,7 @@ public class PlanManager {
                 plans.add(new Plan(
                     resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("quality"),
                     resultSet.getString("icon"), categoryManager.find(resultSet.getInt("category_id")),
-                    componentManager.getPlanComponents(resultSet.getInt("id"))
+                    componentManager.findPlanComponents(resultSet.getInt("id"))
                 ));
             }
         } catch (SQLException e) {

@@ -30,7 +30,7 @@ public class CreatorPaneControllerTest extends FxRobot {
     private static ResourceBundle resources;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUpClass() {
         try {
             resources = ResourceBundle.getBundle("lang", new Locale(LanguageUtil.getLanguage()));
             FxToolkit.registerPrimaryStage();

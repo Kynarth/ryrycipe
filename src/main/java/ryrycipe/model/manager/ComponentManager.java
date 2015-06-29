@@ -28,7 +28,7 @@ public class ComponentManager {
     public Connection connection = DBConnection.getInstance();
 
     /**
-     * Retrieve a {@link Component} by its id in the database.
+     * Retrieve a {@link Component} not affiliated to a {@link Plan} by its id in the database.
      *
      * @param id {@link Component#id}
      * @return {@link Component}
@@ -48,7 +48,7 @@ public class ComponentManager {
 
             if (resultSet.isBeforeFirst()) {
                 component = new Component(
-                    id, resultSet.getString("name"), resultSet.getString("icon"), resultSet.getInt("amount")
+                    id, resultSet.getString("name"), resultSet.getString("icon")
                 );
             }
         } catch (SQLException e) {
@@ -64,7 +64,7 @@ public class ComponentManager {
      * @param planId {@link ryrycipe.model.Plan#id}
      * @return A {@link List} of {@link Component}s composing the {@link ryrycipe.model.Plan}.
      */
-    public List<Component> getPlanComponents(int planId) {
+    public List<Component> findPlanComponents(int planId) {
         List<Component> components = new ArrayList<>();
 
         try {
@@ -80,7 +80,7 @@ public class ComponentManager {
 
             while (resultSet.next()) {
                 components.add(new Component(
-                    resultSet.getString("component_id"), resultSet.getString("name"),
+                    resultSet.getString("component_id"), planId, resultSet.getString("name"),
                     resultSet.getString("icon"), resultSet.getInt("amount")
                 ));
             }
@@ -97,7 +97,7 @@ public class ComponentManager {
      * @param materialId {@link ryrycipe.model.Material#id}
      * @return {@link List} of {@link Component}s affiliated to the given {@link ryrycipe.model.Material}.
      */
-    public List<Component> getMaterialComponents(String materialId) {
+    public List<Component> findMaterialComponents(String materialId) {
         List<Component> components = new ArrayList<>();
 
         try {
@@ -116,8 +116,7 @@ public class ComponentManager {
 
             while (resultSet.next()) {
                 components.add(new Component(
-                    resultSet.getString("cmp_id"), resultSet.getString("cmp_name"),
-                    resultSet.getString("cmp_icon"), 0
+                    resultSet.getString("cmp_id"), resultSet.getString("cmp_name"), resultSet.getString("cmp_icon")
                 ));
             }
         } catch (SQLException e) {

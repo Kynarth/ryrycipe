@@ -2,7 +2,7 @@
     "Weapon": {
         "Melee": {
             "One-handed weapon": {
-                "Hache": {
+                "Axe": {
                     "code": "bccmea05",
                     "icon": "MW_axe",
                     "type": "Weapon 1H",

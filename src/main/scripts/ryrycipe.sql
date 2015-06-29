@@ -42,7 +42,7 @@ CREATE TABLE material_spec(
 CREATE TABLE material_category_type(
     id          INTEGER     NOT NULL    PRIMARY KEY,
     name        TEXT        NOT NULL,
-    icon        BLOB        NOT NULL
+    icon        TEXT        NOT NULL
 );
 
 CREATE TABLE material_component(
@@ -56,14 +56,14 @@ CREATE TABLE material_component(
 CREATE TABLE component(
     id          TEXT     NOT NULL PRIMARY KEY,
     name        TEXT        NOT NULL,
-    icon        BLOB        NOT NULL
+    icon        TEXT        NOT NULL
 );
 
 CREATE TABLE recipe(
     id          INTEGER     NOT NULL    PRIMARY KEY,
     name        TEXT        NOT NULL,
     quality     TEXT        NOT NULL,
-    icon        BLOB        NOT NULL,
+    icon        TEXT        NOT NULL,
     category_id INTEGER     NOT NULL,
     FOREIGN KEY(category_id) REFERENCES recipe_category(id)
 );

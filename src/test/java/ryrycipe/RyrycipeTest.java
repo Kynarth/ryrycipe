@@ -30,7 +30,7 @@ public class RyrycipeTest extends FxRobot {
     private static Ryrycipe ryrycipe;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUpClass() {
         // Remove previous language preference
         Preferences prefs = Preferences.userNodeForPackage(LanguageUtil.class);
         prefs.remove("language");

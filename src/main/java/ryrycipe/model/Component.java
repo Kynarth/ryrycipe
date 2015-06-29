@@ -1,5 +1,6 @@
 package ryrycipe.model;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import javafx.scene.image.Image;
 
@@ -16,6 +17,12 @@ public class Component {
     private String id;
 
     /**
+     * Id of Component's {@link Plan}.
+     * {@link Plan#id}.
+     */
+    private int recipeId;
+
+    /**
      * Component's name.
      */
     private String name;
@@ -30,12 +37,38 @@ public class Component {
      */
     private int amount;
 
+    /**
+     * A component is base element composing a {@link Plan}.
+     * It can be filled with different kind of {@link Material} in function of his nature.
+     */
     public Component() {
-        this.name = null;
     }
 
-    public Component(String id, String name, String icon, int amount) {
+    /**
+     * Component not affiliated to a plan.
+     *
+     * @param id Component's id in the database.
+     * @param name Component's name.
+     * @param icon Component's icon.
+     */
+    public Component(String id, String name, String icon) {
+        this.icon = icon;
+        this.name = name;
         this.id = id;
+    }
+
+    /**
+     * Component affiliated to a plan.
+     *
+     * @param id Component's id in the database.
+     * @param recipeId Plan's id in the database.
+     * @param name Component's name.
+     * @param icon Component's icon.
+     * @param amount Component's amount to fill it (depends of the chosen plan.).
+     */
+    public Component(String id, int recipeId, String name, String icon, int amount) {
+        this.id = id;
+        this.recipeId = recipeId;
         this.name = name;
         this.icon = icon;
         this.amount = amount;
@@ -47,6 +80,14 @@ public class Component {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getName() {
@@ -73,10 +114,6 @@ public class Component {
         this.amount = amount;
     }
 
-    public String toString() {
-        return name;
-    }
-
     /**
      * Return an {@link Image} from {@link Component#icon}.
      *
@@ -100,5 +137,16 @@ public class Component {
     @Override
     public int hashCode() {
         return Objects.hashCode(id, name, icon, amount);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .add("id", id)
+            .add("recipeId", recipeId)
+            .add("name", name)
+            .add("icon", icon)
+            .add("amount", amount)
+            .toString();
     }
 }
