@@ -77,7 +77,7 @@ public class PlanManager {
      * @param quality {@link Plan#quality}
      * @return {@link List} of {@link Plan} corresponding to the given quality.
      */
-    public List<Plan> getAll(String quality) {
+    public List<Plan> findAllPlans(String quality) {
         List<Plan> plans = new ArrayList<>();
         CategoryManager categoryManager = new CategoryManager();
         ComponentManager componentManager = new ComponentManager();
