@@ -28,9 +28,9 @@ public class CategoryManagerTest {
         Category ammoTest = new Category(5, "Ammo", "One-handed ranged weapon");
 
         // Verify if the category manager find correct categories
-        assertThat(armorTest.compareTo(categoryManager.find(1)), is(0));
-        assertThat(jewelTest.compareTo(categoryManager.find(2)), is(0));
-        assertThat(weaponTest.compareTo(categoryManager.find(9)), is(0));
-        assertThat(ammoTest.compareTo(categoryManager.find(5)), is(0));
+        assertThat(armorTest, is(categoryManager.find(1)));
+        assertThat(jewelTest, is(categoryManager.find(2)));
+        assertThat(weaponTest, is(categoryManager.find(9)));
+        assertThat(ammoTest, is(categoryManager.find(5)));
     }
 }

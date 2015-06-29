@@ -1,13 +1,13 @@
 package ryrycipe.model;
 
-import org.jetbrains.annotations.NotNull;
+import com.google.common.base.Objects;
 
 /**
  * {@link Plan}'s category
  *
  * @see Plan#category
  */
-public class Category implements Comparable<Category> {
+public class Category {
 
     /**
      * Category's database id.
@@ -83,15 +83,19 @@ public class Category implements Comparable<Category> {
         this.hand = hand;
     }
 
-    public String toString() {
-        return "Id: " + String.valueOf(id) + "\n" +
-            "Category: " + this.category + "\n " +
-            "Subcategory: " + this.subCategory + "\n" +
-            "hand :" + this.hand;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category1 = (Category) o;
+        return Objects.equal(id, category1.id) &&
+            Objects.equal(hand, category1.hand) &&
+            Objects.equal(category, category1.category) &&
+            Objects.equal(subCategory, category1.subCategory);
     }
 
     @Override
-    public int compareTo(@NotNull Category o) {
-        return this.toString().compareTo(o.toString());
+    public int hashCode() {
+        return Objects.hashCode(id, category, subCategory, hand);
     }
 }

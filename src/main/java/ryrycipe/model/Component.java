@@ -1,5 +1,6 @@
 package ryrycipe.model;
 
+import com.google.common.base.Objects;
 import javafx.scene.image.Image;
 
 /**
@@ -83,5 +84,21 @@ public class Component {
      */
     public Image getImage() {
         return new Image("/images/components/" + icon);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Component component = (Component) o;
+        return Objects.equal(amount, component.amount) &&
+            Objects.equal(id, component.id) &&
+            Objects.equal(name, component.name) &&
+            Objects.equal(icon, component.icon);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, icon, amount);
     }
 }
