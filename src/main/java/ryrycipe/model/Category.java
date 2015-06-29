@@ -29,21 +29,45 @@ public class Category {
      */
     private int hand;
 
+    /**
+     * Each craft plan in Ryzom can be categorized in categories (weapon, jewel...),
+     * themselves divided in subcategories (One-handed, boots ...)
+     */
     public Category() {
         this.id = -1;
     }
 
+    /**
+     * Jewel category.
+     *
+     * @param id Category's id in the database.
+     * @param category One of 4 great category: Weapon, Jewel, Armor, Ammo: here Jewel.
+     */
     public Category(int id, String category) {
         this.id = id;
         this.category = category;
     }
 
+    /**
+     * Ammo and Armor category.
+     * @param id Category's id in the database.
+     * @param category One of 4 great category: Weapon, Jewel, Armor, Ammo: here Ammo or Armor.
+     * @param subCategory one or two handed ranged weapon for ammo or type of armor (light, medium, shield ...).
+     */
     public Category(int id, String category, String subCategory) {
         this.id = id;
         this.category = category;
         this.subCategory = subCategory;
     }
 
+    /**
+     * Weapon category.
+     *
+     * @param id Category's id in the database.
+     * @param category One of 4 great category: Weapon, Jewel, Armor, Ammo: here Weapon.
+     * @param subCategory Define if the weapon is melee or ranged.
+     * @param hand Number of hand to handle the weapon.
+     */
     public Category(int id, String category, String subCategory, int hand ) {
         this.id = id;
         this.category = category;

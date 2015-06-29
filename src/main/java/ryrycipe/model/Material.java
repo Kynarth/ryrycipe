@@ -1,5 +1,6 @@
 package ryrycipe.model;
 
+import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -79,7 +80,7 @@ public class Material {
      * Material's stats for specific {@link Component}.
      * String corresponding to {@link Component#id}
      */
-    private Map<String, JsonObject> stats;
+    private Map<String, JsonObject> stats = new HashMap<>();
 
     /**
      * Number of Materials contained in a {@link ryrycipe.model.view.MaterialView}.
@@ -91,10 +92,25 @@ public class Material {
      */
     private List<Component> asComponent;
 
+    /**
+     * Ryzom's material like amber or fang that are base element to craft items.
+     */
     public Material() {
-        this.stats = new HashMap<>();
     }
 
+    /**
+     * Base element of craft plan.
+     *
+     * @param id Material's id in the database.
+     * @param description Little description providing infos like country of origin, quality and type.
+     * @param category Define if the material has been extracted by drilling or quartering.
+     * @param type Determine if the material belongs to wood, fiber ... type of material.
+     * @param quality Material's quality like Basic, Fine, Choice etc ...
+     * @param faction Inform about the material's faction like "Matis, Fyros etc ...
+     * @param icon Material's icon.
+     * @param name Material's name.
+     * @param asComponent
+     */
     public Material(String id, String description, String category, String type, String quality, Faction faction,
                     String icon, String name, List<Component> asComponent) {
         this.id = id;
@@ -111,6 +127,7 @@ public class Material {
 
     /**
      * A return a {@link List} of material's components name
+     *
      * @return {@link List} of material's components name
      */
     public List<String> getComponents() {
@@ -200,18 +217,28 @@ public class Material {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if((object == null) || (object.getClass() != this.getClass())) {
-            return false;
-        }
-
-        Material material = (Material) object;
-
-        return this.name.equals(material.name) &&
-            this.faction.getName().equals(material.faction.getName()) &&
-            this.quality.equals(material.quality);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Material material = (Material) o;
+        return Objects.equal(nbMaterials, material.nbMaterials) &&
+            Objects.equal(id, material.id) &&
+            Objects.equal(description, material.description) &&
+            Objects.equal(category, material.category) &&
+            Objects.equal(type, material.type) &&
+            Objects.equal(icon, material.icon) &&
+            Objects.equal(name, material.name) &&
+            Objects.equal(quality, material.quality) &&
+            Objects.equal(faction, material.faction) &&
+            Objects.equal(matQualityLevel, material.matQualityLevel) &&
+            Objects.equal(stats, material.stats) &&
+            Objects.equal(asComponent, material.asComponent);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, description, category, type, icon, name, quality, faction, matQualityLevel, stats, nbMaterials, asComponent);
+    }
 
     public String getId() {
         return id;

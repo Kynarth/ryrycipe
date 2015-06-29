@@ -1,7 +1,10 @@
 package ryrycipe.model.manager.view;
 
+import ryrycipe.model.Material;
+
 /**
- * Created by kynarth on 27/06/15.
+ * Visualization of {@link Material} composed of {@link Material#icon}, {@link Material#matQualityLevel}
+ * and when chose to be part of the user's recipe, number of them incorporated in it.
  */
 public class MaterialView {
 }

@@ -19,8 +19,31 @@ public class Faction {
      */
     private String icon;
 
+    /**
+     * <p>A faction represent one of the 5 country in the game:</p>
+     * <ul>
+     *     <li>Jungle: Zoraï</li>
+     *     <li>Forest: Matis</li>
+     *     <li>Desert: Fyros</li>
+     *     <li>Lakes: Tryker</li>
+     *     <li>Prime root</li>
+     * </ul>
+     */
     public Faction() {}
 
+    /**
+     * <p>A faction represent one of the 5 country in the game:</p>
+     * <ul>
+     *     <li>Jungle: Zoraï</li>
+     *     <li>Forest: Matis</li>
+     *     <li>Desert: Fyros</li>
+     *     <li>Lakes: Tryker</li>
+     *     <li>Prime root</li>
+     * </ul>
+     *
+     * @param name Faction's name like Matis or Fyros.
+     * @param icon Each faction is represented by a color: Green -> Matis, Red -> Fyros etc ...
+     */
     public Faction(String name, String icon) {
         this.name = name;
         this.icon = icon;

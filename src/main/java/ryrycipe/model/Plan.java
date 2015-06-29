@@ -41,8 +41,23 @@ public class Plan implements Comparable<Plan> {
      */
     private List<Component> components;
 
+    /**
+     * The plan furnish informations about how many {@link Material}s for each of its {@link Component} to create
+     * his own recipes.
+     */
     public Plan() {}
 
+    /**
+     * The plan furnish informations about how many {@link Material}s for each of its {@link Component} to create
+     * his own recipes.
+     *
+     * @param id Plan's id in the database.
+     * @param name Plan's name.
+     * @param quality Plan's quality (Normal, Medium and High)
+     * @param icon Plan's icon.
+     * @param category Plan's {@link Category} (weapon, jewel, armor or ammo).
+     * @param components {@link Component} composing the plan. (blade, grip, hammer etc ...)
+     */
     public Plan(int id, String name, String quality, String icon, Category category, List<Component>components) {
         this.id = id;
         this.name = name;
