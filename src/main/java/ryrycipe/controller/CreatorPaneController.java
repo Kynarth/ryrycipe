@@ -13,6 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.slf4j.LoggerFactory;
+import ryrycipe.model.Component;
 import ryrycipe.model.Plan;
 import ryrycipe.model.manager.PlanManager;
 
@@ -110,6 +111,7 @@ public class CreatorPaneController implements Initializable {
     // ObservableList for each combobox.
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
+    private ObservableList<Component> componentItems = FXCollections.observableArrayList();
 
     private ResourceBundle resources;
 
@@ -165,6 +167,17 @@ public class CreatorPaneController implements Initializable {
             }
         }));
 
+        // Listener to change componentCB's item in function of chosen plan in planCB
+        planCB.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            componentItems.clear();         // Remove old components associated to the previous plan
+            componentItems.addAll(newValue.getComponents());
+            componentCB.setItems(componentItems);
+            componentCB.getSelectionModel().select(0);
+        });
 
+    }
+
+    public void test() {
+        System.out.println("Coucou");
     }
 }
