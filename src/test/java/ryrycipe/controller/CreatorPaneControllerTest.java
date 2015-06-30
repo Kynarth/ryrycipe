@@ -6,6 +6,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.api.FxRobot;
@@ -46,6 +47,15 @@ public class CreatorPaneControllerTest extends FxRobot {
             FxToolkit.setupStage(stage -> stage.setScene(new Scene(creatorPane)));
             FxToolkit.showStage();
         } catch (IOException | TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+        try {
+            FxToolkit.cleanupStages();
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
     }

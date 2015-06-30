@@ -120,7 +120,7 @@ public class CreatorPaneController implements Initializable {
 
         // Set all possible type of plan in planCB
         PlanManager planManager = new PlanManager();
-        planItems.addAll(planManager.getAll(planQualityCB.getValue()));
+        planItems.addAll(planManager.findAllPlans(planQualityCB.getValue()));
         FXCollections.sort(planItems);
         planCB.setItems(planItems);
 

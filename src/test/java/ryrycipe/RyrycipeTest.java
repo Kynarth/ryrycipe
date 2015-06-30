@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.api.FxRobot;
@@ -38,6 +39,15 @@ public class RyrycipeTest extends FxRobot {
         try {
             primaryStage = FxToolkit.registerPrimaryStage();
             ryrycipe = (Ryrycipe) FxToolkit.setupApplication(Ryrycipe.class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+        try {
+            FxToolkit.cleanupApplication(ryrycipe);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
