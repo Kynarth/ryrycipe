@@ -1,5 +1,6 @@
 package ryrycipe.model;
 
+import com.google.common.base.Objects;
 import javafx.scene.image.Image;
 
 /**
@@ -49,6 +50,20 @@ public class Faction {
         this.icon = icon;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Faction faction = (Faction) o;
+        return Objects.equal(name, faction.name) &&
+            Objects.equal(icon, faction.icon);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name, icon);
+    }
+
     public String toString() {
         return name;
     }
@@ -77,4 +92,6 @@ public class Faction {
     public Image getImage() {
         return new Image("/images/backgrounds/" + icon);
     }
+
+
 }

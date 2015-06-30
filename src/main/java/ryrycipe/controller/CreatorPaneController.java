@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.slf4j.LoggerFactory;
 import ryrycipe.model.Component;
+import ryrycipe.model.Faction;
 import ryrycipe.model.Plan;
 import ryrycipe.model.manager.PlanManager;
 
@@ -86,13 +87,13 @@ public class CreatorPaneController implements Initializable {
      * Filter materials following component like blade, hammer, grip etc.
      */
     @FXML
-    private ComboBox componentCB;
+    private ComboBox<Component> componentCB;
 
     /**
      * Filter materials following their quality (basic to supreme).
      */
     @FXML
-    private ComboBox qualityCB;
+    private ComboBox<String> qualityCB;
 
     /**
      * Filter materials following their faction (Fyros, Matis, etc...).
@@ -112,6 +113,8 @@ public class CreatorPaneController implements Initializable {
     private ObservableList<String> planQualityItems = FXCollections.observableArrayList();
     private ObservableList<Plan> planItems = FXCollections.observableArrayList();
     private ObservableList<Component> componentItems = FXCollections.observableArrayList();
+    private ObservableList<String> qualityItems = FXCollections.observableArrayList();
+    private ObservableList<Faction> factionItems = FXCollections.observableArrayList();
 
     private ResourceBundle resources;
 
@@ -146,7 +149,7 @@ public class CreatorPaneController implements Initializable {
         matQualityLevel.textProperty().addListener(((observable, oldValue, newValue) -> {
             Pattern pattern = Pattern.compile("^[0-9]+$");
 
-            if (!newValue.isEmpty()){
+            if (!newValue.isEmpty()) {
                 if (newValue.equals("0")) {
                     matQualityLevel.setText("");
                 }
@@ -160,7 +163,7 @@ public class CreatorPaneController implements Initializable {
                 else if (newValue.charAt(0) == '0' && newValue.length() > 1)
                     matQualityLevel.setText(newValue.substring(1));
 
-                // Check if the entered value does not exceed the max quality level: 250
+                    // Check if the entered value does not exceed the max quality level: 250
                 else if (!newValue.isEmpty() && Integer.valueOf(newValue) > 250) {
                     matQualityLevel.setText("250");
                 }
@@ -168,16 +171,25 @@ public class CreatorPaneController implements Initializable {
         }));
 
         // Listener to change componentCB's item in function of chosen plan in planCB
-        planCB.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        planCB.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Component combobox
             componentItems.clear();         // Remove old components associated to the previous plan
             componentItems.addAll(newValue.getComponents());
             componentCB.setItems(componentItems);
             componentCB.getSelectionModel().select(0);
         });
 
-    }
+        // Setup quality items for its combobox
+        qualityItems.addAll(resources.getString("combobox.quality.values").split(","));
+        qualityCB.setItems(qualityItems);
+        qualityCB.getSelectionModel().select(0);
 
-    public void test() {
-        System.out.println("Coucou");
+        // Listener to change list of factions in function of selected quality
+//        qualityCB.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue.intValue() >= 2 && oldValue.intValue() < 2) {
+//                factionItems.clear();
+//                factionItems.addAll()
+//            }
+//        });
     }
 }
