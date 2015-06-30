@@ -41,11 +41,11 @@ sourceSets {
     }
 }
 
-test {
-    testLogging {
-        showStandardStreams = true
-    }
-}
+//test {
+//    testLogging {
+//        showStandardStreams = true
+//    }
+//}
 
 // Jar with dependencies
 jar {

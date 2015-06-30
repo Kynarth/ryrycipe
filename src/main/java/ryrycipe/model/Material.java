@@ -83,7 +83,7 @@ public class Material {
     private Map<String, JsonObject> stats = new HashMap<>();
 
     /**
-     * Number of Materials contained in a {@link ryrycipe.model.view.MaterialView}.
+     * Number of Materials contained in a {@link ryrycipe.model.manager.view.MaterialView}.
      */
     private int nbMaterials = 0;
 
@@ -109,7 +109,7 @@ public class Material {
      * @param faction Inform about the material's faction like "Matis, Fyros etc ...
      * @param icon Material's icon.
      * @param name Material's name.
-     * @param asComponent
+     * @param asComponent Define which {@link Component} this material can bu used for.
      */
     public Material(String id, String description, String category, String type, String quality, Faction faction,
                     String icon, String name, List<Component> asComponent) {

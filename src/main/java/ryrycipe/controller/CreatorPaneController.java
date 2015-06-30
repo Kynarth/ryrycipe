@@ -1,7 +1,10 @@
 package ryrycipe.controller;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -18,8 +21,12 @@ import ryrycipe.model.Faction;
 import ryrycipe.model.Plan;
 import ryrycipe.model.manager.FactionManager;
 import ryrycipe.model.manager.PlanManager;
+import ryrycipe.model.manager.view.MaterialView;
+import ryrycipe.task.FilterMaterialsTask;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -117,12 +124,10 @@ public class CreatorPaneController implements Initializable {
     private ObservableList<String> qualityItems = FXCollections.observableArrayList();
     private ObservableList<Faction> factionItems = FXCollections.observableArrayList();
 
-    private ResourceBundle resources;
+    private Task<ObservableList<MaterialView>> filterTask;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.resources = resources;
-
         // Set possible plan's quality in planQualityCB and set default value to 'High'
         planQualityItems.addAll((resources.getString("combobox.quality.items").split(",")));
         planQualityCB.setItems(planQualityItems);
@@ -206,5 +211,67 @@ public class CreatorPaneController implements Initializable {
                 factionCB.getSelectionModel().select(0);
             }
         });
+    }
+
+    /**
+     * Get all parameters from the filter of materials
+     *
+     * @return {@link Map} with the value of each parameter from the filter of materials.
+     */
+    public Map<String, String> getFilterParameters() {
+        Map<String, String> parameters = new HashMap<>();
+
+        if (foragedBtn.isSelected())
+            parameters.put("foraged", foragedBtn.getText());
+        else
+            parameters.put("foraged", null);
+
+        if (quarteredBtn.isSelected())
+            parameters.put("quartered", quarteredBtn.getText());
+        else
+            parameters.put("quartered", null);
+
+        parameters.put("qualityLvl", matQualityLevel.getText());
+        parameters.put("component", componentCB.getValue().getId());
+        parameters.put("faction", factionCB.getValue().getName());
+        parameters.put("quality", qualityCB.getValue());
+        return parameters;
+    }
+
+    /**
+     * Display {@link ryrycipe.model.Material}s fitting the materialFilter options.
+     */
+    @FXML
+    private void displayMaterials() {
+        // Remove previous MaterialView and get filter's parameters
+        materialChooser.getChildren().clear();
+        Map<String, String> filterParameter = getFilterParameters();
+
+        // Check if the user has choose a material category
+        if (filterParameter.get("foraged") == null && filterParameter.get("quartered") == null) {
+            LOGGER.info("Materials not displayed: No category.");
+            return;
+        }
+
+        // Cancel previous running filtering task
+        if (filterTask != null && filterTask.isRunning()) {
+            filterTask.cancel();
+        }
+
+        // Create new filtering task
+        filterTask = new FilterMaterialsTask(materialFilter.getScene(), getFilterParameters());
+
+        // Bind MaterialView from filtering task to materialChooser.
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+        ListProperty<MaterialView> materialViews = new SimpleListProperty<>();
+        materialViews.bind(filterTask.valueProperty());
+        materialViews.addListener((observable, oldValue, newValue) ->
+            materialChooser.getChildren().add(newValue.get(newValue.size() - 1))
+        );
+
+        // launch filtering task
+        Thread filterThread = new Thread(filterTask);
+        filterThread.setDaemon(true);
+        filterThread.start();
     }
 }
