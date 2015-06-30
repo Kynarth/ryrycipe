@@ -1,6 +1,5 @@
 package ryrycipe.model;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import javafx.scene.image.Image;
 
@@ -141,12 +140,6 @@ public class Component {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("id", id)
-            .add("recipeId", recipeId)
-            .add("name", name)
-            .add("icon", icon)
-            .add("amount", amount)
-            .toString();
+        return this.name;
     }
 }

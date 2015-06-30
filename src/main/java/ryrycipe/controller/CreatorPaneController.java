@@ -18,6 +18,7 @@ import ryrycipe.model.manager.PlanManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 /**
  * Controller for the CreatorPane view.
@@ -138,6 +139,32 @@ public class CreatorPaneController implements Initializable {
         } else {
             LOGGER.error("Couldn't find the list of plans for the {} quality.", planQualityCB.getValue());
         }
+
+        // Listener to force user to choose a number between 1 and 250 as material quality level
+        matQualityLevel.textProperty().addListener(((observable, oldValue, newValue) -> {
+            Pattern pattern = Pattern.compile("^[0-9]+$");
+
+            if (!newValue.isEmpty()){
+                if (newValue.equals("0")) {
+                    matQualityLevel.setText("");
+                }
+
+                // Check if the new entered value is a number. If not set the oldValue
+                else if (!pattern.matcher(newValue).matches()) {
+                    matQualityLevel.setText(oldValue);
+                }
+
+                // Check if the user enters a '0' before other numbers to remove it.
+                else if (newValue.charAt(0) == '0' && newValue.length() > 1)
+                    matQualityLevel.setText(newValue.substring(1));
+
+                // Check if the entered value does not exceed the max quality level: 250
+                else if (!newValue.isEmpty() && Integer.valueOf(newValue) > 250) {
+                    matQualityLevel.setText("250");
+                }
+            }
+        }));
+
 
     }
 }
