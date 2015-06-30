@@ -22,7 +22,9 @@ public class CategoryManager {
      * Connection to the ryrycipe database.
      * @see DBConnection
      */
-    public Connection connection = DBConnection.getInstance();
+    private static Connection connection = DBConnection.getInstance();
+
+    private CategoryManager() {}
 
     /**
      * Retrieve a {@link Category} by its id in the database.
@@ -30,11 +32,11 @@ public class CategoryManager {
      * @param id {@link Category#id}
      * @return Return a filled {@link Category} if id is correct otherwise empty one.
      */
-    public Category find(int id) {
+    public static Category find(int id) {
         Category category = new Category();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT * FROM recipe_category WHERE id = ?"
             );
             statement.setInt(1, id);

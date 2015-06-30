@@ -25,7 +25,9 @@ public class PlanManager {
      * Connection to the ryrycipe database.
      * @see DBConnection
      */
-    public Connection connection = DBConnection.getInstance();
+    private static Connection connection = DBConnection.getInstance();
+
+    private PlanManager() {}
 
     /**
      * Retrieve a {@link Plan} by its name and quality in the database.
@@ -34,13 +36,11 @@ public class PlanManager {
      * @param quality {@link Plan#quality}
      * @return Return a filled {@link Plan} if founded otherwise empty one.
      */
-    public Plan find(String name, String quality) {
+    public static Plan find(String name, String quality) {
         Plan plan = new Plan();
-        CategoryManager categoryManager = new CategoryManager();
-        ComponentManager componentManager = new ComponentManager();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT r.id AS plan_id, r.icon, r.category_id FROM recipe AS r " +
                     "INNER JOIN recipe_category AS rc ON r.category_id = rc.id " +
                     "INNER JOIN recipe_component AS rcmp ON rcmp.recipe_id = r.id " +
@@ -53,8 +53,8 @@ public class PlanManager {
 
             if (resultSet.isBeforeFirst()) {
                 // Retrieve plan's category and the list of its components
-                Category category = categoryManager.find(resultSet.getInt("category_id"));
-                List<Component> components = componentManager.findPlanComponents(resultSet.getInt("plan_id"));
+                Category category = CategoryManager.find(resultSet.getInt("category_id"));
+                List<Component> components = ComponentManager.findPlanComponents(resultSet.getInt("plan_id"));
 
                 plan = new Plan(
                     resultSet.getInt("plan_id"), name, quality,
@@ -75,13 +75,11 @@ public class PlanManager {
      * @param quality {@link Plan#quality}
      * @return {@link List} of {@link Plan} corresponding to the given quality or empty one if incorrect quality.
      */
-    public List<Plan> findAllPlans(String quality) {
+    public static List<Plan> findAllPlans(String quality) {
         List<Plan> plans = new ArrayList<>();
-        CategoryManager categoryManager = new CategoryManager();
-        ComponentManager componentManager = new ComponentManager();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT * FROM recipe WHERE quality = ?"
             );
             statement.setString(1, quality);
@@ -91,8 +89,8 @@ public class PlanManager {
             while (resultSet.next()) {
                 plans.add(new Plan(
                     resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("quality"),
-                    resultSet.getString("icon"), categoryManager.find(resultSet.getInt("category_id")),
-                    componentManager.findPlanComponents(resultSet.getInt("id"))
+                    resultSet.getString("icon"), CategoryManager.find(resultSet.getInt("category_id")),
+                    ComponentManager.findPlanComponents(resultSet.getInt("id"))
                 ));
             }
         } catch (SQLException e) {

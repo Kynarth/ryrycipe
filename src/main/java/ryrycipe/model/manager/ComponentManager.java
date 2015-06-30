@@ -25,7 +25,9 @@ public class ComponentManager {
      * Connection to the ryrycipe database.
      * @see DBConnection
      */
-    public Connection connection = DBConnection.getInstance();
+    private static Connection connection = DBConnection.getInstance();
+
+    private ComponentManager() {}
 
     /**
      * Retrieve a {@link Component} not affiliated to a {@link ryrycipe.model.Plan} by its id in the database.
@@ -33,11 +35,11 @@ public class ComponentManager {
      * @param id {@link Component#id}
      * @return Return a filled {@link Component} or empty one if id is incorrect.
      */
-    public Component find(String id) {
+    public static Component find(String id) {
         Component component = new Component();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT * FROM component AS c " +
                     "INNER JOIN recipe_component AS rc ON rc.component_id = c.id " +
                     "WHERE c.id = ?"
@@ -65,11 +67,11 @@ public class ComponentManager {
      * @return A {@link List} of {@link Component}s composing the {@link ryrycipe.model.Plan}, or empty one
      * if the provided {@link ryrycipe.model.Plan#id} doesn't exist.
      */
-    public List<Component> findPlanComponents(int planId) {
+    public static List<Component> findPlanComponents(int planId) {
         List<Component> components = new ArrayList<>();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT c.id AS component_id, c.name, c.icon, rc.amount " +
                     "FROM component AS c " +
                     "INNER JOIN recipe_component AS rc ON rc.component_id = c.id " +
@@ -99,11 +101,11 @@ public class ComponentManager {
      * @return {@link List} of two {@link Component}s affiliated to the given {@link ryrycipe.model.Material}, or
      * empty one if {@link ryrycipe.model.Material#id} doesn't exist.
      */
-    public List<Component> findMaterialComponents(String materialId) {
+    public static List<Component> findMaterialComponents(String materialId) {
         List<Component> components = new ArrayList<>();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT c.id as cmp_id, c.name as cmp_name, c.icon as cmp_icon " +
                     "FROM component as c " +
                     "INNER JOIN material_component as mcmp " +

@@ -18,8 +18,6 @@ public class FactionManagerTest {
 
     private static String language = LanguageUtil.getLanguage();
 
-    private FactionManager factionManager = new FactionManager();
-
     @BeforeClass
     public static void setUpClass() throws UnsupportedLanguageException {
         // Setup english database if not already set
@@ -48,11 +46,11 @@ public class FactionManagerTest {
         Faction zorai = new Faction("Zoraï", "BK_zoraï.png");
 
         // verify that FactionManager retrieve correct factions
-        assertThat(factionManager.find("Generic"), is(generic));
-        assertThat(factionManager.find("Prime"), is(prime));
-        assertThat(factionManager.find("Matis"), is(matis));
-        assertThat(factionManager.find("Fyros"), is(fyros));
-        assertThat(factionManager.find("Tryker"), is(tryker));
-        assertThat(factionManager.find("Zoraï"), is(zorai));
+        assertThat(FactionManager.find("Generic"), is(generic));
+        assertThat(FactionManager.find("Prime"), is(prime));
+        assertThat(FactionManager.find("Matis"), is(matis));
+        assertThat(FactionManager.find("Fyros"), is(fyros));
+        assertThat(FactionManager.find("Tryker"), is(tryker));
+        assertThat(FactionManager.find("Zoraï"), is(zorai));
     }
 }

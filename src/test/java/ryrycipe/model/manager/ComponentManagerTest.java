@@ -22,8 +22,6 @@ public class ComponentManagerTest {
 
     private static String language = LanguageUtil.getLanguage();
 
-    private ComponentManager componentManager = new ComponentManager();
-
     @BeforeClass
     public static void setUpClass() throws UnsupportedLanguageException {
         // Setup english database if not already set
@@ -49,12 +47,12 @@ public class ComponentManagerTest {
         Component magicFocus = new Component("mpftMpMF", "Magic Focus", "ICO_Magic_focus.png");
 
         // Verify that same components are founded
-        assertThat(componentManager.find("mpftMpG"), is(grip));
-        assertThat(componentManager.find("mpftMpM"), is(shaft));
-        assertThat(componentManager.find("mpftMpMF"), is(magicFocus));
+        assertThat(ComponentManager.find("mpftMpG"), is(grip));
+        assertThat(ComponentManager.find("mpftMpM"), is(shaft));
+        assertThat(ComponentManager.find("mpftMpMF"), is(magicFocus));
 
         // Verify that if wrong component's id is passed, the method return empty Component.
-        assertThat(componentManager.find(""), is(new Component()));
+        assertThat(ComponentManager.find(""), is(new Component()));
     }
 
     @Test
@@ -77,12 +75,12 @@ public class ComponentManagerTest {
         shieldComponents.add(new Component("mpftMpAT", 87, "Armor Clip", "ICO_armor_clip.png", 10));
 
         // Verify if the components manager find correct lists
-        assertThat(componentManager.findPlanComponents(25), containsInAnyOrder(axeComponents.toArray()));
-        assertThat(componentManager.findPlanComponents(94), containsInAnyOrder(bowPistolComponents.toArray()));
-        assertThat(componentManager.findPlanComponents(87), containsInAnyOrder(shieldComponents.toArray()));
+        assertThat(ComponentManager.findPlanComponents(25), containsInAnyOrder(axeComponents.toArray()));
+        assertThat(ComponentManager.findPlanComponents(94), containsInAnyOrder(bowPistolComponents.toArray()));
+        assertThat(ComponentManager.findPlanComponents(87), containsInAnyOrder(shieldComponents.toArray()));
 
         // Verify that if wrong plan's id is passed, the method return empty list of component.
-        assertThat(componentManager.findPlanComponents(200), is(new ArrayList<>()));
+        assertThat(ComponentManager.findPlanComponents(200), is(new ArrayList<>()));
     }
 
     @Test
@@ -125,28 +123,28 @@ public class ComponentManagerTest {
 
         // Verify if the components manager find correct pairs of components for each materials
         assertThat(
-            componentManager.findMaterialComponents("m0021dxacb01"), containsInAnyOrder(fiberComponents.toArray())
+            ComponentManager.findMaterialComponents("m0021dxacb01"), containsInAnyOrder(fiberComponents.toArray())
         );
         assertThat(
-            componentManager.findMaterialComponents("m0001dxacc01"), containsInAnyOrder(woodComponents.toArray())
+            ComponentManager.findMaterialComponents("m0001dxacc01"), containsInAnyOrder(woodComponents.toArray())
         );
         assertThat(
-            componentManager.findMaterialComponents("m0155dxajd01"), containsInAnyOrder(amberComponents.toArray())
+            ComponentManager.findMaterialComponents("m0155dxajd01"), containsInAnyOrder(amberComponents.toArray())
         );
         assertThat(
-            componentManager.findMaterialComponents("m0135ccdfd01"), containsInAnyOrder(fangComponents.toArray())
+            ComponentManager.findMaterialComponents("m0135ccdfd01"), containsInAnyOrder(fangComponents.toArray())
         );
         assertThat(
-            componentManager.findMaterialComponents("m0100dxapf01"), containsInAnyOrder(woodNodeComponents.toArray())
+            ComponentManager.findMaterialComponents("m0100dxapf01"), containsInAnyOrder(woodNodeComponents.toArray())
         );
         assertThat(
-            componentManager.findMaterialComponents("m0046dxald01"), containsInAnyOrder(glueComponents.toArray())
+            ComponentManager.findMaterialComponents("m0046dxald01"), containsInAnyOrder(glueComponents.toArray())
         );
         assertThat(
-            componentManager.findMaterialComponents("m0067ckdfe01"), containsInAnyOrder(stingComponents.toArray())
+            ComponentManager.findMaterialComponents("m0067ckdfe01"), containsInAnyOrder(stingComponents.toArray())
         );
 
         // Verify that if wrong material's id is passed, the method return empty list of component.
-        assertThat(componentManager.findMaterialComponents(""), is(new ArrayList<>()));
+        assertThat(ComponentManager.findMaterialComponents(""), is(new ArrayList<>()));
     }
 }

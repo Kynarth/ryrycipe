@@ -21,7 +21,9 @@ public class FactionManager {
      * Connection to the ryrycipe database.
      * @see DBConnection
      */
-    private Connection connection = DBConnection.getInstance();
+    private static Connection connection = DBConnection.getInstance();
+
+    private FactionManager() {}
 
     /**
      * Retrieve a {@link Faction} by its name in the database.
@@ -29,11 +31,11 @@ public class FactionManager {
      * @param name Name of {@link Faction#name}
      * @return Return a filled {@link Faction} if provided name is correct otherwise, return an empty one.
      */
-    public Faction find(String name) {
+    public static Faction find(String name) {
         Faction faction = new Faction();
 
         try {
-            PreparedStatement statement = this.connection.prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                 "SELECT name, icon FROM faction WHERE name = ?"
             );
             statement.setString(1, name);

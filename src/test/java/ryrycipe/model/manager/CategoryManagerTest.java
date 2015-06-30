@@ -18,8 +18,6 @@ public class CategoryManagerTest {
 
     private static String language = LanguageUtil.getLanguage();
 
-    private CategoryManager categoryManager = new CategoryManager();
-
     @BeforeClass
     public static void setUpClass() throws UnsupportedLanguageException {
         // Setup english database if not already set
@@ -46,12 +44,12 @@ public class CategoryManagerTest {
         Category ammoTest = new Category(10, "Ammo", "One-handed ranged weapon");
 
         // Verify if the category manager find correct categories
-        assertThat(categoryManager.find(4), is(armorTest));
-        assertThat(categoryManager.find(3), is(jewelTest));
-        assertThat(categoryManager.find(5), is(weaponTest));
-        assertThat(categoryManager.find(10), is(ammoTest));
+        assertThat(CategoryManager.find(4), is(armorTest));
+        assertThat(CategoryManager.find(3), is(jewelTest));
+        assertThat(CategoryManager.find(5), is(weaponTest));
+        assertThat(CategoryManager.find(10), is(ammoTest));
 
         // Verify method return empty Category if wrong id
-        assertThat(categoryManager.find(50), is(new Category()));
+        assertThat(CategoryManager.find(50), is(new Category()));
     }
 }

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import ryrycipe.model.Component;
 import ryrycipe.model.Faction;
 import ryrycipe.model.Plan;
+import ryrycipe.model.manager.FactionManager;
 import ryrycipe.model.manager.PlanManager;
 
 import java.net.URL;
@@ -99,7 +100,7 @@ public class CreatorPaneController implements Initializable {
      * Filter materials following their faction (Fyros, Matis, etc...).
      */
     @FXML
-    private ComboBox factionCB;
+    private ComboBox<Faction> factionCB;
 
     /**
      * Container where filtered materials are displayed.
@@ -128,8 +129,7 @@ public class CreatorPaneController implements Initializable {
         planQualityCB.setValue(planQualityItems.get(planQualityItems.size() - 1));
 
         // Set all possible type of plan in planCB
-        PlanManager planManager = new PlanManager();
-        planItems.addAll(planManager.findAllPlans(planQualityCB.getValue()));
+        planItems.addAll(PlanManager.findAllPlans(planQualityCB.getValue()));
 
         // Check if the list of plans corresponding to the chosen quality has been founded
         if (!planItems.isEmpty()) {
@@ -179,17 +179,32 @@ public class CreatorPaneController implements Initializable {
             componentCB.getSelectionModel().select(0);
         });
 
-        // Setup quality items for its combobox
+        // Setup quality's items for its combobox
         qualityItems.addAll(resources.getString("combobox.quality.values").split(","));
         qualityCB.setItems(qualityItems);
         qualityCB.getSelectionModel().select(0);
 
+        // Setup faction's items for its combobox
+        factionItems.add(FactionManager.find(resources.getString("combobox.faction.generic")));
+        factionCB.setItems(factionItems);
+        factionCB.getSelectionModel().select(0);
+
         // Listener to change list of factions in function of selected quality
-//        qualityCB.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue.intValue() >= 2 && oldValue.intValue() < 2) {
-//                factionItems.clear();
-//                factionItems.addAll()
-//            }
-//        });
+        qualityCB.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() < 2 && oldValue.intValue() >= 2) {
+                factionItems.clear();
+                factionItems.add(FactionManager.find(resources.getString("combobox.faction.generic")));
+                factionCB.setItems(factionItems);
+                factionCB.getSelectionModel().select(0);
+            } else if (newValue.intValue() >= 2 && oldValue.intValue() < 2) {
+                factionItems.clear();
+                for (String factionName : resources.getString("combobox.faction.values").split(",")) {
+                    factionItems.add(FactionManager.find(factionName));
+                }
+
+                factionCB.setItems(factionItems);
+                factionCB.getSelectionModel().select(0);
+            }
+        });
     }
 }
