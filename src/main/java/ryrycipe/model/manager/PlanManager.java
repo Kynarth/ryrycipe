@@ -32,7 +32,7 @@ public class PlanManager {
      *
      * @param name {@link Plan#name}
      * @param quality {@link Plan#quality}
-     * @return {@link Plan}
+     * @return Return a filled {@link Plan} if founded otherwise empty one.
      */
     public Plan find(String name, String quality) {
         Plan plan = new Plan();
@@ -44,16 +44,14 @@ public class PlanManager {
                 "SELECT r.id AS plan_id, r.icon, r.category_id FROM recipe AS r " +
                     "INNER JOIN recipe_category AS rc ON r.category_id = rc.id " +
                     "INNER JOIN recipe_component AS rcmp ON rcmp.recipe_id = r.id " +
-                    "WHERE r.name= ? AND r.quality= ?",
-                ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY
+                    "WHERE r.name= ? AND r.quality= ?"
             );
             statement.setString(1, name);
             statement.setString(2, quality);
 
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.first()) {
-
+            if (resultSet.isBeforeFirst()) {
                 // Retrieve plan's category and the list of its components
                 Category category = categoryManager.find(resultSet.getInt("category_id"));
                 List<Component> components = componentManager.findPlanComponents(resultSet.getInt("plan_id"));
@@ -75,7 +73,7 @@ public class PlanManager {
      * Retrieve all {@link Plan}s with the given quality.
      *
      * @param quality {@link Plan#quality}
-     * @return {@link List} of {@link Plan} corresponding to the given quality.
+     * @return {@link List} of {@link Plan} corresponding to the given quality or empty one if incorrect quality.
      */
     public List<Plan> findAllPlans(String quality) {
         List<Plan> plans = new ArrayList<>();

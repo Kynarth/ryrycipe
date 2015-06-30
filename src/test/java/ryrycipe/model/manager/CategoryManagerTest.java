@@ -37,7 +37,6 @@ public class CategoryManagerTest {
         }
     }
 
-
     @Test
     public void testFind() {
         // Create some categories
@@ -47,9 +46,12 @@ public class CategoryManagerTest {
         Category ammoTest = new Category(10, "Ammo", "One-handed ranged weapon");
 
         // Verify if the category manager find correct categories
-        assertThat(armorTest, is(categoryManager.find(4)));
-        assertThat(jewelTest, is(categoryManager.find(3)));
-        assertThat(weaponTest, is(categoryManager.find(5)));
-        assertThat(ammoTest, is(categoryManager.find(10)));
+        assertThat(categoryManager.find(4), is(armorTest));
+        assertThat(categoryManager.find(3), is(jewelTest));
+        assertThat(categoryManager.find(5), is(weaponTest));
+        assertThat(categoryManager.find(10), is(ammoTest));
+
+        // Verify method return empty Category if wrong id
+        assertThat(categoryManager.find(50), is(new Category()));
     }
 }

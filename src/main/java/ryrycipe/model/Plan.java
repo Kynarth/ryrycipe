@@ -1,5 +1,7 @@
 package ryrycipe.model;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -115,12 +117,38 @@ public class Plan implements Comparable<Plan> {
         this.components = components;
     }
 
-    public String toString() {
-        return category.getCategory() + "/" + name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plan plan = (Plan) o;
+        return Objects.equal(id, plan.id) &&
+            Objects.equal(name, plan.name) &&
+            Objects.equal(quality, plan.quality) &&
+            Objects.equal(icon, plan.icon) &&
+            Objects.equal(category, plan.category) &&
+            Objects.equal(components, plan.components);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, quality, icon, category, components);
     }
 
     @Override
     public int compareTo(@NotNull Plan o) {
         return this.toString().compareTo(o.toString());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .add("id", id)
+            .add("name", name)
+            .add("quality", quality)
+            .add("icon", icon)
+            .add("category", category)
+            .add("components", components)
+            .toString();
     }
 }

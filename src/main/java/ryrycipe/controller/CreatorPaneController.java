@@ -12,6 +12,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import org.slf4j.LoggerFactory;
 import ryrycipe.model.Plan;
 import ryrycipe.model.manager.PlanManager;
 
@@ -24,6 +25,8 @@ import java.util.ResourceBundle;
  * It also handle the user's comment for his plan.
  */
 public class CreatorPaneController implements Initializable {
+
+    private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CreatorPaneController.class.getName());
 
     // --------------- Plan tab's controls -------------------- //
 
@@ -121,12 +124,20 @@ public class CreatorPaneController implements Initializable {
         // Set all possible type of plan in planCB
         PlanManager planManager = new PlanManager();
         planItems.addAll(planManager.findAllPlans(planQualityCB.getValue()));
-        FXCollections.sort(planItems);
-        planCB.setItems(planItems);
 
-        // Disable all filter's parameters if no plan is selected in planCB
-        for (Node node: materialFilter.getChildren()) {
-            node.disableProperty().bind(planCB.valueProperty().isNull());
+        // Check if the list of plans corresponding to the chosen quality has been founded
+        if (!planItems.isEmpty()) {
+            // Sort plans to group them by category
+            FXCollections.sort(planItems);
+            planCB.setItems(planItems);
+
+            // Disable all filter's parameters if no plan is selected in planCB
+            for (Node node: materialFilter.getChildren()) {
+                node.disableProperty().bind(planCB.valueProperty().isNull());
+            }
+        } else {
+            LOGGER.error("Couldn't find the list of plans for the {} quality.", planQualityCB.getValue());
         }
+
     }
 }

@@ -28,7 +28,7 @@ public class CategoryManager {
      * Retrieve a {@link Category} by its id in the database.
      *
      * @param id {@link Category#id}
-     * @return  {@link Category}
+     * @return Return a filled {@link Category} if id is correct otherwise empty one.
      */
     public Category find(int id) {
         Category category = new Category();

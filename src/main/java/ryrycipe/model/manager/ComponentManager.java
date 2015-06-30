@@ -28,10 +28,10 @@ public class ComponentManager {
     public Connection connection = DBConnection.getInstance();
 
     /**
-     * Retrieve a {@link Component} not affiliated to a {@link Plan} by its id in the database.
+     * Retrieve a {@link Component} not affiliated to a {@link ryrycipe.model.Plan} by its id in the database.
      *
      * @param id {@link Component#id}
-     * @return {@link Component}
+     * @return Return a filled {@link Component} or empty one if id is incorrect.
      */
     public Component find(String id) {
         Component component = new Component();
@@ -62,7 +62,8 @@ public class ComponentManager {
      * Retrieve all {@link Component}s from a {@link ryrycipe.model.Plan}.
      *
      * @param planId {@link ryrycipe.model.Plan#id}
-     * @return A {@link List} of {@link Component}s composing the {@link ryrycipe.model.Plan}.
+     * @return A {@link List} of {@link Component}s composing the {@link ryrycipe.model.Plan}, or empty one
+     * if the provided {@link ryrycipe.model.Plan#id} doesn't exist.
      */
     public List<Component> findPlanComponents(int planId) {
         List<Component> components = new ArrayList<>();
@@ -95,7 +96,8 @@ public class ComponentManager {
      * Retrieve which pair of {@link Component}s a {@link ryrycipe.model.Material} can be used there.
      *
      * @param materialId {@link ryrycipe.model.Material#id}
-     * @return {@link List} of {@link Component}s affiliated to the given {@link ryrycipe.model.Material}.
+     * @return {@link List} of two {@link Component}s affiliated to the given {@link ryrycipe.model.Material}, or
+     * empty one if {@link ryrycipe.model.Material#id} doesn't exist.
      */
     public List<Component> findMaterialComponents(String materialId) {
         List<Component> components = new ArrayList<>();
