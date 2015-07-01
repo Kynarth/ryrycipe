@@ -64,8 +64,8 @@
         "name": "Cartouche de Munitions"
     },
     "mpftMpE": {
-        "icon": "ICO_Explosif",
-        "name": "Explosif"
+        "icon": "ICO_Explosive",
+        "name": "Explosibe"
     },
     "mpftMpH": {
         "icon": "ICO_hammer",

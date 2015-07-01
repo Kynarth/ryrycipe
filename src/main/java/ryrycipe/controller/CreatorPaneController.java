@@ -6,12 +6,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -24,6 +23,7 @@ import ryrycipe.model.manager.PlanManager;
 import ryrycipe.model.manager.view.MaterialView;
 import ryrycipe.task.FilterMaterialsTask;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +40,11 @@ public class CreatorPaneController implements Initializable {
     private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CreatorPaneController.class.getName());
 
     // --------------- Plan tab's controls -------------------- //
+    /**
+     * Plan tab of CreatorPane.
+     */
+    @FXML
+    private TabPane planTab;
 
     /**
      * Allow the user to choose between normal, medium and high plan's quality.
@@ -128,16 +133,10 @@ public class CreatorPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Set possible plan's quality in planQualityCB and set default value to 'High'
-        planQualityItems.addAll((resources.getString("combobox.quality.items").split(",")));
-        planQualityCB.setItems(planQualityItems);
-        planQualityCB.setValue(planQualityItems.get(planQualityItems.size() - 1));
-
-        // Set all possible type of plan in planCB
-        planItems.addAll(PlanManager.findAllPlans(planQualityCB.getValue()));
-
-        // Check if the list of plans corresponding to the chosen quality has been founded
-        if (!planItems.isEmpty()) {
+        // Set all possible type of plan in planCB in function of selected plan's quality
+        planQualityCB.valueProperty().addListener((observable1, oldValue, newValue) -> {
+            planItems.clear();
+            planItems.addAll(PlanManager.findAllPlans(planQualityCB.getValue()));
             // Sort plans to group them by category
             FXCollections.sort(planItems);
             planCB.setItems(planItems);
@@ -146,9 +145,12 @@ public class CreatorPaneController implements Initializable {
             for (Node node: materialFilter.getChildren()) {
                 node.disableProperty().bind(planCB.valueProperty().isNull());
             }
-        } else {
-            LOGGER.error("Couldn't find the list of plans for the {} quality.", planQualityCB.getValue());
-        }
+        });
+
+        // Set possible plan's quality in planQualityCB and set default value to 'High'
+        planQualityItems.addAll((resources.getString("combobox.quality.items").split(",")));
+        planQualityCB.setItems(planQualityItems);
+        planQualityCB.setValue(planQualityItems.get(planQualityItems.size() - 1));
 
         // Listener to force user to choose a number between 1 and 250 as material quality level
         matQualityLevel.textProperty().addListener(((observable, oldValue, newValue) -> {
@@ -175,13 +177,41 @@ public class CreatorPaneController implements Initializable {
             }
         }));
 
-        // Listener to change componentCB's item in function of chosen plan in planCB
+        // Listener to change component combobox items and components' container in function of chosen plan in planCB
         planCB.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // Component combobox
-            componentItems.clear();         // Remove old components associated to the previous plan
+            if (newValue == null) {
+                return;
+            }
+
+            // Components' combobox
+            componentItems.clear();
             componentItems.addAll(newValue.getComponents());
             componentCB.setItems(componentItems);
             componentCB.getSelectionModel().select(0);
+
+            // components' container
+            componentsContainer.getChildren().clear();
+            for (Component component: newValue.getComponents()) {
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(this.getClass().getResource("/ryrycipe/view/ComponentView.fxml"));
+                    loader.setResources(resources);
+                    AnchorPane componentView = loader.load();
+
+                    // Bind width to its tab
+                    componentView.prefWidthProperty().bind(planTab.widthProperty().subtract(40.0));
+
+                    // Initialize the view
+                    ComponentViewController controller = loader.getController();
+                    controller.setupComponentView(component);
+
+                    componentsContainer.getChildren().add(componentView);
+                } catch (IllegalStateException e) {
+                    LOGGER.error("Couldn't find the ComponentView.fxml file.");
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage());
+                }
+            }
         });
 
         // Setup quality's items for its combobox
