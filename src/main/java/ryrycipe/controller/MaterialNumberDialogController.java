@@ -3,6 +3,7 @@ package ryrycipe.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -107,12 +108,12 @@ public class MaterialNumberDialogController implements Initializable {
     }
 
     /**
-     * Set the imageView with the selected MaterialView from {@link CreatorPaneController#materialChooser}
+     * Set the imageView with the selected MaterialView's image from {@link CreatorPaneController#materialChooser}
      *
-     * @param materialView {@link MaterialView}
+     * @param image {@link Image}
      */
-    public void setMaterialImage(MaterialView materialView) {
-        this.materialImg.setImage(materialView.getImage());
+    public void setMaterialImage(Image image) {
+        this.materialImg.setImage(image);
     }
 
     public TextField getNbMaterialField() {

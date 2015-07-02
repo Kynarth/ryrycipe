@@ -64,6 +64,17 @@ public class ComponentViewController implements Initializable {
      */
     private boolean selected;
 
+    /**
+     * Number of material in the ComponentView.
+     */
+    private int nbMaterials = 0;
+
+    /**
+     * Boolean with true if the ComponentView contains enough {@link ryrycipe.model.Material} to fill it.
+     */
+    private boolean filled;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Set an ImageView in the flow layout that represents a empty slot for a material.
@@ -81,6 +92,32 @@ public class ComponentViewController implements Initializable {
         componentIndicator.setText("0/" + this.component.getAmount());
 
         LOGGER.info("Plan's component: {} initialized", this.component.getName());
+    }
+
+    /**
+     * Update the displayed number of {@link ryrycipe.model.Material} present in the user recipe.
+     *
+     * @param nbMaterials Number of {@link ryrycipe.model.Material}s used for the recipe for corresponding component.
+     */
+    public void updateIndicator(int nbMaterials) {
+        this.nbMaterials += nbMaterials;
+        componentIndicator.setText(this.nbMaterials + "/" + component.getAmount());
+
+        // Remove the empty MaterialView when the number of needed material is filled
+        if (this.nbMaterials == component.getAmount()) {
+            materialsContainer.getChildren().remove(materialsContainer.getChildren().size() - 1);
+            filled = true;
+            LOGGER.info("Recipe component filled.");
+        }
+
+        // Add empty MaterialView if ComponentView is no longer filled.
+        if (this.nbMaterials < component.getAmount() && filled) {
+            materialsContainer.getChildren().add(new MaterialView());
+            filled = false;
+            LOGGER.info("Recipe component is no longer filled.");
+        }
+
+        LOGGER.info("Component: {} updated", component.getName());
     }
 
     /**
@@ -125,5 +162,18 @@ public class ComponentViewController implements Initializable {
 
     public Component getComponent() {
         return component;
+    }
+
+    /**
+     * Return the number of remaining of {@link ryrycipe.model.Material}s to fill the {@link Component#amount}.
+     *
+     * @return int - Number of {@link ryrycipe.model.Material}s to fill the {@link Component#amount}.
+     */
+    public int getNeededMaterialNb() {
+        return component.getAmount() - nbMaterials;
+    }
+
+    public FlowPane getMaterialsContainer() {
+        return materialsContainer;
     }
 }

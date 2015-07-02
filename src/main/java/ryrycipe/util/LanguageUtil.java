@@ -6,6 +6,7 @@ import ryrycipe.exception.UnsupportedLanguageException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 
@@ -30,6 +31,15 @@ public class LanguageUtil {
      */
     public static String getLanguage() {
         return prefs.get("language", "en");
+    }
+
+    /**
+     * Give the app's locale or english locale if not defined.
+     *
+     * @return {@link Locale} - application's locale.
+     */
+    public static Locale getLocale() {
+        return new Locale(prefs.get("language", "en"));
     }
 
     /**
