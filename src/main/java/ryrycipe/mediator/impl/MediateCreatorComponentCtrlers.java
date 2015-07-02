@@ -34,8 +34,34 @@ public class MediateCreatorComponentCtrlers implements IMediateCreatorComponentC
         componentViewControllerList.add(controller);
     }
 
+    /**
+     * Update {@link CreatorPaneController#componentCB} with {@link Component} from clicked
+     * {@link ComponentViewController}.
+     *
+     * @param component {@link Component} of {@link ComponentViewController}.
+     */
     @Override
     public void updateComponentCB(Component component) {
         creatorPaneController.getComponentCB().getSelectionModel().select(component);
+    }
+
+    /**
+     * Set an effect of selection on the owner of the given {@link Component}.
+     *
+     * @param component {@link Component} from clicked {@link ComponentViewController} selected in
+     * {@link CreatorPaneController#componentCB}
+     */
+    @Override
+    public void selectComponentView(Component component) {
+        for (ComponentViewController componentViewCtrl: componentViewControllerList) {
+            // Remove select effect from previous selection
+            if (componentViewCtrl.isSelected()) {
+                componentViewCtrl.unselected();
+            }
+            // Add select effect to chosen ComponentView
+            else if (componentViewCtrl.getComponent().equals(component)) {
+                componentViewCtrl.selected();
+            }
+        }
     }
 }

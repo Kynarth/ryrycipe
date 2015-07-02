@@ -12,4 +12,5 @@ public interface IMediateCreatorComponentCtrlers {
     void registerCreatorPaneController(CreatorPaneController controller);
     void addComponentViewController(ComponentViewController controller);
     void updateComponentCB(Component component);
+    void selectComponentView(Component component);
 }

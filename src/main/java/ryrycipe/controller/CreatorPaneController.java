@@ -187,12 +187,6 @@ public class CreatorPaneController implements Initializable {
                 return;
             }
 
-            // Components' combobox
-            componentItems.clear();
-            componentItems.addAll(newValue.getComponents());
-            componentCB.setItems(componentItems);
-            componentCB.getSelectionModel().select(0);
-
             // components' container
             componentsContainer.getChildren().clear();
             for (Component component: newValue.getComponents()) {
@@ -217,6 +211,13 @@ public class CreatorPaneController implements Initializable {
                     LOGGER.error(e.getMessage());
                 }
             }
+
+            // Components' combobox
+            componentItems.clear();
+            componentItems.addAll(newValue.getComponents());
+            componentCB.setItems(componentItems);
+            componentCB.getSelectionModel().select(0);
+            MediateCreatorComponentCtrlers.getInstance().selectComponentView(componentCB.getValue());
         });
 
         // Setup quality's items for its combobox
