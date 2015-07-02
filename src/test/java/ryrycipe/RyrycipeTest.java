@@ -62,6 +62,7 @@ public class RyrycipeTest extends FxRobot {
     public void testAppIcon() {
         Image appIcon = primaryStage.getIcons().get(0);
         Image testIcon = new Image("/images/logo.png");
+
         for (int i = 0; i < appIcon.getWidth(); i++)
         {
             for (int j = 0; j < appIcon.getHeight(); j++)
