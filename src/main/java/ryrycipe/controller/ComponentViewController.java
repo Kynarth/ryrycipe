@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ryrycipe.mediator.impl.MediateCreatorComponentCtrlers;
 import ryrycipe.model.Component;
 import ryrycipe.model.manager.view.MaterialView;
 
@@ -68,5 +69,13 @@ public class ComponentViewController implements Initializable {
         componentIndicator.setText("0/" + this.component.getAmount());
 
         LOGGER.info("Plan's component: {} initialized", this.component.getName());
+    }
+
+    /**
+     * Update the {@link CreatorPaneController#componentCB} in function of clicked ComponentView.
+     */
+    @FXML
+    public void clicked() {
+        MediateCreatorComponentCtrlers.getInstance().updateComponentCB(this.component);
     }
 }

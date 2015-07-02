@@ -15,6 +15,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.slf4j.LoggerFactory;
+import ryrycipe.mediator.impl.MediateCreatorComponentCtrlers;
 import ryrycipe.model.Component;
 import ryrycipe.model.Faction;
 import ryrycipe.model.Plan;
@@ -133,6 +134,9 @@ public class CreatorPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Setup mediator between this controller and ComponentView ones.
+        MediateCreatorComponentCtrlers.getInstance().registerCreatorPaneController(this);
+
         // Set all possible type of plan in planCB in function of selected plan's quality
         planQualityCB.valueProperty().addListener((observable1, oldValue, newValue) -> {
             planItems.clear();
@@ -204,6 +208,7 @@ public class CreatorPaneController implements Initializable {
                     // Initialize the view
                     ComponentViewController controller = loader.getController();
                     controller.setupComponentView(component);
+                    MediateCreatorComponentCtrlers.getInstance().addComponentViewController(controller);
 
                     componentsContainer.getChildren().add(componentView);
                 } catch (IllegalStateException e) {
@@ -303,5 +308,9 @@ public class CreatorPaneController implements Initializable {
         Thread filterThread = new Thread(filterTask);
         filterThread.setDaemon(true);
         filterThread.start();
+    }
+
+    public ComboBox<Component> getComponentCB() {
+        return componentCB;
     }
 }
