@@ -29,11 +29,12 @@ public class RyrycipeTest extends FxRobot {
 
     private static Stage primaryStage;
     private static Ryrycipe ryrycipe;
+    private static Preferences prefs = Preferences.userNodeForPackage(LanguageUtil.class);
+    private static String lang = prefs.get("language", "en");
 
     @BeforeClass
     public static void setUpClass() {
         // Remove previous language preference
-        Preferences prefs = Preferences.userNodeForPackage(LanguageUtil.class);
         prefs.remove("language");
 
         try {
@@ -46,6 +47,9 @@ public class RyrycipeTest extends FxRobot {
 
     @AfterClass
     public static void tearDownClass() {
+        // setup previous language
+        prefs.put("language", lang);
+
         try {
             FxToolkit.cleanupApplication(ryrycipe);
         } catch (TimeoutException e) {

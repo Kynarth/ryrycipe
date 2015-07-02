@@ -233,18 +233,28 @@ public class CreatorPaneController implements Initializable {
         // Listener to change list of factions in function of selected quality
         qualityCB.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() < 2 && oldValue.intValue() >= 2) {
+                // To avoid to trigger displayMaterials function while faction items are cleared
+                factionCB.setOnAction(null);
                 factionItems.clear();
+
                 factionItems.add(FactionManager.find(resources.getString("combobox.faction.generic")));
                 factionCB.setItems(factionItems);
+                factionCB.setOnAction(event -> displayMaterials());
                 factionCB.getSelectionModel().select(0);
             } else if (newValue.intValue() >= 2 && oldValue.intValue() < 2) {
+                // To avoid to trigger displayMaterials function while faction items are cleared
+                factionCB.setOnAction(null);
                 factionItems.clear();
+
                 for (String factionName : resources.getString("combobox.faction.values").split(",")) {
                     factionItems.add(FactionManager.find(factionName));
                 }
 
                 factionCB.setItems(factionItems);
+                factionCB.setOnAction(event -> displayMaterials());
                 factionCB.getSelectionModel().select(0);
+            } else {
+                displayMaterials();
             }
         });
     }
@@ -278,7 +288,7 @@ public class CreatorPaneController implements Initializable {
      * Display {@link ryrycipe.model.Material}s fitting the materialFilter options.
      */
     @FXML
-    private void displayMaterials() {
+    public void displayMaterials() {
         // Remove previous MaterialView and get filter's parameters
         materialChooser.getChildren().clear();
         Map<String, String> filterParameter = getFilterParameters();

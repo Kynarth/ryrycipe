@@ -43,6 +43,7 @@ public class MediateCreatorComponentCtrlers implements IMediateCreatorComponentC
     @Override
     public void updateComponentCB(Component component) {
         creatorPaneController.getComponentCB().getSelectionModel().select(component);
+        creatorPaneController.displayMaterials();
     }
 
     /**
@@ -54,13 +55,17 @@ public class MediateCreatorComponentCtrlers implements IMediateCreatorComponentC
     @Override
     public void selectComponentView(Component component) {
         for (ComponentViewController componentViewCtrl: componentViewControllerList) {
-            // Remove select effect from previous selection
-            if (componentViewCtrl.isSelected()) {
-                componentViewCtrl.unselected();
-            }
             // Add select effect to chosen ComponentView
-            else if (componentViewCtrl.getComponent().equals(component)) {
-                componentViewCtrl.selected();
+            if ( componentViewCtrl.getComponent().equals(component)) {
+                if (componentViewCtrl.isSelected()) { // Already selected
+                    return;
+                } else {
+                    componentViewCtrl.selected();
+                }
+            }
+            // Remove select effect from previous selection
+            else if (componentViewCtrl.isSelected()) {
+                componentViewCtrl.unselected();
             }
         }
     }
