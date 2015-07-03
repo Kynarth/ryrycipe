@@ -65,6 +65,8 @@ public class MaterialNumberDialogController implements Initializable {
                 nbMaterialField.setText(String.valueOf(materialAmount));
             }
         }));
+
+        nbMaterialField.requestFocus();
     }
 
     /**

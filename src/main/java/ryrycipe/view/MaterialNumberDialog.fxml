@@ -14,7 +14,7 @@
     <ImageView fx:id="materialImg" fitHeight="40.0" fitWidth="40.0" layoutX="39.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
     <ButtonBar layoutX="375.0" layoutY="331.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <buttons>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOKBtn" text="%button.ok.text" />
+            <Button mnemonicParsing="false" onAction="#handleOKBtn" text="%button.ok.text" />
             <Button mnemonicParsing="false" onAction="#handleCancelBtn" text="%button.cancel.text" />
         </buttons>
     </ButtonBar>
