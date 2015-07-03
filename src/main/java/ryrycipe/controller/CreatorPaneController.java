@@ -192,6 +192,7 @@ public class CreatorPaneController implements Initializable {
 
             // components' container
             componentsContainer.getChildren().clear();
+            MediateCreatorComponentCtrlers.getInstance().clearComponentViewControllers();
             for (Component component: newValue.getComponents()) {
                 try {
                     FXMLLoader loader = new FXMLLoader();

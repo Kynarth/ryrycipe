@@ -10,4 +10,5 @@ import ryrycipe.controller.CreatorPaneController;
 public interface IMediateCreatorComponentCtrlers {
     void registerCreatorPaneController(CreatorPaneController controller);
     void addComponentViewController(ComponentViewController controller);
+    void clearComponentViewControllers();
 }

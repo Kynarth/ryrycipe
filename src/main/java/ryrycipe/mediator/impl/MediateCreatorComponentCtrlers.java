@@ -45,6 +45,11 @@ public class MediateCreatorComponentCtrlers implements IMediateCreatorComponentC
         componentViewControllerList.add(controller);
     }
 
+    @Override
+    public void clearComponentViewControllers() {
+        componentViewControllerList.clear();
+    }
+
     /**
      * Update {@link CreatorPaneController#componentCB} with {@link Component} from clicked
      * {@link ComponentViewController}.
