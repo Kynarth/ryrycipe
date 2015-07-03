@@ -221,8 +221,7 @@ public class Material {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Material material = (Material) o;
-        return Objects.equal(nbMaterials, material.nbMaterials) &&
-            Objects.equal(id, material.id) &&
+        return Objects.equal(id, material.id) &&
             Objects.equal(description, material.description) &&
             Objects.equal(category, material.category) &&
             Objects.equal(type, material.type) &&
@@ -231,7 +230,6 @@ public class Material {
             Objects.equal(quality, material.quality) &&
             Objects.equal(faction, material.faction) &&
             Objects.equal(matQualityLevel, material.matQualityLevel) &&
-            Objects.equal(stats, material.stats) &&
             Objects.equal(asComponent, material.asComponent);
     }
 

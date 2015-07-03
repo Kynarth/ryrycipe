@@ -51,7 +51,7 @@ public class Ryrycipe extends Application {
         this.primaryStage.getIcons().add(new Image("/images/logo.png"));
 
         // Get user's language
-        this.locale = new Locale(LanguageUtil.getLanguage());
+        this.locale = LanguageUtil.getLocale();
 
         // Setup the MainWindow view with a CreatorPane.
         initMainWindow();
@@ -110,9 +110,5 @@ public class Ryrycipe extends Application {
 
     public Locale getLocale() {
         return locale;
-    }
-
-    public Stage getPrimaryStage() {
-        return primaryStage;
     }
 }

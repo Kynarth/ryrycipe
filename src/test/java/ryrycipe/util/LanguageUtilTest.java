@@ -3,6 +3,7 @@ package ryrycipe.util;
 import org.junit.Test;
 import ryrycipe.exception.UnsupportedLanguageException;
 
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -22,6 +23,15 @@ public class LanguageUtilTest {
     public void testGetLanguageDefault() {
         prefs.remove("language");
         assertThat(LanguageUtil.getLanguage(), is("en"));
+    }
+
+    /**
+     * Test {@link LanguageUtil#getLocale()}} without preferences.
+     */
+    @Test
+    public void testGetLocaleDefault() {
+        prefs.remove("language");
+        assertThat(LanguageUtil.getLocale(), is(new Locale("en")));
     }
 
     @Test

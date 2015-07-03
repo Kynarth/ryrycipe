@@ -1,5 +1,6 @@
 package ryrycipe.model.manager.view;
 
+import com.google.common.base.MoreObjects;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -45,17 +46,19 @@ public class MaterialView extends ImageView {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
             // Add the selected MaterialView in the corresponding ComponentView
             if (event.getClickCount() == 2) {
+                // Create a new MaterialView to not remove clicked MaterialView from materialChooser
+                MaterialView addedMaterial = new MaterialView(this.getImage(), this.getMaterial());
                 // Show a dialog to make the user chooses an amount of materials to add in the ComponentView
                 // Add this amount to the material object within MaterialView.
                 try {
-                    this.material.setNbMaterials(Integer.valueOf(showMaterialNumberDialog(
+                    addedMaterial.getMaterial().setNbMaterials(Integer.valueOf(showMaterialNumberDialog(
                         MediateCreatorComponentCtrlers.getInstance().getNeededAmountOfMaterials()
                     )));
                 } catch (NumberFormatException e) {
                     this.material.setNbMaterials(0);
                 }
 
-                MediateCreatorComponentCtrlers.getInstance().addMaterial(this);
+                MediateCreatorComponentCtrlers.getInstance().addMaterial(addedMaterial);
             }
         }
     });
@@ -166,6 +169,13 @@ public class MaterialView extends ImageView {
 
         WritableImage snapshot = canvas.snapshot(new SnapshotParameters(), null);
         this.setImage(snapshot);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .add("material", material)
+            .toString();
     }
 
     public Material getMaterial() {
