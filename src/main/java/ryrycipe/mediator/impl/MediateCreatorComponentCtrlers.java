@@ -174,7 +174,9 @@ public class MediateCreatorComponentCtrlers implements IMediateCreatorComponentC
      * Search {@link ComponentViewController} in the list for the selected {@link Component} in
      * {@link CreatorPaneController#componentCB}.
      *
-     * @return {@link ComponentViewController}
+     * @return {@link ComponentViewController}.
+     * @throws NullControllerException when no {@link Component} selected or
+     * {@link ComponentViewController} does not exits.
      */
     private ComponentViewController getComponentViewController() throws NullControllerException {
         for (ComponentViewController controller : componentViewControllerList) {

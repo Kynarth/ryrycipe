@@ -45,7 +45,8 @@ public class LanguageUtil {
     /**
      * Setup a new app's language if it supported.
      *
-     * @param language String - New app's language to setup.
+     * @param language New app's language to setup.
+     * @throws UnsupportedLanguageException thrown when user attempt to set a language not supported by the application.
      */
     public static void setLanguage(String language) throws UnsupportedLanguageException {
         InputStream inputStream = LanguageUtil.class.getClassLoader().getResourceAsStream("config.properties");

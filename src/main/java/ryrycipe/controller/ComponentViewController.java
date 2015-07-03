@@ -83,6 +83,8 @@ public class ComponentViewController implements Initializable {
 
     /**
      * Initialize the ComponentView with informations from a {@link ryrycipe.model.Plan}'s {@link Component}.
+     *
+     * @param component {@link Component} to initialize the controller with.
      */
     public void setupComponentView(Component component) {
         // Initialize ComponentView with given component informations

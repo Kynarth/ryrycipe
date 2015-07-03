@@ -43,7 +43,7 @@ public class Faction {
      * </ul>
      *
      * @param name Faction's name like Matis or Fyros.
-     * @param icon Each faction is represented by a color: Green -> Matis, Red -> Fyros etc ...
+     * @param icon Each faction is represented by a color: Green:  Matis, Red: Fyros etc ...
      */
     public Faction(String name, String icon) {
         this.name = name;

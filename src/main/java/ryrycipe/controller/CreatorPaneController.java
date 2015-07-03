@@ -131,7 +131,7 @@ public class CreatorPaneController implements Initializable {
     private ObservableList<Faction> factionItems = FXCollections.observableArrayList();
 
     /**
-     * Task filtering {@Link Material}s in function of filter's parameters.
+     * Task filtering {@link ryrycipe.model.Material}s in function of filter's parameters.
      */
     private Task<ObservableList<MaterialView>> filterTask;
 
