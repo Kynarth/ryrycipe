@@ -130,6 +130,10 @@ public class MediateCreatorComponentCtrlers implements IMediateCreatorComponentC
         }
     }
 
+    public List<ComponentViewController> getComponentViewControllerList() {
+        return componentViewControllerList;
+    }
+
     public static MediateCreatorComponentCtrlers getInstance() {
         return ourInstance;
     }
