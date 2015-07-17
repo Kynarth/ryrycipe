@@ -20,7 +20,7 @@ public class LanguageUtilTest {
      * Test {@link LanguageUtil#getLanguage()} without preferences.
      */
     @Test
-    public void testGetLanguageDefault() {
+    public void testGetLanguageDefault() throws Exception {
         prefs.remove("language");
         assertThat(LanguageUtil.getLanguage(), is("en"));
     }
@@ -29,20 +29,20 @@ public class LanguageUtilTest {
      * Test {@link LanguageUtil#getLocale()}} without preferences.
      */
     @Test
-    public void testGetLocaleDefault() {
+    public void testGetLocaleDefault() throws Exception {
         prefs.remove("language");
         assertThat(LanguageUtil.getLocale(), is(new Locale("en")));
     }
 
     @Test
-    public void testSetValidLanguage() throws UnsupportedLanguageException {
+    public void testSetValidLanguage() throws Exception {
         LanguageUtil.setLanguage("fr");
 
         assertThat(prefs.get("language", ""), is("fr"));
     }
 
     @Test (expected = UnsupportedLanguageException.class)
-    public void testSetInvalidLanguage() throws UnsupportedLanguageException {
+    public void testSetInvalidLanguage() throws Exception {
         LanguageUtil.setLanguage("es");
 
         // Check if language in preferences is still fr

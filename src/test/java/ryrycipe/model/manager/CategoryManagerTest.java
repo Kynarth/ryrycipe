@@ -19,7 +19,7 @@ public class CategoryManagerTest {
     private static String language = LanguageUtil.getLanguage();
 
     @BeforeClass
-    public static void setUpClass() throws UnsupportedLanguageException {
+    public static void setUpClass() throws Exception {
         // Setup english database if not already set
         if (!language.equals("en")) {
             LanguageUtil.setLanguage("en");
@@ -28,7 +28,7 @@ public class CategoryManagerTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws UnsupportedLanguageException {
+    public static void tearDownClass() throws Exception {
         // Setup previous language if changed
         if (!language.equals("en")) {
             LanguageUtil.setLanguage(language);
@@ -36,7 +36,7 @@ public class CategoryManagerTest {
     }
 
     @Test
-    public void testFind() {
+    public void testFind() throws Exception {
         // Create some categories
         Category armorTest = new Category(4, "Armor", "Medium Armor");
         Category jewelTest = new Category(3, "Jewel");

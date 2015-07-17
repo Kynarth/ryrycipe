@@ -33,7 +33,7 @@ public class RyrycipeTest extends FxRobot {
     private static String lang = prefs.get("language", "en");
 
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception {
         // Remove previous language preference
         prefs.remove("language");
 
@@ -46,7 +46,7 @@ public class RyrycipeTest extends FxRobot {
     }
 
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws Exception {
         // setup previous language
         prefs.put("language", lang);
 
@@ -58,12 +58,12 @@ public class RyrycipeTest extends FxRobot {
     }
 
     @Test
-    public void testAppName() {
+    public void testAppName() throws Exception {
         assertThat(primaryStage.getTitle(), is("Ryrycipe"));
     }
 
     @Test
-    public void testAppIcon() {
+    public void testAppIcon() throws Exception {
         Image appIcon = primaryStage.getIcons().get(0);
         Image testIcon = new Image("/images/logo.png");
 
@@ -79,12 +79,12 @@ public class RyrycipeTest extends FxRobot {
     }
 
     @Test
-    public void testAppLanguage() {
+    public void testAppLanguage() throws Exception {
         assertThat(ryrycipe.getLocale(), is(new Locale("en")));
     }
 
     @Test
-    public void testMainWindowToolBar() {
+    public void testMainWindowToolBar() throws Exception {
         // Check main tool bar has four buttons and get styled
         ToolBar toolBar = nodes().lookup("#mainToolBar").queryFirst();
         verifyThat(toolBar, hasChildren(4, ".button"));

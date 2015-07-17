@@ -3,7 +3,6 @@ package ryrycipe.model.manager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ryrycipe.exception.UnsupportedLanguageException;
 import ryrycipe.model.Faction;
 import ryrycipe.util.DBConnection;
 import ryrycipe.util.LanguageUtil;
@@ -19,7 +18,7 @@ public class FactionManagerTest {
     private static String language = LanguageUtil.getLanguage();
 
     @BeforeClass
-    public static void setUpClass() throws UnsupportedLanguageException {
+    public static void setUpClass() throws Exception {
         // Setup english database if not already set
         if (!language.equals("en")) {
             LanguageUtil.setLanguage("en");
@@ -28,7 +27,7 @@ public class FactionManagerTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws UnsupportedLanguageException {
+    public static void tearDownClass() throws Exception {
         // Setup previous language if changed
         if (!language.equals("en")) {
             LanguageUtil.setLanguage(language);
@@ -36,7 +35,7 @@ public class FactionManagerTest {
     }
 
     @Test
-    public void testFind() {
+    public void testFind() throws Exception {
         // Create some factions
         Faction generic = new Faction("Generic", "BK_generic.png");
         Faction prime = new Faction("Prime", "BK_primes.png");

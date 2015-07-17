@@ -3,7 +3,6 @@ package ryrycipe.model.manager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ryrycipe.exception.UnsupportedLanguageException;
 import ryrycipe.model.Component;
 import ryrycipe.util.DBConnection;
 import ryrycipe.util.LanguageUtil;
@@ -23,7 +22,7 @@ public class ComponentManagerTest {
     private static String language = LanguageUtil.getLanguage();
 
     @BeforeClass
-    public static void setUpClass() throws UnsupportedLanguageException {
+    public static void setUpClass() throws Exception {
         // Setup english database if not already set
         if (!language.equals("en")) {
             LanguageUtil.setLanguage("en");
@@ -32,7 +31,7 @@ public class ComponentManagerTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws UnsupportedLanguageException {
+    public static void tearDownClass() throws Exception {
         // Setup previous language if changed
         if (!language.equals("en")) {
             LanguageUtil.setLanguage(language);
@@ -40,7 +39,7 @@ public class ComponentManagerTest {
     }
 
     @Test
-    public void testFind() {
+    public void testFind() throws Exception {
         // Create some components
         Component grip = new Component("mpftMpG", "Grip", "ICO_Grip.png");
         Component shaft = new Component("mpftMpM", "Shaft", "ICO_Shaft.png");
@@ -56,7 +55,7 @@ public class ComponentManagerTest {
     }
 
     @Test
-    public void testFindPlanComponents() {
+    public void testFindPlanComponents() throws Exception {
         // Create list of components from normal axe, medium bow-pistol and high shield
         List<Component> axeComponents = new ArrayList<>();
         axeComponents.add(new Component("mpftMpL", 25, "Blade", "ICO_Blade.png", 5));
@@ -84,7 +83,7 @@ public class ComponentManagerTest {
     }
 
     @Test
-    public void testFindMaterialComponents() {
+    public void testFindMaterialComponents() throws Exception {
         // Create components corresponding to:
         // Basic Buo Fiber
         List<Component> fiberComponents = new ArrayList<>();

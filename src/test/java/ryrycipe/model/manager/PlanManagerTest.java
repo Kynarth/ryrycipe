@@ -3,7 +3,6 @@ package ryrycipe.model.manager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ryrycipe.exception.UnsupportedLanguageException;
 import ryrycipe.model.Plan;
 import ryrycipe.util.DBConnection;
 import ryrycipe.util.LanguageUtil;
@@ -22,7 +21,7 @@ public class PlanManagerTest {
     private static String language = LanguageUtil.getLanguage();
 
     @BeforeClass
-    public static void setUpClass() throws UnsupportedLanguageException {
+    public static void setUpClass() throws Exception {
         // Setup english database if not already set
         if (!language.equals("en")) {
             LanguageUtil.setLanguage("en");
@@ -31,7 +30,7 @@ public class PlanManagerTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws UnsupportedLanguageException {
+    public static void tearDownClass() throws Exception {
         // Setup previous language if changed
         if (!language.equals("en")) {
             LanguageUtil.setLanguage(language);
@@ -39,7 +38,7 @@ public class PlanManagerTest {
     }
 
     @Test
-    public void testFind() {
+    public void testFind() throws Exception {
         // Create some plans
         Plan normalSword = new Plan(
             126, "Sword", "Normal", "MW_sword.png",
@@ -78,7 +77,7 @@ public class PlanManagerTest {
     }
 
     @Test
-    public void testFindAllPlans() {
+    public void testFindAllPlans() throws Exception {
         // Get list of plans by quality
         List<Plan> normalPlans = PlanManager.findAllPlans("Normal");
         List<Plan> mediumPlans = PlanManager.findAllPlans("Medium");

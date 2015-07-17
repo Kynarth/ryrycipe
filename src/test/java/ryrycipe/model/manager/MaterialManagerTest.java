@@ -3,7 +3,6 @@ package ryrycipe.model.manager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ryrycipe.exception.UnsupportedLanguageException;
 import ryrycipe.util.DBConnection;
 import ryrycipe.util.LanguageUtil;
 
@@ -21,7 +20,7 @@ public class MaterialManagerTest {
     private static String language = LanguageUtil.getLanguage();
 
     @BeforeClass
-    public static void setUpClass() throws UnsupportedLanguageException {
+    public static void setUpClass() throws Exception {
         // Setup english database if not already set
         if (!language.equals("en")) {
             LanguageUtil.setLanguage("en");
@@ -30,7 +29,7 @@ public class MaterialManagerTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws UnsupportedLanguageException {
+    public static void tearDownClass() throws Exception {
         // Setup previous language if changed
         if (!language.equals("en")) {
             LanguageUtil.setLanguage(language);
@@ -38,7 +37,7 @@ public class MaterialManagerTest {
     }
 
     @Test
-    public void testFilter() {
+    public void testFilter() throws Exception {
         // Create some filter's parameters
         Map<String, String> firstFilterParams = new HashMap<>();
         firstFilterParams.put("qualityLvl", "250");

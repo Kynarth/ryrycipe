@@ -13,6 +13,8 @@ repositories {
 dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.testfx:testfx-core:4.0.0-SNAPSHOT'
+    testCompile 'info.cukes:cucumber-junit:1.2.3'
+    testCompile 'info.cukes:cucumber-java:1.2.3'
     compile 'com.intellij:annotations:12.0'
     compile 'org.xerial:sqlite-jdbc:3.8.9.1'
     compile 'org.slf4j:slf4j-api:1.7.12'
@@ -90,5 +92,22 @@ task buildSelfContainedApp << {
                 "-outfile", "Ryrycipe",
                 "-srcdir", "${buildDir.name}${File.separator}${libsDir.name}",
                 "-appclass", mainClassName
+    }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'ryrycipe.cucumber', 'src/test/resources']
+        }
     }
 }

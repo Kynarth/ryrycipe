@@ -19,7 +19,7 @@ public class FactionTest {
     private Faction faction = new Faction("Matis", "BK_matis.png");
 
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception {
         try {
             FxToolkit.registerPrimaryStage();
         } catch (TimeoutException e) {
@@ -28,7 +28,7 @@ public class FactionTest {
     }
 
     @Test
-    public void testGetImage() {
+    public void testGetImage() throws Exception {
         Platform.runLater(() -> {
             Image factionImage = faction.getImage();
             Image testImage = new Image("/images/backgrounds/BK_matis.png");

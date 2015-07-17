@@ -31,7 +31,7 @@ public class CreatorPaneControllerTest extends FxRobot {
     private static ResourceBundle resources;
 
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception {
         try {
             resources = ResourceBundle.getBundle("lang", new Locale(LanguageUtil.getLanguage()));
             FxToolkit.registerPrimaryStage();
@@ -52,7 +52,7 @@ public class CreatorPaneControllerTest extends FxRobot {
     }
 
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws Exception {
         try {
             FxToolkit.cleanupStages();
         } catch (TimeoutException e) {
@@ -61,7 +61,7 @@ public class CreatorPaneControllerTest extends FxRobot {
     }
 
     @Test
-    public void testPlanQualityItems() {
+    public void testPlanQualityItems() throws Exception {
         ComboBox<String> planQualityCB = nodes().lookup("#planQualityCB").queryFirst();
         assertThat(
             planQualityCB.getItems().toArray(),
@@ -70,7 +70,7 @@ public class CreatorPaneControllerTest extends FxRobot {
     }
 
     @Test
-    public void testPlanItems() {
+    public void testPlanItems() throws Exception {
         ComboBox<Plan> planCB = nodes().lookup("#planCB").queryFirst();
         GridPane filter = nodes().lookup("#materialFilter").queryFirst();
 
